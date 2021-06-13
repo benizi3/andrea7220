@@ -20,6 +20,10 @@ import com.jayqqaa12.abase.annotation.db.Transient;
  * @created 2012-10-10
  */
 public class FieldUtils {
+	
+	
+	
+	
 	public static Method getFieldGetMethod(Class<?> clazz, Field f) {
 		String fn = f.getName();
 		Method m = null;
