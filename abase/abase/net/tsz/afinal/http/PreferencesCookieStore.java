@@ -21,7 +21,6 @@ import android.text.TextUtils;
 
 /**
  * 保存到 Preferences 的cookie
- * @author michael yang
  *
  */
 public class PreferencesCookieStore implements CookieStore {
