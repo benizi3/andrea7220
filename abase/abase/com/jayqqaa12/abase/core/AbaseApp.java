@@ -1,12 +1,11 @@
 package com.jayqqaa12.abase.core;
 
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.HashMap;
 import java.util.Map;
 
 import android.app.Application;
 import android.content.Context;
-
-import com.jayqqaa12.abase.exception.AbaseCrashHandler;
 
 /**
  * 如果 不想 每次都 传递 Context 请继承这个类 然后在 清单文件中配置 如果 直接 通过 getContext 获得 application
@@ -82,7 +81,7 @@ public class AbaseApp extends Application
 	 * 设置  异常的 处理器 应该在 app 的onCreate 里面设置 
 	 * @param handler
 	 */
-	public static void setUncaughtExceptionHandler(AbaseCrashHandler handler)
+	public static void setUncaughtExceptionHandler(UncaughtExceptionHandler handler)
 	{
 		Thread.currentThread().setUncaughtExceptionHandler(handler);
 	}

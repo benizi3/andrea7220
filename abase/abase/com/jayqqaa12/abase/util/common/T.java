@@ -6,6 +6,14 @@ import com.jayqqaa12.abase.util.ManageUtil;
 import android.content.Context;
 import android.widget.Toast;
 
+
+/**
+ * 
+ * Toast
+ * 
+ * @author  jayqqaa12
+ *
+ */
 public class T  extends AbaseUtil
 {
 	public static void ShortToast(String msg)

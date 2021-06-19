@@ -1,5 +1,6 @@
 package com.jayqqaa12.abase.util.ui;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
@@ -7,12 +8,56 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnKeyListener;
+import android.content.Intent;
 import android.view.KeyEvent;
 import android.view.View;
 
 public class DialogUtil
 {
 
+	 /**
+	    * 无网络弹出的提示窗口
+	    */
+		public void showNotNetworkDialog(final Activity activity) { 
+			 Dialog dialog = new AlertDialog.Builder(activity)	     
+	  			   .setMessage("网络连接失败，请检查重试！")// 设置内容       
+	  			   .setPositiveButton("退出",//确定按钮      
+	        new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog,  int which) {
+	        	   activity.finish();
+	           } 
+	         }).setNegativeButton("设置", //設置按钮
+	        new DialogInterface.OnClickListener() {       
+	         public void onClick(DialogInterface dialog, int whichButton) { 
+	        activity.startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS),0);
+	        activity.finish();
+	         }       
+	         }).create(); 
+	         dialog.show();
+	        } 
+		
+		
+		
+		/**
+		 * 一个 点击 退出的  对话框 
+		 * @param activity
+		 */
+		public void showExitDialog(final Activity activity,String msg){
+			
+			
+			 Dialog dialog = new AlertDialog.Builder(activity)	     
+			   .setMessage(msg)// 设置内容       
+			   .setPositiveButton("退出",new DialogInterface.OnClickListener(){
+				   public void onClick(DialogInterface dialog, int which) {
+					   activity.finish();
+				   };
+			   } ).create();
+			 dialog.show();
+		}
+	
+		
+		
+		
 	public static void showSingleChoiceDiaog(Context context, String title, String[] items, int checkedItem,
 			DialogInterface.OnClickListener oklistener, DialogInterface.OnClickListener canellistener)
 	{

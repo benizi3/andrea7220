@@ -17,6 +17,8 @@ package net.tsz.afinal.bitmap.core;
 
 import java.io.File;
 
+import com.jayqqaa12.abase.util.common.TAG;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
@@ -25,7 +27,6 @@ import android.util.Log;
 
 public class BitmapCommonUtils {
 	
-	private static final String TAG = "BitmapCommonUtils";
 	
 	/**
 	 * 获取可以使用的缓存目录
@@ -72,7 +73,7 @@ public class BitmapCommonUtils {
     		 final StatFs stats = new StatFs(path.getPath());
     	     return (long) stats.getBlockSize() * (long) stats.getAvailableBlocks();
     	}catch (Exception e) {
-			Log.e(TAG, "获取 sdcard 缓存大小 出错，请查看AndroidManifest.xml 是否添加了sdcard的访问权限");
+			Log.e(TAG.ERROR, "获取 sdcard 缓存大小 出错，请查看AndroidManifest.xml 是否添加了sdcard的访问权限");
 			e.printStackTrace();
 			return -1;
 		}

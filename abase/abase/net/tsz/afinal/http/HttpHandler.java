@@ -24,6 +24,11 @@ import com.jayqqaa12.abase.copy.AsyncTask;
 
 public class  HttpHandler  <T> extends  AsyncTask<Object, Object, Object> implements EntityCallBack{
 
+	private final static int UPDATE_START = 1;
+	private final static int UPDATE_LOADING = 2;
+	private final static int UPDATE_FAILURE = 3;
+	private final static int UPDATE_SUCCESS = 4;
+
 	private final AbstractHttpClient client;
 	private final HttpContext context;
 	
@@ -36,6 +41,8 @@ public class  HttpHandler  <T> extends  AsyncTask<Object, Object, Object> implem
 	private String targetUrl = null; //下载的路径
 	private boolean isResume = false; //是否断点续传
 	private String charset;
+	
+	private long time;
 
 	public HttpHandler(AbstractHttpClient client, HttpContext context, AjaxCallBack<T> callback,String charset) {
 		this.client = client;
@@ -107,10 +114,6 @@ public class  HttpHandler  <T> extends  AsyncTask<Object, Object, Object> implem
 		return null;
 	}
 
-	private final static int UPDATE_START = 1;
-	private final static int UPDATE_LOADING = 2;
-	private final static int UPDATE_FAILURE = 3;
-	private final static int UPDATE_SUCCESS = 4;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -183,7 +186,7 @@ public class  HttpHandler  <T> extends  AsyncTask<Object, Object, Object> implem
 	}
 	
 	
-	private long time;
+
 	@Override
 	public void callBack(long count, long current,boolean mustNoticeUI) {
 		if(callback!=null && callback.isProgress()){

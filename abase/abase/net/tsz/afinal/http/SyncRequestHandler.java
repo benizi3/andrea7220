@@ -12,6 +12,9 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.protocol.HttpContext;
 
+
+
+
 public class SyncRequestHandler {
 
 	private final AbstractHttpClient client;
@@ -27,6 +30,12 @@ public class SyncRequestHandler {
 		this.charset = charset;
 	}
 
+	/**
+	 * 重试 并 处理异常
+	 * @param request
+	 * @return
+	 * @throws IOException
+	 */
 	private Object makeRequestWithRetries(HttpUriRequest request) throws IOException {
 		
 		boolean retry = true;

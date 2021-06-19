@@ -38,8 +38,7 @@ public class FileUtil
 	public static final long ONE_MB = ONE_KB * ONE_KB;
 
 	/**
-	 * The file copy buffer size (10 MB) （原为30MB，为更适合在手机上使用，将其改为10MB，by
-	 * Geek_Soledad)
+	 * The file copy buffer size (10 MB) （原为30MB，为更适合在手机上使用，将其改为10MB，
 	 */
 	private static final long FILE_COPY_BUFFER_SIZE = ONE_MB * 10;
 
