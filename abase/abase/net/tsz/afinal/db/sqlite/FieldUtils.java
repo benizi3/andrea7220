@@ -1,3 +1,18 @@
+/**
+ * Copyright (c) 2012-2013, Michael Yang 杨福海 (www.yangfuhai.com).
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package net.tsz.afinal.db.sqlite;
 
 import java.lang.reflect.Field;
@@ -16,14 +31,12 @@ import com.jayqqaa12.abase.annotation.db.Transient;
 /**
  * @title 字段操作工具类
  * @description 描述
+ * @company 探索者网络工作室(www.tsz.net)
+ * @author michael Young (www.YangFuhai.com)
  * @version 1.0
  * @created 2012-10-10
  */
 public class FieldUtils {
-	
-	
-	
-	
 	public static Method getFieldGetMethod(Class<?> clazz, Field f) {
 		String fn = f.getName();
 		Method m = null;
@@ -225,7 +238,7 @@ public class FieldUtils {
 	
 	
 	/**
-	 * 获取某个属性对应的 表的列
+	 * 获取某个熟悉对应的 表的列
 	 * @param entity
 	 * @param fieldName
 	 * @return

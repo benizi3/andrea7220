@@ -1,3 +1,18 @@
+/**
+ * Copyright (c) 2012-2013, Michael Yang 杨福海 (www.yangfuhai.com).
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package net.tsz.afinal.http;
 
 import java.io.File;
@@ -24,11 +39,6 @@ import com.jayqqaa12.abase.copy.AsyncTask;
 
 public class  HttpHandler  <T> extends  AsyncTask<Object, Object, Object> implements EntityCallBack{
 
-	private final static int UPDATE_START = 1;
-	private final static int UPDATE_LOADING = 2;
-	private final static int UPDATE_FAILURE = 3;
-	private final static int UPDATE_SUCCESS = 4;
-
 	private final AbstractHttpClient client;
 	private final HttpContext context;
 	
@@ -41,8 +51,6 @@ public class  HttpHandler  <T> extends  AsyncTask<Object, Object, Object> implem
 	private String targetUrl = null; //下载的路径
 	private boolean isResume = false; //是否断点续传
 	private String charset;
-	
-	private long time;
 
 	public HttpHandler(AbstractHttpClient client, HttpContext context, AjaxCallBack<T> callback,String charset) {
 		this.client = client;
@@ -76,7 +84,7 @@ public class  HttpHandler  <T> extends  AsyncTask<Object, Object, Object> implem
 				}
 				return;
 			} catch (UnknownHostException e) {
-				publishProgress(UPDATE_FAILURE, e,"unknownHostException：can't resolve host");
+				publishProgress(UPDATE_FAILURE,e,0,"unknownHostException：can't resolve host");
 				return;
 			} catch (IOException e) {
 				cause = e;
@@ -108,12 +116,16 @@ public class  HttpHandler  <T> extends  AsyncTask<Object, Object, Object> implem
 			makeRequestWithRetries((HttpUriRequest)params[0]);
 			
 		} catch (IOException e) {
-			publishProgress(UPDATE_FAILURE,e,e.getMessage()); // 结束
+			publishProgress(UPDATE_FAILURE,e,0,e.getMessage()); // 结束
 		}
 
 		return null;
 	}
 
+	private final static int UPDATE_START = 1;
+	private final static int UPDATE_LOADING = 2;
+	private final static int UPDATE_FAILURE = 3;
+	private final static int UPDATE_SUCCESS = 4;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -130,7 +142,7 @@ public class  HttpHandler  <T> extends  AsyncTask<Object, Object, Object> implem
 			break;
 		case UPDATE_FAILURE:
 			if(callback!=null)
-				callback.onFailure((Throwable)values[1],(String)values[2]);
+				callback.onFailure((Throwable)values[1],(Integer)values[2],(String)values[3]);
 			break;
 		case UPDATE_SUCCESS:
 			if(callback!=null)
@@ -161,7 +173,7 @@ public class  HttpHandler  <T> extends  AsyncTask<Object, Object, Object> implem
 			if(status.getStatusCode() == 416 && isResume){
 				errorMsg += " \n maybe you have download complete.";
 			}
-			publishProgress(UPDATE_FAILURE,new HttpResponseException(status.getStatusCode(), status.getReasonPhrase()),errorMsg);
+			publishProgress(UPDATE_FAILURE,new HttpResponseException(status.getStatusCode(), status.getReasonPhrase()),status.getStatusCode() ,errorMsg);
 		} else {
 			try {
 				HttpEntity entity = response.getEntity();
@@ -179,14 +191,14 @@ public class  HttpHandler  <T> extends  AsyncTask<Object, Object, Object> implem
 				publishProgress(UPDATE_SUCCESS,responseBody);
 				
 			} catch (IOException e) {
-				publishProgress(UPDATE_FAILURE,e,e.getMessage());
+				publishProgress(UPDATE_FAILURE,e,0,e.getMessage());
 			}
 			
 		}
 	}
 	
 	
-
+	private long time;
 	@Override
 	public void callBack(long count, long current,boolean mustNoticeUI) {
 		if(callback!=null && callback.isProgress()){

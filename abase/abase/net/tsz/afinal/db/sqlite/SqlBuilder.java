@@ -12,7 +12,7 @@ import net.tsz.afinal.db.table.TableInfo;
 
 import android.text.TextUtils;
 
-import com.jayqqaa12.abase.exception.DaoException;
+import com.jayqqaa12.abase.exception.DbException;
 
 public class SqlBuilder
 {
@@ -108,7 +108,7 @@ public class SqlBuilder
 		Id id = table.getId();
 		Object idvalue = id.getValue(entity);
 
-		if (idvalue == null) { throw new DaoException("getDeleteSQL:" + entity.getClass() + " id value is null"); }
+		if (idvalue == null) { throw new DbException("getDeleteSQL:" + entity.getClass() + " id value is null"); }
 		StringBuffer strSQL = new StringBuffer(getDeleteSqlBytableName(table.getTableName()));
 		strSQL.append(" WHERE ").append(id.getColumn()).append("=?");
 
@@ -124,7 +124,7 @@ public class SqlBuilder
 		TableInfo table = TableInfo.get(clazz);
 		Id id = table.getId();
 
-		if (null == idValue) { throw new DaoException("getDeleteSQL:idValue is null"); }
+		if (null == idValue) { throw new DbException("getDeleteSQL:idValue is null"); }
 
 		StringBuffer strSQL = new StringBuffer(getDeleteSqlBytableName(table.getTableName()));
 		strSQL.append(" WHERE ").append(id.getColumn()).append("=?");
@@ -226,7 +226,7 @@ public class SqlBuilder
 
 		if (null == idValue)
 		{// 主键值不能为null，否则不能更新
-			throw new DaoException("this entity[" + entity.getClass() + "]'s id value is null");
+			throw new DbException("this entity[" + entity.getClass() + "]'s id value is null");
 		}
 
 		List<KeyValue> keyValueList = new ArrayList<KeyValue>();
@@ -287,7 +287,7 @@ public class SqlBuilder
 			if (kv != null) keyValueList.add(kv);
 		}
 
-		if (keyValueList == null || keyValueList.size() == 0) { throw new DaoException("this entity[" + entity.getClass() + "] has no property"); }
+		if (keyValueList == null || keyValueList.size() == 0) { throw new DbException("this entity[" + entity.getClass() + "] has no property"); }
 
 		SqlInfo sqlInfo = new SqlInfo();
 		StringBuffer strSQL = new StringBuffer("UPDATE ");

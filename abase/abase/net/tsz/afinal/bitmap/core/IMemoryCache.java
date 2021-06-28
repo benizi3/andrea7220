@@ -13,8 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.tsz.afinal.http.entityhandler;
+package net.tsz.afinal.bitmap.core;
 
-public interface EntityCallBack {
-	public void callBack(long count,long current,boolean mustNoticeUI);
+import android.graphics.Bitmap;
+
+public interface IMemoryCache {
+	
+	public void put(String key,Bitmap bitmap);
+	public Bitmap get(String key);
+	public void evictAll();
+	public void remove(String key);
+
 }

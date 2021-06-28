@@ -14,15 +14,15 @@ import net.tsz.afinal.db.table.KeyValue;
 import net.tsz.afinal.db.table.ManyToOne;
 import net.tsz.afinal.db.table.OneToMany;
 import net.tsz.afinal.db.table.TableInfo;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.jayqqaa12.abase.exception.DaoException;
+import com.jayqqaa12.abase.exception.DbException;
 import com.jayqqaa12.abase.util.common.TAG;
 
 
@@ -191,6 +191,29 @@ public class AbaseDao
 		return getInstance(config);
 	}
 
+	
+	
+	/**
+	 * 删除所有数据表
+	 */
+	public void dropDb() {
+		Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type ='table'", null);
+		if(cursor!=null){
+			while(cursor.moveToNext()){
+				//添加异常捕获.忽略删除所有表时出现的异常:
+				//table sqlite_sequence may not be dropped
+				try {
+					db.execSQL("DROP TABLE "+cursor.getString(0));
+				} catch (SQLException e) {
+					Log.e(TAG.DAO, e.getMessage());
+				}
+			}
+		}
+		if(cursor!=null){
+			cursor.close();
+			cursor=null;
+		}
+	}
 	/**
 	 * 
 	 * 
@@ -684,7 +707,7 @@ public class AbaseDao
 		List<T> list = findAllByWhere(clazz, where);
 		
 		
-		if(list.size()>1) throw new  DaoException("find size  >1  maybe find error !!"); 
+		if(list.size()>1) throw new  DbException("find size  >1  maybe find error !!"); 
 		
 
 		return list.size() > 0 ? list.get(0) : null;
