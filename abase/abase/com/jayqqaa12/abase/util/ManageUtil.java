@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.os.PowerManager;
+import android.telephony.TelephonyManager;
 import android.view.WindowManager;
 
 import com.jayqqaa12.abase.core.AbaseUtil;
@@ -80,6 +81,11 @@ public class ManageUtil extends AbaseUtil
 
 	public static PowerManager getPowerManager() {
 		  return  (PowerManager)getContext().getSystemService(Context.POWER_SERVICE);  
+	}
+
+	public static TelephonyManager getTelephonyManager()
+	{
+		return  (TelephonyManager) getContext().getSystemService(Context.TELEPHONY_SERVICE);
 	}
 
 }

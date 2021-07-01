@@ -127,10 +127,14 @@ public class CallUtil extends AbaseUtil
 
 	}
 
-	public static void deleteCallLog(String incomingNumber)
+	/**
+	 * 删除 通话记录
+	 * @param number
+	 */
+	public static void deleteCallLog(String number)
 	{
 		ContentResolver resolver = getContext().getContentResolver();
-		Cursor cursor = resolver.query(CallLog.Calls.CONTENT_URI, null, "number=?", new String[] { incomingNumber }, null);
+		Cursor cursor = resolver.query(CallLog.Calls.CONTENT_URI, null, "number=?", new String[] { number }, null);
 		if (cursor.moveToFirst())
 		{// 查询到了呼叫记录
 			String id = cursor.getString(cursor.getColumnIndex("_id"));

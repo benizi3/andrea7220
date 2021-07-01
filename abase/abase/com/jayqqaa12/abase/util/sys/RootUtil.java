@@ -110,8 +110,7 @@ public class RootUtil
 	 */
 	public static void startIntent(final String packname, final String actvityName)
 	{
-		new Thread()
-		{
+		new Thread() {
 
 			public void run()
 			{
@@ -159,10 +158,55 @@ public class RootUtil
 	 * @param msgwhat
 	 * @param callback
 	 */
-	public static void install(final Context context, final List<String> paths, final Object msgobj, final Handler callback)
+	public static void install(final Context context, final String path)
 	{
-		new Thread()
-		{
+		new Thread() {
+			public void run()
+			{
+				Process process = null;
+				OutputStream out = null;
+				try
+				{
+					process = Runtime.getRuntime().exec("su");
+					out = process.getOutputStream();
+					// 调用安装
+					out.write(("pm install -r " + path + "\n").getBytes());
+					// root fail
+				}
+				catch (Exception e)
+				{
+				}
+				finally
+				{
+					try
+					{
+						process.destroy();
+						out.close();
+					}
+					catch (IOException e)
+					{
+						e.printStackTrace();
+					}
+
+				}
+			}
+
+		}.start();
+	}
+
+	/***
+	 * 
+	 * 调用 Root 失败 会使用 intent 方式
+	 * 
+	 * @param context
+	 * @param path
+	 * @param msgwhat
+	 * @param callback
+	 */
+	public static void install(final Context context, final List<String> paths, final Object msgobj,
+			final Handler callback)
+	{
+		new Thread() {
 			public void run()
 			{
 				Process process = null;
@@ -219,7 +263,6 @@ public class RootUtil
 		}.start();
 	}
 
-	
 	/***
 	 * Root uninstall
 	 * 
@@ -232,10 +275,10 @@ public class RootUtil
 	 * @param msgwhat
 	 * @param callback
 	 */
-	public static void uninstall(final Context context, final List<String> packageNames, final Object msgobj, final Handler callback)
+	public static void uninstall(final Context context, final List<String> packageNames, final Object msgobj,
+			final Handler callback)
 	{
-		new Thread()
-		{
+		new Thread() {
 			public void run()
 			{
 				Process process = null;
@@ -290,14 +333,12 @@ public class RootUtil
 		}.start();
 	}
 
-	
-	/////////////////////////--------------------ROOT TOOLS .jar 封装 //////////////////////////////////////////////
-	
-	
-	
-	
+	// ///////////////////////--------------------ROOT TOOLS .jar 封装
+	// //////////////////////////////////////////////
+
 	/**
 	 * 直接 发送 指令
+	 * 
 	 * @param name
 	 */
 	public static void sendShell(String cmd)
@@ -305,7 +346,7 @@ public class RootUtil
 		try
 		{
 			RootTools.sendShell(cmd, 2);
-		
+
 		}
 		catch (IOException e)
 		{
@@ -319,20 +360,17 @@ public class RootUtil
 		{
 			e.printStackTrace();
 		}
-		
-		
+
 	}
-	
-	
+
 	/**
-	 * 杀死 进程 
+	 * 杀死 进程
 	 * 
 	 * @param pid
 	 */
 	public static void killProcess(final int pid)
 	{
-		new Thread()
-		{
+		new Thread() {
 			public void run()
 			{
 				try
@@ -348,6 +386,5 @@ public class RootUtil
 			};
 		}.start();
 	}
-
 
 }

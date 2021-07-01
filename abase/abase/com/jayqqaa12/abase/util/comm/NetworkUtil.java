@@ -1,14 +1,21 @@
 package com.jayqqaa12.abase.util.comm;
 
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.ProtocolException;
 import java.net.URL;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.TrafficStats;
+import android.os.Environment;
 
 import com.jayqqaa12.abase.core.AbaseUtil;
 import com.jayqqaa12.abase.util.ManageUtil;
@@ -19,6 +26,8 @@ public class NetworkUtil extends AbaseUtil
 	/**
 	 * 获得 网络 图片
 	 * 
+	 * 非线程
+	 * 
 	 * @param path
 	 * @return
 	 * @throws Exception
@@ -27,8 +36,102 @@ public class NetworkUtil extends AbaseUtil
 	{
 		URL url = new URL(path);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setConnectTimeout(5000);
+		conn.setRequestMethod("GET");
 		InputStream is = conn.getInputStream();
 		return BitmapFactory.decodeStream(is);
+	}
+
+
+	/**
+	 * 又缓存
+	 * 
+	 * @param url
+	 * @return
+	 */
+	public static Drawable loadImage(String url, String cachePath)
+	{
+		Drawable d = null;
+		try
+		{
+			if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
+			{// 是否有SD卡的读取权限
+				File file = new File(cachePath);
+				if (!file.exists())
+				{
+					file.mkdirs();
+				}
+				String fileName = url.substring(cachePath.length(), url.length()).replaceAll("\\/", "");
+				File f = new File(cachePath, fileName);
+				fileName = null;
+
+				if (f.exists())
+				{
+
+					FileInputStream fis = new FileInputStream(f);
+					d = Drawable.createFromStream(fis, "src");
+
+					if (d == null)
+					{
+
+						f.delete();
+						// 创建文件写到SD卡
+						f.createNewFile();
+						URL m = new URL(url);
+						InputStream i = (InputStream) m.getContent();
+						DataInputStream in = new DataInputStream(i);
+						FileOutputStream out = new FileOutputStream(f);
+						byte[] buffer = new byte[256];
+						int byteread = 0;
+						while ((byteread = in.read(buffer)) != -1)
+						{
+							out.write(buffer, 0, byteread);
+						}
+						in.close();
+						out.close();
+						FileInputStream fis2 = new FileInputStream(f);
+						d = Drawable.createFromStream(fis2, "src");
+						i.close();
+						fis2.close();
+					}
+					fis.close();
+
+				}
+				else
+				{// 创建文件写到SD卡
+
+					f.createNewFile();
+					URL m = new URL(url);
+					InputStream i = (InputStream) m.getContent();
+					DataInputStream in = new DataInputStream(i);
+					FileOutputStream out = new FileOutputStream(f);
+					byte[] buffer = new byte[256];
+					int byteread = 0;
+					while ((byteread = in.read(buffer)) != -1)
+					{
+						out.write(buffer, 0, byteread);
+					}
+					in.close();
+					out.close();
+					FileInputStream fis = new FileInputStream(f);
+					d = Drawable.createFromStream(fis, "src");
+					i.close();
+					fis.close();
+				}
+			}
+			else
+			{// 连接网络直接获取图片
+				URL m = new URL(url);
+				InputStream i = (InputStream) m.getContent();
+				d = Drawable.createFromStream(i, "src");
+				i.close();
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return d;// 返回得到的图片
 	}
 
 	/**

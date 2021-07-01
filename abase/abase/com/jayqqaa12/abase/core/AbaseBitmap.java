@@ -1,18 +1,3 @@
-/**
- * Copyright (c) 2012-2013, Michael Yang 杨福海 (www.yangfuhai.com).
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.jayqqaa12.abase.core;
 
 import java.lang.ref.WeakReference;
@@ -54,12 +39,12 @@ public class AbaseBitmap {
 	private ExecutorService bitmapLoadAndDisplayExecutor;
 
 	private static AbaseBitmap mFinalBitmap;
-	
+
 	////////////////////////// config method start////////////////////////////////////
 	private AbaseBitmap(Context context) {
 		mContext = context;
 		mConfig = new FinalBitmapConfig(context);
-		configDiskCachePath(Utils.getDiskCacheDir(context, "afinalCache").getAbsolutePath());//配置缓存路径
+		configDiskCachePath(Utils.getDiskCacheDir(context, "abaseCache").getAbsolutePath());//配置缓存路径
 		configDisplayer(new SimpleDisplayer());//配置显示器
 		configDownlader(new SimpleDownloader());//配置下载器
 	}
@@ -789,6 +774,17 @@ public class AbaseBitmap {
 				defaultDisplayConfig.setBitmapWidth(defaultWidth);
 				
 		}
+		 
+		 
+		 
+		 
 	}
+	
+	
+	
+	
+	
+	
+	
 	
 }
