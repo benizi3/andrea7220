@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.jayqqaa12.abase.util.MsgUtil;
+import com.jayqqaa12.abase.util.common.L;
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.RootToolsException;
 
@@ -151,27 +152,34 @@ public class RootUtil
 
 	/***
 	 * 
-	 * 调用 Root 失败 会使用 intent 方式
+	 * 调用 Root 可能会失败
 	 * 
 	 * @param context
 	 * @param path
+	 * @param handler
 	 * @param msgwhat
 	 * @param callback
 	 */
-	public static void install(final Context context, final String path)
+	public static void install(final Context context, final String path, final Handler callback)
 	{
 		new Thread() {
 			public void run()
 			{
 				Process process = null;
 				OutputStream out = null;
+				InputStream in = null;
 				try
 				{
 					process = Runtime.getRuntime().exec("su");
 					out = process.getOutputStream();
 					// 调用安装
 					out.write(("pm install -r " + path + "\n").getBytes());
-					// root fail
+
+					in = process.getInputStream();
+					byte[] bs = new byte[256];
+					int len = in.read(bs);
+					if (-1 == len && callback != null) MsgUtil.sendMessage(callback, MsgUtil.MSG_FAIL, null);
+					else if(callback!=null)  MsgUtil.sendMessage(callback, MsgUtil.MSG_SUCCESS, null);
 				}
 				catch (Exception e)
 				{
@@ -180,8 +188,9 @@ public class RootUtil
 				{
 					try
 					{
-						process.destroy();
-						out.close();
+						if (process != null)	process.destroy();
+						if (out != null)	out.close();
+						if (in != null) in.close();
 					}
 					catch (IOException e)
 					{

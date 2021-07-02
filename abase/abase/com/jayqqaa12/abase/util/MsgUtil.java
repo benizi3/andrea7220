@@ -1,8 +1,8 @@
 package com.jayqqaa12.abase.util;
 
+
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 import com.jayqqaa12.abase.core.AbaseUtil;
 
@@ -22,7 +22,6 @@ public class MsgUtil extends AbaseUtil
 	public static final int MSG_SERACH = 6;
 	public static final int MSG_FLASH = 7;
 	public static final int MSG_CREATE = 8;
-	public static final int MSG_FIND = 9;
 	public static final int MSG_FAIL = 9;
 	public static final int MSG_SUCCESS = 10;
 	public static final int MSG_FINISH = 12;
@@ -34,6 +33,7 @@ public class MsgUtil extends AbaseUtil
 	public static final int MSG_RIGHT = 18;
 	public static final int MSG_LEFT = 19;
 	public static final int MSG_START = 20;
+	public static final int MSG_FIND = 21;
 	
 	
 	

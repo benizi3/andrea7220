@@ -37,10 +37,6 @@ public class BitmapCache {
     private static final int DEFAULT_DISK_CACHE_COUNT = 1000 * 10 ; // 缓存的图片数量
 
     //BitmapCache的一些默认配置
-    
-    /**
-     *  true 的话 是用 soft 引用的 
-     */
     private static final boolean DEFAULT_MEM_CACHE_ENABLED = true;
     private static final boolean DEFAULT_DISK_CACHE_ENABLED = true;
 

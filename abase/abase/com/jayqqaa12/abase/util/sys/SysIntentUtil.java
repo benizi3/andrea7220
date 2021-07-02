@@ -25,6 +25,7 @@ public class SysIntentUtil extends AbaseUtil
 	public static void install(Context context, File file)
 	{
 		Intent intent = new Intent();
+		intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.setAction(intent.ACTION_VIEW);
 		intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
 		context.startActivity(intent);
@@ -43,6 +44,7 @@ public class SysIntentUtil extends AbaseUtil
 		if (pkg == null) { return; }
 		Uri uri = Uri.fromParts("package", pkg, null);
 		Intent intent = new Intent(Intent.ACTION_DELETE, uri);
+		
 		context.startActivity(intent);
 	}
 
@@ -156,6 +158,16 @@ public class SysIntentUtil extends AbaseUtil
 		Intent intent = new Intent(Intent.ACTION_PICK);
     	intent.setType("image/*");
     	context.startActivity(intent);
+		
+	}
+
+	public static void goWeb(Context context,String url)
+	{
+		Intent i = new Intent();
+		i.setAction(Intent.ACTION_VIEW);
+		i.setData(Uri.parse(url));
+		i.setFlags(i.FLAG_ACTIVITY_NEW_TASK);
+		context.startActivity(i);
 		
 	}
 	
