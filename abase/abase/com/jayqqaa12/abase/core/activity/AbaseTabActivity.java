@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
@@ -40,12 +42,9 @@ import com.jayqqaa12.abase.core.AbaseApp;
  * 
  * @author jayqqaa12
  * @date 2013-4-15
- * @update 用 内部类 改进 失败  会使 使用者 调用 太麻烦 还是算了
  */
 public class AbaseTabActivity extends TabActivity implements Listener, OnTabChangeListener
 {
-	// 缓存 找到的 parentView 数据
-	protected Map<Integer, View> parentViews = new HashMap<Integer, View>();
 
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -53,26 +52,6 @@ public class AbaseTabActivity extends TabActivity implements Listener, OnTabChan
 		Abase.init(this);
 	}
 	
-	protected void initViewForReflect()
-	{
-		Resources resources = this.getResources();
-		if (!Abase.isOpenActivtiy()) return;
-		
-		Field[] fields = Abase.getFields(this);
-		
-		if (fields == null || fields.length < 1) return;
-
-		for (Field field : fields)
-		{
-			initView(field,resources);
-		}
-	}
-	
-
-	protected void initView(Field field, Resources resources)
-	{
-		Abase.initView(this, field, resources, parentViews);
-	}
 
 	// ////////////////////////////////////Listener//////////////////////////////////////////////////
 	@Override
@@ -112,6 +91,88 @@ public class AbaseTabActivity extends TabActivity implements Listener, OnTabChan
 	{
 
 	}
+	
+	@Override
+	public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+	{
+
+	}
+
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState)
+	{
+		
+	}
+
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
+	{
+		
+	}
+
+	@Override
+	public void onPageScrollStateChanged(int arg0)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onPageScrolled(int arg0, float arg1, int arg2)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onPageSelected(int arg0)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean onChildClick(ExpandableListView arg0, View arg1, int arg2, int arg3, long arg4)
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean onTouch(View arg0, MotionEvent arg1)
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void onFocusChange(View arg0, boolean arg1)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void afterTextChanged(Editable arg0)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
 
 	/**
 	 * 使用 getTabHost() 方式时使用 使用 系统 默认的 风格 同时 实现 IOC 为系统风格
@@ -391,26 +452,9 @@ public class AbaseTabActivity extends TabActivity implements Listener, OnTabChan
 
 	private void init(TabHost tabHost)
 	{
-		initViewForReflect();
+		Abase.initViewForReflect(this);
 		tabHost.setOnTabChangedListener(this);
 	}
 
-	@Override
-	public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-	{
-
-	}
-
-	@Override
-	public void onScrollStateChanged(AbsListView view, int scrollState)
-	{
-		
-	}
-
-	@Override
-	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
-	{
-		
-	}
-
+	
 }

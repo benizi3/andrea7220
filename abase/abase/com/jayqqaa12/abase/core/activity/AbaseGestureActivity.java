@@ -9,7 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ViewFlipper;
 
-public class AbaseGestureActivity extends AbaseTouchActivity implements OnGestureListener
+public class AbaseGestureActivity extends AbaseActivity implements OnGestureListener
 {
 	public static final int MIN_GESTURE_DISTANCE = 50;
 	private GestureDetector detector = new GestureDetector(this);
@@ -23,6 +23,7 @@ public class AbaseGestureActivity extends AbaseTouchActivity implements OnGestur
 		this.pre = pre;
 		this.next = next;
 	}
+	
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event)
@@ -65,9 +66,9 @@ public class AbaseGestureActivity extends AbaseTouchActivity implements OnGestur
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
 	{
 		Dir dir = getGestureDirection(e1, e2);
-
+		
 		changeActivity(context, pre, next, dir);
-
+		
 		return false;
 	}
 
@@ -81,8 +82,10 @@ public class AbaseGestureActivity extends AbaseTouchActivity implements OnGestur
 		return null;
 
 	}
-
-	protected void changeView(ViewFlipper vf, Dir dir)
+	
+	
+	
+	protected void changeView(ViewFlipper vf ,Dir dir)
 	{
 		if (dir == Dir.RIGHT)
 		{
@@ -93,8 +96,15 @@ public class AbaseGestureActivity extends AbaseTouchActivity implements OnGestur
 			vf.showNext();
 		}
 	}
+	
+	
+	
+	
+	
+	
 
-	protected void changeActivity(Context context, Class<? extends Activity> pre, Class<? extends Activity> next, Dir dir)
+	protected  void changeActivity(Context context, Class<? extends Activity> pre, Class<? extends Activity> next,
+			Dir dir)
 	{
 		// right is go back
 		if (dir == Dir.RIGHT)
@@ -104,23 +114,26 @@ public class AbaseGestureActivity extends AbaseTouchActivity implements OnGestur
 			finish();
 			startActivity(intent);
 		}
-		// will LEFT is go forward
+		// will LEFT  is   go forward 
 		else if (dir == Dir.LEFT)
 		{
 			if (next == null) return;
 			Intent intent = new Intent(context, next);
 
-			if (next != null) intent.putExtra("activity", next.getSimpleName());
+			if (next != null) intent.putExtra("activity",next.getSimpleName());
 			finish();
 			startActivity(intent);
 		}
 	}
 
-	private void setOverridePendingTransition(int in, int out)
+	private void setOverridePendingTransition(int in,int out)
 	{
-		overridePendingTransition(in, out);
-
+		overridePendingTransition(in ,out);
+		
 	}
+	
 
+
+	
 
 }

@@ -1,50 +1,27 @@
 package com.jayqqaa12.abase.core.activity;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
-
 import android.app.Activity;
-import android.content.res.Resources;
 import android.os.Bundle;
+import android.text.Editable;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.ExpandableListView;
 
 import com.jayqqaa12.abase.core.Abase;
-import com.jayqqaa12.abase.core.AbaseApp;
 import com.jayqqaa12.abase.util.common.T;
 
 /**
- * 注意 用 parID 如果 当前是 parent 元素 id 设置为0 可以提高性能
+ * activiy 的ioc
  * 
- * @findEngine
- * @findDao 没有太大 意义 建议 在 application 里面 关闭 比较浪费性能
- * 
- * @author jayqqaa12. This is Android for Ioc framework. Use it must extends
- *         BaseActivity for your Activity and View Field add @findView and
- *         override attribute id (equel findViewById(R.id...)) or add onclik
- *         listener (equal setListener(this)) and override onListener in your
- *         Activity or you can open service and dao ioc but it's possible so
- *         show you can set ( IOC.activity or service or dao = false); it's so
- *         easy! Let's go
+ * @author jayqqaa12. 
  * 
  */
 public class AbaseActivity extends Activity implements Listener
 {
-	// 缓存 找到的 parentView 数据
-	protected Map<Integer, View> parentViews = new HashMap<Integer, View>();
 
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -57,55 +34,84 @@ public class AbaseActivity extends Activity implements Listener
 	public void setContentView(int layoutResID)
 	{
 		super.setContentView(layoutResID);
-
-		initViewForReflect();
+		Abase.initViewForReflect(this);
 	}
 
 	@Override
 	public void setContentView(View view, LayoutParams params)
 	{
 		super.setContentView(view, params);
-
-		initViewForReflect();
+		Abase.initViewForReflect(this);
 	}
 
 	@Override
 	public void setContentView(View view)
 	{
 		super.setContentView(view);
-
-		initViewForReflect();
+		Abase.initViewForReflect(this);
 	}
 
-	protected void initViewForReflect()
-	{
-		Resources resources = this.getResources();
-		if (!Abase.isOpenActivtiy()) return;
-		
-		Field[] fields = Abase.getFields(this);
-		
-		if (fields == null || fields.length < 1) return;
 
-		for (Field field : fields)
-		{
-			initView(field, resources);
-		}
-	}
-
-	protected void initView(Field field, Resources resources)
-	{
-		  Abase.initView(this, field, resources, parentViews);
-	}
-	
-	
 	protected void showToast(String msg)
 	{
 		T.ShortToast(msg);
 	}
-	
-	
+
 
 	// ////////////////////////////////////Listener//////////////////////////////////////////////////
+	@Override
+	public void beforeTextChanged(CharSequence s, int start, int count, int after)
+	{
+
+	}
+
+	@Override
+	public void onTextChanged(CharSequence s, int start, int before, int count)
+	{
+
+	}
+
+	@Override
+	public void afterTextChanged(Editable s)
+	{
+
+	}
+
+	@Override
+	public void onFocusChange(View v, boolean hasFocus)
+	{
+
+	}
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id)
+	{
+		return false;
+	}
+
+	@Override
+	public void onPageScrollStateChanged(int arg0)
+	{
+
+	}
+
+	@Override
+	public void onPageScrolled(int arg0, float arg1, int arg2)
+	{
+
+	}
+
+	@Override
+	public void onPageSelected(int arg0)
+	{
+
+	}
 
 	@Override
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
@@ -147,13 +153,20 @@ public class AbaseActivity extends Activity implements Listener
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState)
 	{
-		
+
 	}
 
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
 	{
-		
+
+	}
+
+	@Override
+	protected void onDestroy()
+	{
+		super.onDestroy();
+		Abase.cleanCache();
 	}
 
 }
