@@ -15,7 +15,6 @@
                 >
 
                 <TextView
-               
                     android:id="@id/tv_title"
                     style="@style/text_white_style"
                     android:text="ssss" />

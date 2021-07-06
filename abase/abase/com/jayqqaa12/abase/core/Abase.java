@@ -324,7 +324,7 @@ public class Abase
 					if (parentViews.get(parId) != null) view = parentViews.get(parId);
 					else
 					{
-						view = obj.findViewById(parId);
+						view = rootView.findViewById(parId);
 						if (view != null) parentViews.put(parId, view);
 					}
 					if (view != null)
@@ -339,6 +339,7 @@ public class Abase
 					if (pageViews.get(pageNum) != null) view = pageViews.get(pageNum);
 					else
 					{
+						//FIXME 可能出问题的地方 
 						view = obj.getLayoutInflater().inflate(pageId, null);
 						if (view != null) pageViews.put(pageNum, view);
 					}
@@ -351,7 +352,7 @@ public class Abase
 				}
 				else
 				{
-					field.set(obj, obj.findViewById(id));
+					field.set(obj, rootView.findViewById(id));
 				}
 			}
 			catch (Exception e)
