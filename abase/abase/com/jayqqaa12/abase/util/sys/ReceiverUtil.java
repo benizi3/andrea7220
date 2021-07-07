@@ -104,7 +104,7 @@ public class ReceiverUtil extends AbaseUtil
 	public static BroadcastReceiver registPackageAdded(Context context, BroadcastReceiver receiver)
 	{
 		IntentFilter intentFilter = new IntentFilter();
-		intentFilter.addAction("android.intent.action.ACTION_PACKAGE_ADDED");
+		intentFilter.addAction("android.intent.action.PACKAGE_ADDED");
 		intentFilter.addDataScheme("package");
 		return registReceiver(context, receiver, intentFilter);
 	}
@@ -118,7 +118,7 @@ public class ReceiverUtil extends AbaseUtil
 	public static BroadcastReceiver registPackageReplaced(Context context, BroadcastReceiver receiver)
 	{
 		IntentFilter intentFilter = new IntentFilter();
-		intentFilter.addAction("android.intent.action.ACTION_PACKAGE_REPLACED");
+		intentFilter.addAction("android.intent.action.PACKAGE_REPLACED");
 		intentFilter.addDataScheme("package");
 		return registReceiver(context, receiver, intentFilter);
 	}

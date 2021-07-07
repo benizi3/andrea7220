@@ -1,15 +1,18 @@
-package com.jayqqaa12.abase.util.comm;
+package com.jayqqaa12.abase.util.phone;
 
 import java.util.List;
 
+import android.net.wifi.WifiInfo;
 import android.telephony.CellLocation;
 import android.telephony.NeighboringCellInfo;
 import android.telephony.TelephonyManager;
 
 import com.jayqqaa12.abase.core.AbaseUtil;
+import com.jayqqaa12.abase.util.ConfigUtil;
 import com.jayqqaa12.abase.util.ManageUtil;
+import com.jayqqaa12.abase.util.security.ValidateUtil;
 
-public  class TelUtil extends AbaseUtil
+public class TelUtil extends AbaseUtil
 {
 
 	/**
@@ -20,6 +23,17 @@ public  class TelUtil extends AbaseUtil
 	{
 		TelephonyManager tm = ManageUtil.getTelephonyManager();
 		return tm.getCallState();
+	}
+
+	/***
+	 * get mac address
+	 * 
+	 * @return
+	 */
+	public static String getMacAddress()
+	{
+		WifiInfo info = ManageUtil.getWifiManger().getConnectionInfo();
+		return info.getMacAddress();
 	}
 
 	/**
@@ -223,6 +237,38 @@ public  class TelUtil extends AbaseUtil
 	{
 		TelephonyManager tm = ManageUtil.getTelephonyManager();
 		return tm.isNetworkRoaming();
+	}
+
+	/**
+	 * 返回 一个 id 也许是IMEI IMSI 等等
+	 * 
+	 * 只要 插过一次卡 以后就可以读出来
+	 * 
+	 * 变更后会自动 更新
+	 * 
+	 * @return
+	 */
+	public static String getId()
+	{
+		String uid = getDeviceId();
+		if (uid == null) uid = TelUtil.getSubscriberId();
+		if (uid == null) uid = TelUtil.getLine1Number();
+		
+		if(uid!=null)
+		{
+			final String ABASE_DEVICE_ID="ABASE_DEVICE_ID";
+			String old = ConfigUtil.getString(ABASE_DEVICE_ID, null);
+			if(!ValidateUtil.equals(old, uid)) ConfigUtil.setValue(ABASE_DEVICE_ID, uid);
+		}
+		else
+		{
+			uid = ConfigUtil.getString("ABASE_DEVICE_ID", null);
+		}
+		
+		
+		
+
+		return uid;
 	}
 
 }

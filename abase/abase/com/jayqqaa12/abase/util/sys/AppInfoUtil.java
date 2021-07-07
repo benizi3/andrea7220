@@ -19,38 +19,35 @@ import android.text.format.Formatter;
 import com.jayqqaa12.abase.core.AbaseUtil;
 import com.jayqqaa12.abase.util.ManageUtil;
 
-
-
 /**
  * apk 的 相关 信息
+ * 
  * @author 12
- *
+ * 
  */
-public class ApkInfoUtil extends AbaseUtil
+public class AppInfoUtil extends AbaseUtil
 {
-	
-	
-	
+
 	/**
 	 * 获得 版本号
+	 * 
 	 * @return
 	 */
-	public static String getVersionNo(){
-		try {
-			
+	public static String getVersionNo()
+	{
+		try
+		{
+
 			PackageInfo info = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
 			return info.versionName;
-		} catch (NameNotFoundException e) {
+		}
+		catch (NameNotFoundException e)
+		{
 			e.printStackTrace();
 			return "0";
 		}
-		
-		
+
 	}
-	
-	
-	
-	
 
 	/**
 	 * 通过包名获取应用程序的名称。
@@ -96,25 +93,25 @@ public class ApkInfoUtil extends AbaseUtil
 	 * 
 	 * @return
 	 */
-	public static List<ApkInfo> getLauncherApp()
+	public static List<AppInfo> getLauncherApp()
 	{
-		List<ApkInfo> apks = new ArrayList<ApkInfo>();
+		List<AppInfo> apks = new ArrayList<AppInfo>();
 
 		PackageManager pm = ManageUtil.getPackManager();
 		Intent intent = new Intent();
 		intent.setAction(Intent.ACTION_MAIN);
 		intent.addCategory(intent.CATEGORY_LAUNCHER);
-		List<ResolveInfo> resovleInfos = pm.queryIntentActivities(intent,PackageManager.COMPONENT_ENABLED_STATE_DEFAULT);
+		List<ResolveInfo> resovleInfos = pm.queryIntentActivities(intent, PackageManager.COMPONENT_ENABLED_STATE_DEFAULT);
 
 		for (ResolveInfo info : resovleInfos)
 		{
 			try
 			{
-				ApkInfo apk = getAppInfo(pm, pm.getPackageInfo(info.activityInfo.packageName, 0));
+				AppInfo apk = getAppInfo(pm, pm.getPackageInfo(info.activityInfo.packageName, 0));
 				apk.appName = info.loadLabel(pm).toString();
 				apk.iconDrawable = info.loadIcon(pm);
 				apk.packageName = info.activityInfo.packageName;
-				
+
 				apks.add(apk);
 			}
 			catch (NameNotFoundException e)
@@ -131,9 +128,9 @@ public class ApkInfoUtil extends AbaseUtil
 	 * 
 	 * @return 有关本程序的信息。
 	 */
-	public static ApkInfo getMyApkInfo()
+	public static AppInfo getMyApkInfo()
 	{
-		ApkInfo apkInfo = new ApkInfo();
+		AppInfo apkInfo = new AppInfo();
 		Context context = getContext();
 
 		ApplicationInfo applicationInfo = context.getApplicationInfo();
@@ -180,16 +177,16 @@ public class ApkInfoUtil extends AbaseUtil
 	 * 
 	 * @return 应用程序的集合
 	 */
-	public static List<ApkInfo> getAllApps()
+	public static List<AppInfo> getAllApps()
 	{
-		List<ApkInfo> list = new ArrayList<ApkInfo>();
+		List<AppInfo> list = new ArrayList<AppInfo>();
 		PackageManager packmanager = ManageUtil.getPackManager();
 
 		List<PackageInfo> packinfos = packmanager.getInstalledPackages(PackageManager.GET_UNINSTALLED_PACKAGES);
 
 		for (PackageInfo info : packinfos)
 		{
-			ApkInfo apkinfo = getAppInfo(packmanager, info);
+			AppInfo apkinfo = getAppInfo(packmanager, info);
 
 			list.add(apkinfo);
 		}
@@ -202,9 +199,9 @@ public class ApkInfoUtil extends AbaseUtil
 	 * @param apkpath
 	 * @return
 	 */
-	public static ApkInfo getApkInfo(String apkpath)
+	public static AppInfo getApkInfo(String apkpath)
 	{
-		ApkInfo apk = null;
+		AppInfo apk = null;
 		PackageManager pm = getContext().getPackageManager();
 		PackageInfo info = pm.getPackageArchiveInfo(apkpath, PackageManager.GET_ACTIVITIES);
 		if (info != null) apk = getAppInfo(pm, info);
@@ -212,37 +209,41 @@ public class ApkInfoUtil extends AbaseUtil
 		return apk;
 	}
 
-	private static ApkInfo getAppInfo(PackageManager packmanager, PackageInfo info)
+	private static AppInfo getAppInfo(PackageManager packmanager, PackageInfo packageInfo)
 	{
-		ApkInfo apkinfo = new ApkInfo();
-		apkinfo.versionCode = info.versionCode;
-		apkinfo.versionName = info.versionName;
-		String packname = info.packageName;
-		apkinfo.packageName = packname;
-		ApplicationInfo applicationInfo = info.applicationInfo;
+		AppInfo info = new AppInfo();
+		info.versionCode = packageInfo.versionCode;
+		info.versionName = packageInfo.versionName;
+		String packname = packageInfo.packageName;
+		info.packageName = packname;
+		ApplicationInfo applicationInfo = packageInfo.applicationInfo;
 		Drawable icon = applicationInfo.loadIcon(packmanager);
-		apkinfo.iconId = applicationInfo.icon;
-		apkinfo.iconDrawable = icon;
-		apkinfo.uid = applicationInfo.uid;
-		apkinfo.appSize = new File(applicationInfo.publicSourceDir).length();
-		apkinfo.size = Formatter.formatFileSize(getContext(), apkinfo.appSize);
+		info.iconId = applicationInfo.icon;
+		info.iconDrawable = icon;
+		info.uid = applicationInfo.uid;
+		if (applicationInfo.publicSourceDir != null)
+		{
+			info.appSize = new File(applicationInfo.publicSourceDir).length();
+			info.size = Formatter.formatFileSize(getContext(), info.appSize);
+		}
 		String appname = applicationInfo.loadLabel(packmanager).toString();
-		apkinfo.appName = appname;
+		info.appName = appname;
 
 		if (!filterApp(applicationInfo))
 		{
-			apkinfo.isSysApp = true;
+			info.isSysApp = true;
 
 		}
-		else
+		else if (applicationInfo.publicSourceDir != null)
 		{
 			// 系统应用 不知道时间
-			apkinfo.date = new Date(new File(applicationInfo.sourceDir).lastModified());
+			info.date = new Date(new File(applicationInfo.sourceDir).lastModified());
 		}
+		
 		// TODO 判断 ROOT 进来的 SYSTEM app 目前的办法是 需要 有一个 常用 第三方 应用的 名单 然后 排除掉
 		// 但是应该有更好的办法
 
-		return apkinfo;
+		return info;
 	}
 
 	/**
@@ -250,7 +251,7 @@ public class ApkInfoUtil extends AbaseUtil
 	 * 
 	 * @return 应用程序的集合
 	 */
-	public static List<ApkInfo> getMyApps()
+	public static List<AppInfo> getMyApps()
 	{
 		return getMyApps(getAllApps());
 	}
@@ -260,7 +261,7 @@ public class ApkInfoUtil extends AbaseUtil
 	 * 
 	 * @return
 	 */
-	public static List<ApkInfo> getNotSysApps()
+	public static List<AppInfo> getNotSysApps()
 	{
 		return getNotSysApps(getAllApps());
 	}
@@ -270,12 +271,12 @@ public class ApkInfoUtil extends AbaseUtil
 	 * 
 	 * @return
 	 */
-	public static List<ApkInfo> getNotSysApps(List<ApkInfo> apks)
+	public static List<AppInfo> getNotSysApps(List<AppInfo> apks)
 	{
 
-		List<ApkInfo> list = new ArrayList<ApkInfo>();
+		List<AppInfo> list = new ArrayList<AppInfo>();
 
-		for (ApkInfo info : apks)
+		for (AppInfo info : apks)
 		{
 			if (!info.isSysApp)
 			{
@@ -291,12 +292,12 @@ public class ApkInfoUtil extends AbaseUtil
 	 * 
 	 * @return 应用程序的集合
 	 */
-	public static List<ApkInfo> getMyApps(List<ApkInfo> apps)
+	public static List<AppInfo> getMyApps(List<AppInfo> apps)
 	{
 
-		List<ApkInfo> list = new ArrayList<ApkInfo>();
+		List<AppInfo> list = new ArrayList<AppInfo>();
 
-		for (ApkInfo info : apps)
+		for (AppInfo info : apps)
 		{
 			if (!info.isSysApp && !info.isPreloadApp)
 			{
@@ -311,7 +312,7 @@ public class ApkInfoUtil extends AbaseUtil
 	 * 
 	 * @return 应用程序的集合
 	 */
-	public static List<ApkInfo> getSysApps()
+	public static List<AppInfo> getSysApps()
 	{
 		return getSysApps(getAllApps());
 	}
@@ -323,7 +324,7 @@ public class ApkInfoUtil extends AbaseUtil
 	 * @return
 	 */
 
-	public static List<ApkInfo> getPreloadApps()
+	public static List<AppInfo> getPreloadApps()
 	{
 
 		return getPreloadApps(getAllApps());
@@ -334,11 +335,11 @@ public class ApkInfoUtil extends AbaseUtil
 	 * 
 	 * @return 应用程序的集合
 	 */
-	public static List<ApkInfo> getSysApps(List<ApkInfo> apps)
+	public static List<AppInfo> getSysApps(List<AppInfo> apps)
 	{
-		List<ApkInfo> list = new ArrayList<ApkInfo>();
+		List<AppInfo> list = new ArrayList<AppInfo>();
 
-		for (ApkInfo info : apps)
+		for (AppInfo info : apps)
 		{
 			if (info.isSysApp)
 			{
@@ -348,11 +349,11 @@ public class ApkInfoUtil extends AbaseUtil
 		return list;
 	}
 
-	public static List<ApkInfo> getPreloadApps(List<ApkInfo> apps)
+	public static List<AppInfo> getPreloadApps(List<AppInfo> apps)
 	{
-		List<ApkInfo> list = new ArrayList<ApkInfo>();
+		List<AppInfo> list = new ArrayList<AppInfo>();
 
-		for (ApkInfo info : apps)
+		for (AppInfo info : apps)
 		{
 			if (info.isPreloadApp)
 			{

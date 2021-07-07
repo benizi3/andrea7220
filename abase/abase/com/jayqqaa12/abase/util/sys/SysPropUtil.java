@@ -12,6 +12,30 @@ import java.lang.reflect.Method;
  */
 public class SysPropUtil {
 
+	
+	/**
+	 * android系统  唯一 id  可能会 重复 
+	 * @return
+	 */
+	public static String getAndroidId()
+	{
+		
+		
+		String serialnum = null;                                                                                                                                        
+		try {                                                           
+		 Class<?> c = Class.forName("android.os.SystemProperties"); 
+		 Method get = c.getMethod("get", String.class, String.class );     
+		 serialnum = (String)(   get.invoke(c, "ro.serialno", "unknown" )  );   
+		}                                                                                
+		catch (Exception ignored)                                                        
+		{                              
+		}
+		
+		return serialnum;
+	}
+	
+	
+	
 	/**
 	 * 获取当前固件版本号
 	 * @return
@@ -62,4 +86,18 @@ public class SysPropUtil {
 		return null;
 
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

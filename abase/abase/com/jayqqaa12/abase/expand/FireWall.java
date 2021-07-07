@@ -1,4 +1,4 @@
-package com.jayqqaa12.abase.util.sys;
+package com.jayqqaa12.abase.expand;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -29,7 +29,7 @@ import com.example.abase.R;
  * iptables 通信的 类
  * 
  */
-public final class Api
+public final class FireWall
 {
 
 	/** special application UID used to indicate "any application" */
@@ -195,7 +195,7 @@ public final class Api
 		final boolean whitelist = prefs.getString(PREF_MODE, MODE_WHITELIST).equals(MODE_WHITELIST);
 		final boolean blacklist = !whitelist;
 		final boolean logenabled = ctx.getSharedPreferences(PREFS_NAME, 0).getBoolean(PREF_LOGENABLED, false);
-		final String customScript = ctx.getSharedPreferences(Api.PREFS_NAME, 0).getString(Api.PREF_CUSTOMSCRIPT, "");
+		final String customScript = ctx.getSharedPreferences(FireWall.PREFS_NAME, 0).getString(FireWall.PREF_CUSTOMSCRIPT, "");
 
 		final StringBuilder script = new StringBuilder();
 		try
@@ -495,7 +495,7 @@ public final class Api
 		{
 			assertBinaries(ctx, showErrors);
 			// Custom "shutdown" script
-			final String customScript = ctx.getSharedPreferences(Api.PREFS_NAME, 0).getString(Api.PREF_CUSTOMSCRIPT2,
+			final String customScript = ctx.getSharedPreferences(FireWall.PREFS_NAME, 0).getString(FireWall.PREF_CUSTOMSCRIPT2,
 					"");
 			final StringBuilder script = new StringBuilder();
 			script.append(scriptHeader(ctx));
@@ -949,8 +949,8 @@ public final class Api
 			return;
 		}
 		/* notify */
-		final Intent message = new Intent(Api.STATUS_CHANGED_MSG);
-		message.putExtra(Api.STATUS_EXTRA, enabled);
+		final Intent message = new Intent(FireWall.STATUS_CHANGED_MSG);
+		message.putExtra(FireWall.STATUS_EXTRA, enabled);
 		ctx.sendBroadcast(message);
 	}
 

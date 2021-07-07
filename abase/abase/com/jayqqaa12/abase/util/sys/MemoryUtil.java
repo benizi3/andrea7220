@@ -37,25 +37,6 @@ public class MemoryUtil extends AbaseUtil
 	}
 
 	/**
-	 * 获取手机可用的内存空间 返回 单位 G
-	 * 
-	 * @return
-	 */
-	public static String getAvailableSDRom()
-	{
-		String state = Environment.getExternalStorageState();
-		// SD卡不可用
-		if (!Environment.MEDIA_MOUNTED.equals(state)) return "0";
-
-		File path = Environment.getExternalStorageDirectory();
-		StatFs stat = new StatFs(path.getPath());
-		long blockSize = stat.getBlockSize();
-		long availableBlocks = stat.getAvailableBlocks();
-		return Formatter.formatFileSize(getContext(), availableBlocks * blockSize);
-
-	}
-
-	/**
 	 * 获取当前可用内存大小
 	 * @return
 	 */

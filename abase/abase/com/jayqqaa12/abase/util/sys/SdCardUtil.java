@@ -1,8 +1,13 @@
 package com.jayqqaa12.abase.util.sys;
 
+import java.io.File;
+
 import com.jayqqaa12.abase.core.AbaseUtil;
+import com.jayqqaa12.abase.util.TextUtil;
 
 import android.os.Environment;
+import android.os.StatFs;
+import android.text.format.Formatter;
 
 public class SdCardUtil extends AbaseUtil
 {
@@ -20,5 +25,39 @@ public class SdCardUtil extends AbaseUtil
 	    } 
 	    return false; 
 	} 
+	
+	
+	/**
+	 * 获取手机可用的内存空间 返回 单位 G  如  “1.5GB”
+	 * 
+	 * @return
+	 */
+	public static String getAvailableSDRomString()
+	{
+		if (!isCanUseSdCard()) return "0";
+		File path = Environment.getExternalStorageDirectory();
+		StatFs stat = new StatFs(path.getPath());
+		long blockSize = stat.getBlockSize();
+		long availableBlocks = stat.getAvailableBlocks();
+		return Formatter.formatFileSize(getContext(), availableBlocks * blockSize);
+	}
+	
+	/**
+	 * 同 getAvailableSDRomString 返回的是 int
+	 * 
+	 * @return
+	 */
+	public static float getAvailableSDRom()
+	{
+
+		if (!isCanUseSdCard()) return 0;
+		File path = Environment.getExternalStorageDirectory();
+		StatFs stat = new StatFs(path.getPath());
+		long blockSize = stat.getBlockSize();
+		long availableBlocks = stat.getAvailableBlocks();
+		long size = availableBlocks * blockSize;
+		return Float.parseFloat( TextUtil.getDataSize(size));
+		
+	}
 	
 }

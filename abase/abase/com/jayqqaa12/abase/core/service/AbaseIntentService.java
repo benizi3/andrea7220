@@ -11,8 +11,8 @@ import android.content.Intent;
  * 
  *  This's IntentService  ioc
  *  
- *  多个任务 或者要重新 开始多次的任务 都 放在这里
- *  
+ * WANING  如果 多线程 任务 不能 放在 这里 
+ * 这里 适合 可以不需要并行的 任务   每个 请求会 放入 工作线程 依次 执行 而不是并行的
  * 
  */
 public abstract class AbaseIntentService extends IntentService

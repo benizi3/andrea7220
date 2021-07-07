@@ -1,4 +1,4 @@
-package com.jayqqaa12.abase.util.comm;
+package com.jayqqaa12.abase.util.network;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -14,42 +14,32 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
 import android.app.ProgressDialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 public class DownLoadUtil
 {
-
-	public static File getFile(String srcPath, String dirPath, ProgressDialog pd) throws Exception
-	{
-		URL url = new URL(srcPath);
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		conn.setRequestMethod("GET");
-		conn.setConnectTimeout(3000);
-		if (conn.getResponseCode() == 200)
-		{
-			int total = conn.getContentLength();
-			pd.setMax(total);
-			InputStream is = conn.getInputStream();
-			File file = new File(dirPath);
-			FileOutputStream fos = new FileOutputStream(file);
-			byte[] buffer = new byte[1024];
-			int len = 0;
-			int process = 0;
-			while ((len = is.read(buffer)) != -1)
-			{
-				fos.write(buffer, 0, len);
-				process += len;
-				pd.setProgress(process);
-			}
-			fos.flush();
-			fos.close();
-			is.close();
-
-			return file;
-		}
-		return null;
-
-	}
 	
+	
+	/**
+	 * 获得 网络 图片
+	 * 
+	 * 非线程 需要 放在线程中使用
+	 * 
+	 * @param path
+	 * @return
+	 * @throws IOException
+	 */
+	public static Bitmap getImage(String path) throws IOException
+	{
+		URL url = new URL(path);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setConnectTimeout(5000);
+		conn.setRequestMethod("GET");
+		InputStream is = conn.getInputStream();
+		return BitmapFactory.decodeStream(is);
+	}
+
 	
 	/**
 	 * 下载指定的文本内容

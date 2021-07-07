@@ -5,7 +5,7 @@ import java.util.Date;
 
 import android.graphics.drawable.Drawable;
 
-public class ApkInfo<T>  implements Serializable{
+public class AppInfo<T>  implements Serializable{
 	
 	
 	public String packageName;
@@ -52,7 +52,7 @@ public class ApkInfo<T>  implements Serializable{
 		if (this == obj) return true;
 		if (obj == null) return false;
 		if (getClass() != obj.getClass()) return false;
-		ApkInfo other = (ApkInfo) obj;
+		AppInfo other = (AppInfo) obj;
 		if (appName == null)
 		{
 			if (other.appName != null) return false;

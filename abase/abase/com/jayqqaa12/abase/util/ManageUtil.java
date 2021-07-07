@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
+import android.net.wifi.WifiManager;
 import android.os.PowerManager;
 import android.telephony.TelephonyManager;
 import android.view.WindowManager;
@@ -19,8 +20,6 @@ import com.jayqqaa12.abase.core.AbaseUtil;
 
 public class ManageUtil extends AbaseUtil
 {
-
-
 
 	public static DevicePolicyManager getDevicePolicyManager()
 	{
@@ -31,7 +30,6 @@ public class ManageUtil extends AbaseUtil
 	{
 		return (KeyguardManager) getContext().getSystemService(Context.KEYGUARD_SERVICE);
 	}
-
 
 	public static void registAdminDevice(Context context, Class<? extends DeviceAdminReceiver> admin)
 	{
@@ -46,7 +44,7 @@ public class ManageUtil extends AbaseUtil
 		}
 
 	}
-	
+
 	public static LocationManager getLocationManager()
 	{
 		return (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
@@ -70,22 +68,28 @@ public class ManageUtil extends AbaseUtil
 
 	public static PackageManager getPackManager()
 	{
-		
+
 		return getContext().getPackageManager();
 	}
 
 	public static ConnectivityManager getConnectivtyManager()
 	{
-		return  (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+		return (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 	}
 
-	public static PowerManager getPowerManager() {
-		  return  (PowerManager)getContext().getSystemService(Context.POWER_SERVICE);  
+	public static PowerManager getPowerManager()
+	{
+		return (PowerManager) getContext().getSystemService(Context.POWER_SERVICE);
 	}
 
 	public static TelephonyManager getTelephonyManager()
 	{
-		return  (TelephonyManager) getContext().getSystemService(Context.TELEPHONY_SERVICE);
+		return (TelephonyManager) getContext().getSystemService(Context.TELEPHONY_SERVICE);
+	}
+
+	public static WifiManager getWifiManger()
+	{
+		return (WifiManager) getContext().getSystemService(Context.WIFI_SERVICE);
 	}
 
 }

@@ -33,6 +33,8 @@ import com.jayqqaa12.abase.annotation.view.FindEngine;
 import com.jayqqaa12.abase.annotation.view.FindRes;
 import com.jayqqaa12.abase.annotation.view.FindRes.ResType;
 import com.jayqqaa12.abase.annotation.view.FindView;
+import com.jayqqaa12.abase.exception.AbaseException;
+import com.jayqqaa12.abase.util.common.L;
 
 /**
  * 
@@ -307,8 +309,9 @@ public class Abase
 		for (Field field : fields)
 		{
 			FindView find = field.getAnnotation(FindView.class);
-
-			if (find == null) return;
+			
+			if (find == null) continue;
+			
 			View view = null;
 			try
 			{

@@ -1,151 +1,76 @@
-package com.jayqqaa12.abase.util.comm;
+package com.jayqqaa12.abase.util.network;
 
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.ProtocolException;
-import java.net.URL;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Collections;
+import java.util.List;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
+import org.apache.http.conn.util.InetAddressUtils;
+
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.TrafficStats;
-import android.os.Environment;
+import android.telephony.TelephonyManager;
 
 import com.jayqqaa12.abase.core.AbaseUtil;
 import com.jayqqaa12.abase.util.ManageUtil;
 
 public class NetworkUtil extends AbaseUtil
 {
-
-	/**
-	 * 获得 网络 图片
-	 * 
-	 * 非线程
-	 * 
-	 * @param path
+	
+	
+	
+	/***
+	 * 返回 网络 类型    用 TelephonyManager 里面的常量进行 判断 
 	 * @return
-	 * @throws Exception
 	 */
-	public static Bitmap getImage(String path) throws Exception
+	public static int getNetworkType()
 	{
-		URL url = new URL(path);
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		conn.setConnectTimeout(5000);
-		conn.setRequestMethod("GET");
-		InputStream is = conn.getInputStream();
-		return BitmapFactory.decodeStream(is);
+		NetworkInfo info = ManageUtil.getConnectivtyManager().getActiveNetworkInfo();
+
+		return info==null ? 0: info.getSubtype();
 	}
-
-
+	
 	/**
-	 * 又缓存
+	 * 判断 当前 网络 是否是 edge 
 	 * 
-	 * @param url
 	 * @return
 	 */
-	public static Drawable loadImage(String url, String cachePath)
+	public static boolean isEDGE()
 	{
-		Drawable d = null;
-		try
+
+		NetworkInfo info = ManageUtil.getConnectivtyManager().getActiveNetworkInfo();
+
+		if (info != null && info.isAvailable())
 		{
-			if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
-			{// 是否有SD卡的读取权限
-				File file = new File(cachePath);
-				if (!file.exists())
-				{
-					file.mkdirs();
-				}
-				String fileName = url.substring(cachePath.length(), url.length()).replaceAll("\\/", "");
-				File f = new File(cachePath, fileName);
-				fileName = null;
-
-				if (f.exists())
-				{
-
-					FileInputStream fis = new FileInputStream(f);
-					d = Drawable.createFromStream(fis, "src");
-
-					if (d == null)
-					{
-
-						f.delete();
-						// 创建文件写到SD卡
-						f.createNewFile();
-						URL m = new URL(url);
-						InputStream i = (InputStream) m.getContent();
-						DataInputStream in = new DataInputStream(i);
-						FileOutputStream out = new FileOutputStream(f);
-						byte[] buffer = new byte[256];
-						int byteread = 0;
-						while ((byteread = in.read(buffer)) != -1)
-						{
-							out.write(buffer, 0, byteread);
-						}
-						in.close();
-						out.close();
-						FileInputStream fis2 = new FileInputStream(f);
-						d = Drawable.createFromStream(fis2, "src");
-						i.close();
-						fis2.close();
-					}
-					fis.close();
-
-				}
-				else
-				{// 创建文件写到SD卡
-
-					f.createNewFile();
-					URL m = new URL(url);
-					InputStream i = (InputStream) m.getContent();
-					DataInputStream in = new DataInputStream(i);
-					FileOutputStream out = new FileOutputStream(f);
-					byte[] buffer = new byte[256];
-					int byteread = 0;
-					while ((byteread = in.read(buffer)) != -1)
-					{
-						out.write(buffer, 0, byteread);
-					}
-					in.close();
-					out.close();
-					FileInputStream fis = new FileInputStream(f);
-					d = Drawable.createFromStream(fis, "src");
-					i.close();
-					fis.close();
-				}
-			}
-			else
-			{// 连接网络直接获取图片
-				URL m = new URL(url);
-				InputStream i = (InputStream) m.getContent();
-				d = Drawable.createFromStream(i, "src");
-				i.close();
-			}
+			if (TelephonyManager.NETWORK_TYPE_EDGE == info.getSubtype()) return true;
 		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-		return d;// 返回得到的图片
+
+		return false;
 	}
 
+	
 	/**
-	 * 判断 wifi 是否 连接
+	 * 判断 当前 网络 是否是 edge 
 	 * 
-	 * @param cm
 	 * @return
 	 */
-	public static boolean isWifiConnecting(ConnectivityManager cm)
+	public static boolean isGPRS()
 	{
 
-		return cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnected();
-	}
+		NetworkInfo info = ManageUtil.getConnectivtyManager().getActiveNetworkInfo();
 
+		if (info != null && info.isAvailable())
+		{
+			if (TelephonyManager.NETWORK_TYPE_GPRS == info.getSubtype()) return true;
+		}
+
+		return false;
+	}
+	
+	
+	
 	/**
 	 * 判断 wifi 是否 连接
 	 * 
@@ -155,17 +80,6 @@ public class NetworkUtil extends AbaseUtil
 	public static boolean isWifiConnecting()
 	{
 		return ManageUtil.getConnectivtyManager().getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnected();
-	}
-
-	/**
-	 * 判断 mobile 网络 是否连接
-	 * 
-	 * @param cm
-	 * @return
-	 */
-	public static boolean isMobileConnecting(ConnectivityManager cm)
-	{
-		return cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnected();
 	}
 
 	/**
@@ -192,6 +106,36 @@ public class NetworkUtil extends AbaseUtil
 		if (connectivityManager == null) { return false; }
 		NetworkInfo info = connectivityManager.getActiveNetworkInfo();
 		return (info != null) && info.isAvailable();
+	}
+
+	/**
+	 * 
+	 * 获得 本机 ip 如果 没有联网 returne null
+	 * 
+	 * @return
+	 */
+	public static String getIpAddress()
+	{
+		try
+		{
+			String ipv4;
+			List<NetworkInterface> nilist = Collections.list(NetworkInterface.getNetworkInterfaces());
+			for (NetworkInterface ni : nilist)
+			{
+				List<InetAddress> ialist = Collections.list(ni.getInetAddresses());
+				for (InetAddress address : ialist)
+				{
+					if (!address.isLoopbackAddress() && InetAddressUtils.isIPv4Address(ipv4 = address.getHostAddress())) { return ipv4; }
+				}
+
+			}
+
+		}
+		catch (SocketException ex)
+		{
+			ex.printStackTrace();
+		}
+		return null;
 	}
 
 	/**

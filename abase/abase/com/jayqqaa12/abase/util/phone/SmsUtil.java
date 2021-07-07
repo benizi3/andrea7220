@@ -1,4 +1,4 @@
-package com.jayqqaa12.abase.util.comm;
+package com.jayqqaa12.abase.util.phone;
 
 import android.content.Context;
 import android.content.Intent;

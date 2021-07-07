@@ -125,13 +125,22 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener{
         animDuration = duration;  
     }  
   
-    public boolean feedKeyword(String keyword) {  
+    public boolean addKeyword(String keyword) {  
         boolean result = false;  
         if (vecKeywords.size() < MAX) {  
             result = vecKeywords.add(keyword);  
         }  
         return result;  
     }  
+    
+    
+    public void addKeywords(String [] keys)
+    {
+    	for(String key:keys)
+    	{
+    		addKeyword(key);
+    	}
+    }
   
     /** 
      * 开始动画显示。<br/> 
@@ -141,13 +150,13 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener{
      *         1.时间上不允许，受lastStartAnimationTime的制约；<br/> 
      *         2.未获取到width和height的值。<br/> 
      */  
-    public boolean go2Show(int animType) {  
+    public boolean go2Show(boolean in) {  
         if (System.currentTimeMillis() - lastStartAnimationTime > animDuration) {  
             enableShow = true;  
-            if (animType == ANIMATION_IN) {
+            if (in) {
                 txtAnimInType = OUTSIDE_TO_LOCATION;  
                 txtAnimOutType = LOCATION_TO_CENTER;  
-            } else if (animType == ANIMATION_OUT) {  
+            } else  {  
                 txtAnimInType = CENTER_TO_LOCATION;  
                 txtAnimOutType = LOCATION_TO_OUTSIDE;  
             }  
@@ -412,6 +421,11 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener{
         removeAllViews();  
     }  
   
+    
+    /***I
+     * 可 添加 每个 textView 的 监听器
+     * @param listener
+     */
     public void setOnItemClickListener(OnClickListener listener) {  
         itemClickListener = listener;  
     }  

@@ -10,7 +10,7 @@ import java.util.Date;
 import android.os.Environment;
 
 import com.jayqqaa12.abase.util.common.L;
-import com.jayqqaa12.abase.util.sys.ApkInfoUtil;
+import com.jayqqaa12.abase.util.sys.AppInfoUtil;
 import com.jayqqaa12.abase.util.sys.SysUtil;
 
 
@@ -34,7 +34,7 @@ public abstract class AbaseCrashHandler implements UncaughtExceptionHandler
 		{
 			ex.printStackTrace();
 			
-			sb.append("程序的版本号为" + ApkInfoUtil.getVersionNo());
+			sb.append("程序的版本号为" + AppInfoUtil.getVersionNo());
 			sb.append("\n");
 			sb.append(SysUtil.getSysInfo());
 			sb.append(L.getExceptionStackTrace(ex));

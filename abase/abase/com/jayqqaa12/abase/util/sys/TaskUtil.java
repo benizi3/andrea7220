@@ -68,7 +68,7 @@ public class TaskUtil extends AbaseUtil
 				ApplicationInfo appinfo = pm.getPackageInfo(packname, 0).applicationInfo;
 				Drawable icon = appinfo.loadIcon(pm);
 				taskinfo.icon = icon;
-				if (ApkInfoUtil.filterApp(appinfo)) taskinfo.system = false;
+				if (AppInfoUtil.filterApp(appinfo)) taskinfo.system = false;
 				else taskinfo.system = true;
 
 				String appname = appinfo.loadLabel(pm).toString();

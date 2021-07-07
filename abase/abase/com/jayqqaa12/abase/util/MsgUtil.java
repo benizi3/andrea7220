@@ -47,7 +47,17 @@ public class MsgUtil extends AbaseUtil
 
 	}
 
-	
+
+	public static void sendMessage(Handler callback, int what,int arg1)
+	{
+		Message msg = new Message();
+		msg.what = what;
+		msg.arg1=arg1;
+		msg.setTarget(callback);
+		callback.sendMessage(msg);
+
+	}
+
 	
 
 	public static void sendMessage(Handler callback, int what, Object obj)
