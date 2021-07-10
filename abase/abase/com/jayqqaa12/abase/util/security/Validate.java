@@ -6,7 +6,7 @@ import java.util.Collection;
 /**
  * 校验工具类
  */
-public class ValidateUtil {
+public class Validate {
 	
 	
 			
@@ -17,7 +17,7 @@ public class ValidateUtil {
 	 */
 	public static boolean equals (String s1,String s2)
 	{
-		return isValid(s1)&&isValid(s2) &&s1.equals(s2);
+		return notEmpty(s1)&&notEmpty(s2) &&s1.equals(s2);
 		
 	}
 	
@@ -27,8 +27,8 @@ public class ValidateUtil {
 	/**
 	 * 验证字符串有效性
 	 */
-	public static boolean isValid(String str){
-		if(str == null || "".equals(str)){
+	public static boolean notEmpty(String str){
+		if(str == null || "".equals(str.trim())){
 			return false ;
 		}
 		return true ;
@@ -37,7 +37,7 @@ public class ValidateUtil {
 	/**
 	 * 验证集合有效性
 	 */
-	public static boolean isValid(Collection col){
+	public static boolean notEmpty(Collection col){
 		if(col == null || col.isEmpty()){
 			return false ;
 		}
@@ -47,7 +47,7 @@ public class ValidateUtil {
 	/**
 	 * 验证数组有效性
 	 */
-	public static boolean isValid(Object[] arr){
+	public static boolean notEmpty(Object[] arr){
 		if(arr == null || arr.length == 0){
 			return false ;
 		}

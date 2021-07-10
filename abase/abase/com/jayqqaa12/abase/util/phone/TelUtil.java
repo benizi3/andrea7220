@@ -10,11 +10,25 @@ import android.telephony.TelephonyManager;
 import com.jayqqaa12.abase.core.AbaseUtil;
 import com.jayqqaa12.abase.util.ConfigUtil;
 import com.jayqqaa12.abase.util.ManageUtil;
-import com.jayqqaa12.abase.util.security.ValidateUtil;
+import com.jayqqaa12.abase.util.security.Validate;
 
 public class TelUtil extends AbaseUtil
 {
+	/**
+	 * 没有sim卡 
+	 */
+	public static final int NETWORK_NONE=-1;
+	public static final int NETWORK_OTHER=0; 
+	public static final int CHINA_MOBILE = 10;
+	public static final int CHINA_UNICOM = 11;
+	public static final int CHINA_TELECOM = 12;
+	
+	public static final int NETWORK_2G =2;
+	public static final int NETWORK_3G =3;
+	public static final int NETWORK_4G =4;
 
+
+	
 	/**
 	 * 电话状态： 1.tm.CALL_STATE_IDLE=0 无活动 2.tm.CALL_STATE_RINGING=1 响铃
 	 * 3.tm.CALL_STATE_OFFHOOK=2 摘机
@@ -74,6 +88,7 @@ public class TelUtil extends AbaseUtil
 	{
 		TelephonyManager tm = ManageUtil.getTelephonyManager();
 		return tm.getLine1Number();
+		
 	}
 
 	/**
@@ -155,10 +170,40 @@ public class TelUtil extends AbaseUtil
 	 * 获取SIM卡提供的移动国家码和移动网络码.5或6位的十进制数字. SIM卡的状态必须是
 	 * SIM_STATE_READY(使用getSimState()判断).
 	 */
-	public static String getSimOperator()
+	public static int getSimOperator()
 	{
 		TelephonyManager tm = ManageUtil.getTelephonyManager();
-		return tm.getSimOperator();
+
+		String operator = tm.getSimOperator();
+
+		if (operator != null)
+		{
+			if (operator.equals("46000") || operator.equals("46002") || operator.equals("46007"))
+			{
+				// 中国移动
+
+				return CHINA_MOBILE;
+
+			}
+			else if (operator.equals("46001"))
+			{
+				// 中国联通
+
+				return CHINA_UNICOM;
+
+			}
+			else if (operator.equals("46003"))
+			{
+				// 中国电信
+
+				return CHINA_TELECOM;
+			}
+			else return NETWORK_OTHER; 
+				
+		}
+		
+		return NETWORK_NONE;
+
 	}
 
 	/**
@@ -253,20 +298,17 @@ public class TelUtil extends AbaseUtil
 		String uid = getDeviceId();
 		if (uid == null) uid = TelUtil.getSubscriberId();
 		if (uid == null) uid = TelUtil.getLine1Number();
-		
-		if(uid!=null)
+
+		if (uid != null)
 		{
-			final String ABASE_DEVICE_ID="ABASE_DEVICE_ID";
+			final String ABASE_DEVICE_ID = "ABASE_DEVICE_ID";
 			String old = ConfigUtil.getString(ABASE_DEVICE_ID, null);
-			if(!ValidateUtil.equals(old, uid)) ConfigUtil.setValue(ABASE_DEVICE_ID, uid);
+			if (!Validate.equals(old, uid)) ConfigUtil.setValue(ABASE_DEVICE_ID, uid);
 		}
 		else
 		{
 			uid = ConfigUtil.getString("ABASE_DEVICE_ID", null);
 		}
-		
-		
-		
 
 		return uid;
 	}

@@ -15,7 +15,6 @@
  */
 package net.tsz.afinal.db.table;
 
-
 public class OneToMany extends Property{
 
 	private Class<?> oneClass;

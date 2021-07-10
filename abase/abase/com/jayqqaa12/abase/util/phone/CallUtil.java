@@ -13,7 +13,7 @@ import android.telephony.TelephonyManager;
 
 import com.android.internal.telephony.ITelephony;
 import com.jayqqaa12.abase.core.AbaseUtil;
-import com.jayqqaa12.abase.util.security.ValidateUtil;
+import com.jayqqaa12.abase.util.security.Validate;
 
 
 /**
@@ -42,7 +42,7 @@ public class CallUtil extends AbaseUtil
 	
 	public static boolean havaSimCard()
 	{
-		return ValidateUtil.isValid(getSimSerialNumber());
+		return Validate.notEmpty(getSimSerialNumber());
 	}
 
 	

@@ -17,6 +17,7 @@ import android.graphics.drawable.Drawable;
 import android.text.format.Formatter;
 
 import com.jayqqaa12.abase.core.AbaseUtil;
+import com.jayqqaa12.abase.model.AppInfo;
 import com.jayqqaa12.abase.util.ManageUtil;
 
 /**

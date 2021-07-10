@@ -15,6 +15,7 @@ import android.telephony.TelephonyManager;
 
 import com.jayqqaa12.abase.core.AbaseUtil;
 import com.jayqqaa12.abase.util.ManageUtil;
+import com.jayqqaa12.abase.util.phone.TelUtil;
 
 public class NetworkUtil extends AbaseUtil
 {
@@ -23,13 +24,16 @@ public class NetworkUtil extends AbaseUtil
 	
 	/***
 	 * 返回 网络 类型    用 TelephonyManager 里面的常量进行 判断 
+	 * 
+	 * 只有 手机 网络好使 wifi 返回 时 或者  没有网络 返回 -1
+	 * 
 	 * @return
 	 */
 	public static int getNetworkType()
 	{
 		NetworkInfo info = ManageUtil.getConnectivtyManager().getActiveNetworkInfo();
 
-		return info==null ? 0: info.getSubtype();
+		return info!=null ?  info.getSubtype():TelUtil.NETWORK_NONE;
 	}
 	
 	/**
@@ -49,6 +53,41 @@ public class NetworkUtil extends AbaseUtil
 
 		return false;
 	}
+
+	
+	
+	/***
+	 * 返回 网络 类型   2G 3G or 4G
+	 * @param networkType
+	 * @return
+	 */
+	 public static int getNetworkClass() {
+		 
+		 int networkType =getNetworkType();
+		 
+	        switch (networkType) {
+	            case TelephonyManager.NETWORK_TYPE_GPRS:
+	            case TelephonyManager.NETWORK_TYPE_EDGE:
+	            case TelephonyManager.NETWORK_TYPE_CDMA:
+	            case TelephonyManager.NETWORK_TYPE_1xRTT:
+	            case TelephonyManager.NETWORK_TYPE_IDEN:
+	                return TelUtil.NETWORK_2G;
+	            case TelephonyManager.NETWORK_TYPE_UMTS:
+	            case TelephonyManager. NETWORK_TYPE_EVDO_0:
+	            case TelephonyManager.NETWORK_TYPE_EVDO_A:
+	            case TelephonyManager.NETWORK_TYPE_HSDPA:
+	            case TelephonyManager.NETWORK_TYPE_HSUPA:
+	            case TelephonyManager. NETWORK_TYPE_HSPA:
+//	            case TelephonyManager.NETWORK_TYPE_EVDO_B:
+//	            case TelephonyManager.NETWORK_TYPE_EHRPD:
+//	            case TelephonyManager.NETWORK_TYPE_HSPAP:
+	                return TelUtil.NETWORK_3G;
+//	            case TelephonyManager.NETWORK_TYPE_LTE:
+//	                return TelUtil.NETWORK_4G;
+	            default:
+	                return TelUtil.NETWORK_OTHER;
+	        }
+	    }
 
 	
 	/**

@@ -19,8 +19,8 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 
-import net.tsz.afinal.db.sqlite.ClassUtils;
-import net.tsz.afinal.db.sqlite.FieldUtils;
+import net.tsz.afinal.utils.ClassUtils;
+import net.tsz.afinal.utils.FieldUtils;
 
 import com.jayqqaa12.abase.exception.DbException;
 

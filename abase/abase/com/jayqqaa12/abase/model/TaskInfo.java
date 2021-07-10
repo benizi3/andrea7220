@@ -1,4 +1,4 @@
-package com.jayqqaa12.abase.util.sys;
+package com.jayqqaa12.abase.model;
 
 import android.graphics.drawable.Drawable;
 

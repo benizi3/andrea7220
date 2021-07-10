@@ -53,7 +53,6 @@ public class SysPropUtil {
 			String phoneInfo = (String) result;
 			return phoneInfo;
 			
-			// return "V1.1";
 
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -18,8 +18,9 @@ public class DialogUtil
 	 /**
 	    * 无网络弹出的提示窗口
 	    */
-		public void showNotNetworkDialog(final Activity activity) { 
-			 Dialog dialog = new AlertDialog.Builder(activity)	     
+		public static void showNotNetworkDialog(final Activity activity) { 
+			
+			Dialog dialog = new AlertDialog.Builder(activity)	     
 	  			   .setMessage("网络连接失败，请检查重试！")// 设置内容       
 	  			   .setPositiveButton("退出",//确定按钮      
 	        new DialogInterface.OnClickListener() {
@@ -29,7 +30,7 @@ public class DialogUtil
 	         }).setNegativeButton("设置", //設置按钮
 	        new DialogInterface.OnClickListener() {       
 	         public void onClick(DialogInterface dialog, int whichButton) { 
-	        activity.startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS),0);
+	        activity.startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
 	        activity.finish();
 	         }       
 	         }).create(); 
@@ -37,12 +38,39 @@ public class DialogUtil
 	        } 
 		
 		
+
+		 /**
+		    * 无网络弹出的提示窗口
+		    */
+			public static void showChangeApnDialog(final Activity activity) { 
+				
+				Dialog dialog = new AlertDialog.Builder(activity)	     
+		  			   .setMessage("当前接入点是WAP,可能无法访问互联网,请修改接入点")// 设置内容       
+		  			   .setPositiveButton("退出",//确定按钮      
+		        new DialogInterface.OnClickListener() {
+		           public void onClick(DialogInterface dialog,  int which) {
+		        	   activity.finish();
+		           } 
+		         }).setNegativeButton("设置", //設置按钮
+		        new DialogInterface.OnClickListener() {       
+		         public void onClick(DialogInterface dialog, int whichButton) { 
+		        activity.startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
+		        activity.finish();
+		         }       
+		         }).create();
+		         dialog.show();
+		        } 
+			
+			
+		
+		
+		
 		
 		/**
 		 * 一个 点击 退出的  对话框 
 		 * @param activity
 		 */
-		public void showExitDialog(final Activity activity,String msg){
+		public static void showExitDialog(final Activity activity,String msg){
 			
 			
 			 Dialog dialog = new AlertDialog.Builder(activity)	     

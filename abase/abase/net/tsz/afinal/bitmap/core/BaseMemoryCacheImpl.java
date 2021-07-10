@@ -15,7 +15,7 @@
  */
 package net.tsz.afinal.bitmap.core;
 
-import net.tsz.afinal.db.sqlite.Utils;
+import net.tsz.afinal.utils.Utils;
 import android.graphics.Bitmap;
 
 public class BaseMemoryCacheImpl implements IMemoryCache {

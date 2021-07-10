@@ -16,6 +16,7 @@ import com.jayqqaa12.abase.core.AbaseUtil;
 /**
  * 获得 logcat 的 日志 信息
  * 
+ * <uses-permission android:name="android.permission.READ_LOGS" />
  * 
  * @author jayqqaa12
  * @date 2013-5-15
@@ -108,13 +109,13 @@ public class LogcatUtil extends AbaseUtil
 	 * @param tag
 	 * @return
 	 */
-	public static BufferedReader getLog(String tag)
+	public static BufferedReader getLog(String tag, String priority)
 	{
 		Process process;
 		try
 		{
 			Runtime.getRuntime().exec("logcat -c");
-			process = Runtime.getRuntime().exec("logcat -s " + tag);
+			process = Runtime.getRuntime().exec("logcat -s " + tag+":"+priority);
 			
 			return new BufferedReader(new InputStreamReader(process.getInputStream()));
 		}

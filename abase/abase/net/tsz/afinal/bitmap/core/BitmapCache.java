@@ -21,7 +21,7 @@ import java.nio.ByteBuffer;
 
 import net.tsz.afinal.bitmap.core.BytesBufferPool.BytesBuffer;
 import net.tsz.afinal.bitmap.core.DiskCache.LookupRequest;
-import net.tsz.afinal.db.sqlite.Utils;
+import net.tsz.afinal.utils.Utils;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Bitmap;

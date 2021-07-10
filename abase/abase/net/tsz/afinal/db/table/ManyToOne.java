@@ -15,7 +15,6 @@
  */
 package net.tsz.afinal.db.table;
 
-
 public class ManyToOne extends Property{
 
 	private Class<?> manyClass;

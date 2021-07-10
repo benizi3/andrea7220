@@ -22,6 +22,10 @@ public class NotificationUtil  extends AbaseUtil
 {
 	
 
+	public static void deleteNotification(int id)
+	{
+	   ManageUtil.getNotificationManager().cancel(id);;
+	}
 
 	
 

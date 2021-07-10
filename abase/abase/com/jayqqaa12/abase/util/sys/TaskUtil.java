@@ -15,6 +15,7 @@ import android.os.Debug.MemoryInfo;
 import android.text.format.Formatter;
 
 import com.jayqqaa12.abase.core.AbaseUtil;
+import com.jayqqaa12.abase.model.TaskInfo;
 import com.jayqqaa12.abase.util.ManageUtil;
 
 

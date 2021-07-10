@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.jayqqaa12.abase.util.security.ValidateUtil;
+import com.jayqqaa12.abase.util.security.Validate;
 
 /**
  * 媒体类型工具包
@@ -80,7 +80,7 @@ public class MediaTypeUtil {
 	public static String getMIMEType(String filePath) {
 		String type = "";
 		String fName = null;
-		if (ValidateUtil.isValid(fName))  fName = "";
+		if (Validate.notEmpty(fName))  fName = "";
 		else fName = filePath.substring(filePath.lastIndexOf(File.separator) + 1);
 		/* 取得扩展名 */
 		String end = fName

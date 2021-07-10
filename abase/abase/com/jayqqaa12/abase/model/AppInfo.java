@@ -1,4 +1,4 @@
-package com.jayqqaa12.abase.util.sys;
+package com.jayqqaa12.abase.model;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -17,7 +17,10 @@ public class AppInfo<T>  implements Serializable{
 	public long appSize;
 	public String versionName;
 	public boolean isSysApp;
-	public boolean isPreloadApp;
+	/**
+	 * 预装 应用
+	 */
+	public boolean isPreloadApp; 
 	public Date date;
 	public String size;
 	public boolean check;

@@ -13,7 +13,7 @@ import net.tsz.afinal.bitmap.display.Displayer;
 import net.tsz.afinal.bitmap.display.SimpleDisplayer;
 import net.tsz.afinal.bitmap.download.Downloader;
 import net.tsz.afinal.bitmap.download.SimpleDownloader;
-import net.tsz.afinal.db.sqlite.Utils;
+import net.tsz.afinal.utils.Utils;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -28,7 +28,7 @@ import android.widget.ImageView;
 import com.jayqqaa12.abase.copy.AsyncTask;
 
 public class AbaseBitmap {
-	private FinalBitmapConfig mConfig;
+	private AbaseBitmapConfig mConfig;
 	private BitmapCache mImageCache;
 	private BitmapProcess mBitmapProcess;
 	private boolean mExitTasksEarly = false;
@@ -38,44 +38,42 @@ public class AbaseBitmap {
 	private boolean mInit = false ;
 	private ExecutorService bitmapLoadAndDisplayExecutor;
 
-	private static AbaseBitmap mFinalBitmap;
-
-	////////////////////////// config method start////////////////////////////////////
-	private AbaseBitmap(Context context) {
-		mContext = context;
-		mConfig = new FinalBitmapConfig(context);
-		configDiskCachePath(Utils.getDiskCacheDir(context, "abaseCache").getAbsolutePath());//配置缓存路径
-		configDisplayer(new SimpleDisplayer());//配置显示器
-		configDownlader(new SimpleDownloader());//配置下载器
-	}
-	
+	private static AbaseBitmap mAbaseBitmap;
 	/**
-	 * 创建finalbitmap
-	 * @param ctx
-	 * @return
-	 */
-	public static synchronized AbaseBitmap create(Context ctx){
-		if(mFinalBitmap == null){
-			mFinalBitmap = new AbaseBitmap(ctx.getApplicationContext());
-		}
-		return mFinalBitmap;
-	}
-	
-	/**
-	 * 创建finalbitmap
+	 * 创建AbaseBitmap
 	 * 
 	 * @return
 	 */
 	public static AbaseBitmap create()
 	{
-		if (mFinalBitmap == null)
+		if (mAbaseBitmap == null)
 		{
-			mFinalBitmap = new AbaseBitmap(Abase.getContext());
-			mFinalBitmap.init();
+			mAbaseBitmap = new AbaseBitmap(Abase.getContext());
+			mAbaseBitmap.init();
 		}
-		return mFinalBitmap;
+		return mAbaseBitmap;
 	}
-
+	
+	////////////////////////// config method start////////////////////////////////////
+	private AbaseBitmap(Context context) {
+		mContext = context;
+		mConfig = new AbaseBitmapConfig(context);
+		configDiskCachePath(Utils.getDiskCacheDir(context, "afinalCache").getAbsolutePath());//配置缓存路径
+		configDisplayer(new SimpleDisplayer());//配置显示器
+		configDownlader(new SimpleDownloader());//配置下载器
+	}
+	
+	/**
+	 * 创建AbaseBitmap
+	 * @param ctx
+	 * @return
+	 */
+	public static synchronized AbaseBitmap create(Context ctx){
+		if(mAbaseBitmap == null){
+			mAbaseBitmap = new AbaseBitmap(ctx.getApplicationContext());
+		}
+		return mAbaseBitmap;
+	}
 	
 	
 	
@@ -215,7 +213,7 @@ public class AbaseBitmap {
 	} 
 	
 	/**
-	 * 初始化finalBitmap
+	 * 初始化AbaseBitmap
 	 * @return
 	 */
 	private AbaseBitmap init(){
@@ -409,14 +407,14 @@ public class AbaseBitmap {
 	
 
     /**
-     * 执行过此方法后,FinalBitmap的缓存已经失效,建议通过FinalBitmap.create()获取新的实例
+     * 执行过此方法后,AbaseBitmap的缓存已经失效,建议通过AbaseBitmap.create()获取新的实例
      * @author fantouch
      */
 	private void closeCacheInternalInBackgroud() {
 		if (mImageCache != null) {
 			mImageCache.close();
 			mImageCache = null;
-            mFinalBitmap = null;
+            mAbaseBitmap = null;
 		}
 	}
 
@@ -487,7 +485,7 @@ public class AbaseBitmap {
     
     /**
      * activity onDestroy的时候调用这个方法，释放缓存
-     * 执行过此方法后,FinalBitmap的缓存已经失效,建议通过FinalBitmap.create()获取新的实例
+     * 执行过此方法后,AbaseBitmap的缓存已经失效,建议通过AbaseBitmap.create()获取新的实例
      * 
      * @author fantouch
      */
@@ -546,7 +544,7 @@ public class AbaseBitmap {
 
     /**
      * 关闭缓存
-     * 执行过此方法后,FinalBitmap的缓存已经失效,建议通过FinalBitmap.create()获取新的实例
+     * 执行过此方法后,AbaseBitmap的缓存已经失效,建议通过AbaseBitmap.create()获取新的实例
      * @author fantouch
      */
 	public void closeCache() {
@@ -704,7 +702,6 @@ public class AbaseBitmap {
 		@Override
 		protected void onPostExecute(Bitmap bitmap) {
 			if (isCancelled() || mExitTasksEarly) {
-				bitmap.recycle();
 				bitmap = null;
 			}
 
@@ -744,13 +741,13 @@ public class AbaseBitmap {
 	
 	/**
 	 * @title 配置信息
-	 * @description FinalBitmap的配置信息
+	 * @description AbaseBitmap的配置信息
 	 * @company 探索者网络工作室(www.tsz.net)
 	 * @author michael Young (www.YangFuhai.com)
 	 * @version 1.0
 	 * @created 2012-10-28
 	 */
-	private class FinalBitmapConfig {
+	private class AbaseBitmapConfig {
 		public String cachePath;
 		 public Displayer displayer;
 		 public Downloader downloader;
@@ -761,7 +758,7 @@ public class AbaseBitmap {
 		 public int poolSize = 3;//默认的线程池线程并发数量
 		 public boolean recycleImmediately = true;//是否立即回收内存
 		
-		 public FinalBitmapConfig(Context context) {
+		 public AbaseBitmapConfig(Context context) {
 				defaultDisplayConfig = new BitmapDisplayConfig();
 				
 				defaultDisplayConfig.setAnimation(null);
@@ -774,12 +771,7 @@ public class AbaseBitmap {
 				defaultDisplayConfig.setBitmapWidth(defaultWidth);
 				
 		}
-		 
-		 
-		 
-		 
 	}
-	
 	
 	
 	

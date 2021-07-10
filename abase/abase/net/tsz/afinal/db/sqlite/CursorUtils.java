@@ -1,17 +1,34 @@
+/**
+ * Copyright (c) 2012-2013, Michael Yang 杨福海 (www.yangfuhai.com).
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package net.tsz.afinal.db.sqlite;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import net.tsz.afinal.db.table.ManyToOne;
+import net.tsz.afinal.db.table.OneToMany;
 import net.tsz.afinal.db.table.Property;
 import net.tsz.afinal.db.table.TableInfo;
-
 import android.database.Cursor;
 
+import com.jayqqaa12.abase.core.AbaseDao;
 
 public class CursorUtils {
 
-	public static <T> T getEntity(Cursor cursor, Class<T> clazz){
+	public static <T> T getEntity(Cursor cursor, Class<T> clazz,AbaseDao db){
 		try {
 			if(cursor!=null ){
 				TableInfo table = TableInfo.get(clazz);
@@ -30,8 +47,28 @@ public class CursorUtils {
 								table.getId().setValue(entity,  cursor.getString(i));
 							}
 						}
-						
+
 					}
+                    /**
+                     * 处理OneToMany的lazyLoad形式
+                     */
+                    for(OneToMany oneToManyProp : table.oneToManyMap.values()){
+                        if(oneToManyProp.getDataType()==OneToManyLazyLoader.class){
+                            OneToManyLazyLoader oneToManyLazyLoader = new OneToManyLazyLoader(entity,clazz,oneToManyProp.getOneClass(),db);
+                            oneToManyProp.setValue(entity,oneToManyLazyLoader);
+                        }
+                    }
+
+                    /**
+                     * 处理ManyToOne的lazyLoad形式
+                     */
+                    for(ManyToOne manyToOneProp : table.manyToOneMap.values()){
+                        if(manyToOneProp.getDataType()==ManyToOneLazyLoader.class){
+                            ManyToOneLazyLoader manyToOneLazyLoader = new ManyToOneLazyLoader(entity,clazz,manyToOneProp.getManyClass(),db);
+                            manyToOneLazyLoader.setFieldValue(cursor.getInt(cursor.getColumnIndex(manyToOneProp.getColumn())));
+                            manyToOneProp.setValue(entity,manyToOneLazyLoader);
+                        }
+                    }
 					return entity;
 				}
 			}
@@ -43,11 +80,6 @@ public class CursorUtils {
 	}
 	
 	
-	/**
-	 * 设置进 基本数据
-	 * @param cursor
-	 * @return
-	 */
 	public static DbModel getDbModel(Cursor cursor){
 		if(cursor!=null && cursor.getColumnCount() > 0){
 			DbModel model = new DbModel();

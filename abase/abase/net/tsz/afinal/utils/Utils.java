@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.tsz.afinal.db.sqlite;
+package net.tsz.afinal.utils;
 
 import java.io.File;
 

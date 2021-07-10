@@ -1,6 +1,7 @@
 package com.jayqqaa12.abase.core;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -8,6 +9,8 @@ import java.util.List;
 
 import net.tsz.afinal.db.sqlite.CursorUtils;
 import net.tsz.afinal.db.sqlite.DbModel;
+import net.tsz.afinal.db.sqlite.ManyToOneLazyLoader;
+import net.tsz.afinal.db.sqlite.OneToManyLazyLoader;
 import net.tsz.afinal.db.sqlite.SqlBuilder;
 import net.tsz.afinal.db.sqlite.SqlInfo;
 import net.tsz.afinal.db.table.KeyValue;
@@ -17,37 +20,56 @@ import net.tsz.afinal.db.table.TableInfo;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.jayqqaa12.abase.exception.DbException;
-import com.jayqqaa12.abase.util.common.TAG;
-
 
 /**
- *简单的  orm 框架 
- *
-* @author jayqqaa12 
-* @date 2013-5-22
+ * 简单的 orm 框架
+ * 
+ * @author jayqqaa12
+ * @date 2013-5-22
  */
 public class AbaseDao
 {
+	private static final String TAG = "FinalDb";
 	private static HashMap<String, AbaseDao> daoMap = new HashMap<String, AbaseDao>();
 
 	private SQLiteDatabase db;
 	private DaoConfig config;
 
 	private AbaseDao()
-	{
-	};
+	{};
 
 	private AbaseDao(DaoConfig config)
 	{
 		this.db = new SqliteDbHelper(Abase.getContext(), config.getDbName(), config.getDbVersion(), config.getDbUpdateListener())
 				.getWritableDatabase();
 		this.config = config;
+	}
+
+	/**
+	 * 查询数量
+	 * 
+	 * @param clazz
+	 * @return
+	 */
+	public int count(Class<?> clazz)
+	{
+		return findAll(clazz).size();
+	}
+
+	/**
+	 * 
+	 * @param clazz
+	 * @param where
+	 * @return
+	 */
+	public int count(Class<?> clazz, String where)
+	{
+		return findAllByWhere(clazz, where).size();
 	}
 
 	private synchronized static AbaseDao getInstance(String dbPath, String dbName, boolean debug)
@@ -191,34 +213,222 @@ public class AbaseDao
 		return getInstance(config);
 	}
 
-	
-	
 	/**
-	 * 删除所有数据表
+	 * 根据更新所有数据
+	 * 
+	 * @param entity
 	 */
-	public void dropDb() {
-		Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type ='table'", null);
-		if(cursor!=null){
-			while(cursor.moveToNext()){
-				//添加异常捕获.忽略删除所有表时出现的异常:
-				//table sqlite_sequence may not be dropped
-				try {
-					db.execSQL("DROP TABLE "+cursor.getString(0));
-				} catch (SQLException e) {
-					Log.e(TAG.DAO, e.getMessage());
+	public void updateAll(Object entity)
+	{
+		update(entity, null);
+
+	}
+
+	/**
+	 * 根据主键查找数据（默认不查询多对一或者一对多的关联数据）
+	 * 
+	 * @param id
+	 * @param clazz
+	 */
+	public <T> T findById(Class<T> clazz, Object id)
+	{
+		checkTableExist(clazz);
+		SqlInfo sqlInfo = SqlBuilder.getSelectSqlAsSqlInfo(clazz, id);
+		if (sqlInfo != null)
+		{
+			debugSql(sqlInfo.getSql());
+			Cursor cursor = db.rawQuery(sqlInfo.getSql(), sqlInfo.getBindArgsAsStringArray());
+			try
+			{
+				if (cursor.moveToNext()) { return CursorUtils.getEntity(cursor, clazz, this); }
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+			finally
+			{
+				cursor.close();
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 根据条件查找数据
+	 * 
+	 * true 找到了
+	 * 
+	 * false 没有找到
+	 * 
+	 * @param clazz
+	 * @param where
+	 *            条件为空的时候查找所有数据
+	 */
+	public boolean isFindByWhere(Class<?> clazz, String where)
+	{
+		return findAllByWhere(clazz, where).size() == 0 ? false : true;
+	}
+
+	/**
+	 * 根据条件查找数据 true 找到了
+	 * 
+	 * false 没有找到
+	 * 
+	 * @param clazz
+	 * @param where
+	 *            条件为空的时候查找所有数据
+	 */
+	public boolean isFindAllByWhere(Class<?> clazz, String where)
+	{
+		return findAllByWhere(clazz, where).size() == 0 ? false : true;
+	}
+
+	/**
+	 * 根据条件查找数据
+	 * 
+	 * 如果找到的数量 大于1 @throws DbException
+	 * 
+	 * 
+	 * @param clazz
+	 * @param where
+	 *            条件为空的时候查找所有数据
+	 */
+	public <T> T findByWhere(Class<T> clazz, String where)
+	{
+		List<T> list = findAllByWhere(clazz, where);
+
+		if (list.size() > 1) throw new DbException("find size  >1  maybe find error !!");
+
+		return list.size() > 0 ? list.get(0) : null;
+
+	}
+
+	/**
+	 * 直接 通过 sql 查 返回 单个的 string 字符串
+	 * 
+	 * @param sql
+	 */
+	public String findStringBySql(String sql, String columName)
+	{
+		DbModel model = findDbModelBySQL(sql);
+		if (model != null) return model.getString(columName);
+		else return null;
+	}
+
+	/**
+	 * 直接 通过 sql 查 返回 多个的 string 字符串
+	 * 
+	 * @param sql
+	 */
+	public List<String> findAllStringBySql(String sql, String columName)
+	{
+		List<String> list = new ArrayList<String>();
+
+		for (DbModel dm : findDbModelListBySQL(sql))
+		{
+			list.add(dm.getString(columName));
+		}
+		return list;
+	}
+
+	public static class DaoConfig
+	{
+		private String dbName = "abase.db";// 数据库名字
+		private int dbVersion = 1;// 数据库版本
+		private boolean debug = true;
+		private DbUpdateListener dbUpdateListener;
+
+		public String getDbName()
+		{
+			return dbName;
+		}
+
+		public void setDbName(String dbName)
+		{
+			this.dbName = dbName;
+		}
+
+		public int getDbVersion()
+		{
+			return dbVersion;
+		}
+
+		public void setDbVersion(int dbVersion)
+		{
+			this.dbVersion = dbVersion;
+		}
+
+		public boolean isDebug()
+		{
+			return debug;
+		}
+
+		public void setDebug(boolean debug)
+		{
+			this.debug = debug;
+		}
+
+		public DbUpdateListener getDbUpdateListener()
+		{
+			return dbUpdateListener;
+		}
+
+		public void setDbUpdateListener(DbUpdateListener dbUpdateListener)
+		{
+			this.dbUpdateListener = dbUpdateListener;
+		}
+
+	}
+
+	class SqliteDbHelper extends SQLiteOpenHelper
+	{
+
+		private DbUpdateListener mDbUpdateListener;
+
+		public SqliteDbHelper(Context context, String name, int version, DbUpdateListener dbUpdateListener)
+		{
+			super(context, name, null, version);
+			this.mDbUpdateListener = dbUpdateListener;
+		}
+
+		public void onCreate(SQLiteDatabase db)
+		{}
+
+		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
+		{
+			if (mDbUpdateListener != null) mDbUpdateListener.onUpgrade(db, oldVersion, newVersion);
+
+			else
+			{ // 清空所有的数据信息
+				Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type ='table'", null);
+				if (cursor != null)
+				{
+					while (cursor.moveToNext())
+					{
+						db.execSQL("DROP TABLE " + cursor.getString(0));
+					}
+				}
+				if (cursor != null)
+				{
+					cursor.close();
+					cursor = null;
 				}
 			}
 		}
-		if(cursor!=null){
-			cursor.close();
-			cursor=null;
-		}
+
 	}
+
+	public interface DbUpdateListener
+	{
+		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion);
+	}
+
+	
+///////////////////////////////////////////////// 以上内容为修改版 ///////////////////////////////////////////////////////////////////	
+	
 	/**
-	 * 
-	 * 
-	 * 保存数据库，
-	 * 
+	 * 保存数据库，速度要比save快
 	 * 
 	 * @param entity
 	 */
@@ -271,15 +481,13 @@ public class AbaseDao
 		}
 		else
 		{
-			Log.w(TAG.DB, "insertContentValues: List<KeyValue> is empty or ContentValues is empty!");
+			Log.w(TAG, "insertContentValues: List<KeyValue> is empty or ContentValues is empty!");
 		}
 
 	}
 
 	/**
 	 * 更新数据 （主键ID必须不能为空）
-	 * 
-	 * 根据主键id 更新
 	 * 
 	 * @param entity
 	 */
@@ -290,27 +498,16 @@ public class AbaseDao
 	}
 
 	/**
-	 * 根据更新所有数据
-	 * 
-	 * @param entity
-	 */
-	public void updateAll(Object entity)
-	{
-		update(entity, null);
-
-	}
-
-	/**
 	 * 根据条件更新数据
 	 * 
 	 * @param entity
-	 * @param where
+	 * @param strWhere
 	 *            条件为空的时候，将会更新所有的数据
 	 */
-	public void update(Object entity, String where)
+	public void update(Object entity, String strWhere)
 	{
 		checkTableExist(entity.getClass());
-		exeSqlInfo(SqlBuilder.getUpdateSqlAsSqlInfo(entity, where));
+		exeSqlInfo(SqlBuilder.getUpdateSqlAsSqlInfo(entity, strWhere));
 	}
 
 	/**
@@ -337,33 +534,68 @@ public class AbaseDao
 	{
 		checkTableExist(clazz);
 		exeSqlInfo(SqlBuilder.buildDeleteSql(clazz, id));
-
-	}
-
-	/**
-	 * 删除 全部
-	 * 
-	 * @param clazz
-	 *            要删除的实体类
-	 */
-	public void deleteAll(Class<?> clazz)
-	{
-		deleteByWhere(clazz, null);
 	}
 
 	/**
 	 * 根据条件删除数据
 	 * 
 	 * @param clazz
-	 * @param where
+	 * @param strWhere
 	 *            条件为空的时候 将会删除所有的数据
 	 */
-	public void deleteByWhere(Class<?> clazz, String where)
+	public void deleteByWhere(Class<?> clazz, String strWhere)
 	{
 		checkTableExist(clazz);
-		String sql = SqlBuilder.buildDeleteSql(clazz, where);
+		String sql = SqlBuilder.buildDeleteSql(clazz, strWhere);
 		debugSql(sql);
 		db.execSQL(sql);
+	}
+
+	/**
+	 * 删除表的所有数据
+	 * 
+	 * @param clazz
+	 */
+	public void deleteAll(Class<?> clazz)
+	{
+		checkTableExist(clazz);
+		String sql = SqlBuilder.buildDeleteSql(clazz, null);
+		debugSql(sql);
+		db.execSQL(sql);
+	}
+
+	/**
+	 * 删除指定的表
+	 * 
+	 * @param clazz
+	 */
+	public void dropTable(Class<?> clazz)
+	{
+		checkTableExist(clazz);
+		TableInfo table = TableInfo.get(clazz);
+		String sql = "DROP TABLE " + table.getTableName();
+		debugSql(sql);
+		db.execSQL(sql);
+	}
+
+	/**
+	 * 删除所有数据表
+	 */
+	public void dropDb()
+	{
+		Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type ='table' AND name != 'sqlite_sequence'", null);
+		if (cursor != null)
+		{
+			while (cursor.moveToNext())
+			{
+				db.execSQL("DROP TABLE " + cursor.getString(0));
+			}
+		}
+		if (cursor != null)
+		{
+			cursor.close();
+			cursor = null;
+		}
 	}
 
 	private void exeSqlInfo(SqlInfo sqlInfo)
@@ -375,7 +607,7 @@ public class AbaseDao
 		}
 		else
 		{
-			Log.e(TAG.DB, "sava error:sqlInfo is null");
+			Log.e(TAG, "sava error:sqlInfo is null");
 		}
 	}
 
@@ -385,7 +617,7 @@ public class AbaseDao
 	 * @param id
 	 * @param clazz
 	 */
-	public <T> T findById(Class<T> clazz, Object id)
+	public <T> T findById(Object id, Class<T> clazz)
 	{
 		checkTableExist(clazz);
 		SqlInfo sqlInfo = SqlBuilder.getSelectSqlAsSqlInfo(clazz, id);
@@ -395,7 +627,7 @@ public class AbaseDao
 			Cursor cursor = db.rawQuery(sqlInfo.getSql(), sqlInfo.getBindArgsAsStringArray());
 			try
 			{
-				if (cursor.moveToNext()) { return CursorUtils.getEntity(cursor, clazz); }
+				if (cursor.moveToNext()) { return CursorUtils.getEntity(cursor, clazz, this); }
 			}
 			catch (Exception e)
 			{
@@ -424,38 +656,14 @@ public class AbaseDao
 		if (dbModel != null)
 		{
 			T entity = CursorUtils.dbModel2Entity(dbModel, clazz);
-			if (entity != null)
-			{
-				try
-				{
-					Collection<ManyToOne> manys = TableInfo.get(clazz).manyToOneMap.values();
-					for (ManyToOne many : manys)
-					{
-						Object obj = dbModel.get(many.getColumn());
-						if (obj != null)
-						{
-							@SuppressWarnings("unchecked")
-							T manyEntity = (T) findById(many.getDataType(), Integer.valueOf(obj.toString()));
-							if (manyEntity != null)
-							{
-								many.setValue(entity, manyEntity);
-							}
-						}
-					}
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-			}
-			return entity;
+			return loadManyToOne(dbModel, entity, clazz);
 		}
 
 		return null;
 	}
 
 	/**
-	 * 根据主键查找，同时查找“多对一”的数据（只查找findClass中的类的数据）
+	 * 根据条件查找，同时查找“多对一”的数据（只查找findClass中的类的数据）
 	 * 
 	 * @param id
 	 * @param clazz
@@ -471,14 +679,46 @@ public class AbaseDao
 		if (dbModel != null)
 		{
 			T entity = CursorUtils.dbModel2Entity(dbModel, clazz);
-			if (entity != null)
+			return loadManyToOne(dbModel, entity, clazz, findClass);
+		}
+		return null;
+	}
+
+	/**
+	 * 将entity中的“多对一”的数据填充满 如果是懒加载填充，则dbModel参数可为null
+	 * 
+	 * @param clazz
+	 * @param entity
+	 * @param <T>
+	 * @return
+	 */
+	public <T> T loadManyToOne(DbModel dbModel, T entity, Class<T> clazz, Class<?>... findClass)
+	{
+		if (entity != null)
+		{
+			try
 			{
-				try
+				Collection<ManyToOne> manys = TableInfo.get(clazz).manyToOneMap.values();
+				for (ManyToOne many : manys)
 				{
-					Collection<ManyToOne> manys = TableInfo.get(clazz).manyToOneMap.values();
-					for (ManyToOne many : manys)
+
+					Object id = null;
+					if (dbModel != null)
+					{
+						id = dbModel.get(many.getColumn());
+					}
+					else if (many.getValue(entity).getClass() == ManyToOneLazyLoader.class && many.getValue(entity) != null)
+					{
+						id = ((ManyToOneLazyLoader) many.getValue(entity)).getFieldValue();
+					}
+
+					if (id != null)
 					{
 						boolean isFind = false;
+						if (findClass == null || findClass.length == 0)
+						{
+							isFind = true;
+						}
 						for (Class<?> mClass : findClass)
 						{
 							if (many.getManyClass() == mClass)
@@ -487,26 +727,37 @@ public class AbaseDao
 								break;
 							}
 						}
-
 						if (isFind)
 						{
+
 							@SuppressWarnings("unchecked")
-							T manyEntity = (T) findById(many.getDataType(), dbModel.get(many.getColumn()));
+							T manyEntity = (T) findById(Integer.valueOf(id.toString()), many.getManyClass());
 							if (manyEntity != null)
 							{
-								many.setValue(entity, manyEntity);
+								if (many.getValue(entity).getClass() == ManyToOneLazyLoader.class)
+								{
+									if (many.getValue(entity) == null)
+									{
+										many.setValue(entity, new ManyToOneLazyLoader(entity, clazz, many.getManyClass(), this));
+									}
+									((ManyToOneLazyLoader) many.getValue(entity)).set(manyEntity);
+								}
+								else
+								{
+									many.setValue(entity, manyEntity);
+								}
+
 							}
 						}
 					}
 				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
 			}
-			return entity;
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
 		}
-		return null;
+		return entity;
 	}
 
 	/**
@@ -524,26 +775,7 @@ public class AbaseDao
 		if (dbModel != null)
 		{
 			T entity = CursorUtils.dbModel2Entity(dbModel, clazz);
-			if (entity != null)
-			{
-				try
-				{
-					Collection<OneToMany> ones = TableInfo.get(clazz).oneToManyMap.values();
-					for (OneToMany one : ones)
-					{
-						List<?> list = findAllByWhere(one.getOneClass(), one.getColumn() + "=" + id);
-						if (list != null)
-						{
-							one.setValue(entity, list);
-						}
-					}
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-			}
-			return entity;
+			return loadOneToMany(entity, clazz);
 		}
 
 		return null;
@@ -565,64 +797,69 @@ public class AbaseDao
 		if (dbModel != null)
 		{
 			T entity = CursorUtils.dbModel2Entity(dbModel, clazz);
-			if (entity != null)
-			{
-				try
-				{
-					Collection<OneToMany> ones = TableInfo.get(clazz).oneToManyMap.values();
-					for (OneToMany one : ones)
-					{
-						boolean isFind = false;
-						for (Class<?> mClass : findClass)
-						{
-							if (one.getOneClass().equals(mClass.getName()))
-							{
-								isFind = true;
-								break;
-							}
-						}
-
-						if (isFind)
-						{
-							List<?> list = findAllByWhere(one.getOneClass(), one.getColumn() + "=" + id);
-							if (list != null)
-							{
-								one.setValue(entity, list);
-							}
-						}
-					}
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-			}
-			return entity;
+			return loadOneToMany(entity, clazz, findClass);
 		}
 
 		return null;
 	}
 
 	/**
-	 * 查询数量
+	 * 将entity中的“一对多”的数据填充满
 	 * 
+	 * @param entity
 	 * @param clazz
+	 * @param <T>
 	 * @return
 	 */
-	public int count(Class<?> clazz)
+	public <T> T loadOneToMany(T entity, Class<T> clazz, Class<?>... findClass)
 	{
-		return findAll(clazz).size();
-	}
+		if (entity != null)
+		{
+			try
+			{
+				Collection<OneToMany> ones = TableInfo.get(clazz).oneToManyMap.values();
+				Object id = TableInfo.get(clazz).getId().getValue(entity);
+				for (OneToMany one : ones)
+				{
+					boolean isFind = false;
+					if (findClass == null || findClass.length == 0)
+					{
+						isFind = true;
+					}
+					for (Class<?> mClass : findClass)
+					{
+						if (one.getOneClass() == mClass)
+						{
+							isFind = true;
+							break;
+						}
+					}
 
-	/**
-	 * 
-	 * @param clazz
-	 * @param where
-	 * @return
-	 */
-	public int count(Class<?> clazz, String where)
-	{
-		return findAllByWhere(clazz, where).size();
+					if (isFind)
+					{
+						List<?> list = findAllByWhere(one.getOneClass(), one.getColumn() + "=" + id);
+						if (list != null)
+						{
+							/* 如果是OneToManyLazyLoader泛型，则执行灌入懒加载数据 */
+							if (one.getDataType() == OneToManyLazyLoader.class)
+							{
+								OneToManyLazyLoader oneToManyLazyLoader = one.getValue(entity);
+								oneToManyLazyLoader.setList(list);
+							}
+							else
+							{
+								one.setValue(entity, list);
+							}
+						}
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		return entity;
 	}
 
 	/**
@@ -646,87 +883,35 @@ public class AbaseDao
 	public <T> List<T> findAll(Class<T> clazz, String orderBy)
 	{
 		checkTableExist(clazz);
-		return findAllBySql(clazz, SqlBuilder.getSelectSQL(clazz) + " ORDER BY " + orderBy + " DESC");
+		return findAllBySql(clazz, SqlBuilder.getSelectSQL(clazz) + " ORDER BY " + orderBy);
 	}
 
 	/**
 	 * 根据条件查找所有数据
 	 * 
 	 * @param clazz
-	 * @param where
+	 * @param strWhere
 	 *            条件为空的时候查找所有数据
 	 */
-	public <T> List<T> findAllByWhere(Class<T> clazz, String where)
+	public <T> List<T> findAllByWhere(Class<T> clazz, String strWhere)
 	{
 		checkTableExist(clazz);
-		return findAllBySql(clazz, SqlBuilder.getSelectSQLByWhere(clazz, where));
-	}
-
-	/**
-	 * 根据条件查找数据
-	 * 
-	 * true 找到了
-	 * 
-	 * false 没有找到
-	 * 
-	 * @param clazz
-	 * @param where
-	 *            条件为空的时候查找所有数据
-	 */
-	public boolean isFindByWhere(Class<?> clazz, String where)
-	{
-		return findAllByWhere(clazz, where).size()==0 ? false : true;
-	}
-
-	/**
-	 * 根据条件查找数据 true 找到了
-	 * 
-	 * false 没有找到
-	 * 
-	 * @param clazz
-	 * @param where
-	 *            条件为空的时候查找所有数据
-	 */
-	public boolean isFindAllByWhere(Class<?> clazz, String where)
-	{
-		return findAllByWhere(clazz, where).size() == 0 ? false : true;
-	}
-
-	/**
-	 * 根据条件查找数据
-	 * 
-	 * 如果找到的数量 大于1 @throws DbException
-	 * 
-	 * 
-	 * @param clazz
-	 * @param where
-	 *            条件为空的时候查找所有数据
-	 */
-	public <T> T findByWhere(Class<T> clazz, String where)
-	{
-		List<T> list = findAllByWhere(clazz, where);
-		
-		
-		if(list.size()>1) throw new  DbException("find size  >1  maybe find error !!"); 
-		
-
-		return list.size() > 0 ? list.get(0) : null;
-
+		return findAllBySql(clazz, SqlBuilder.getSelectSQLByWhere(clazz, strWhere));
 	}
 
 	/**
 	 * 根据条件查找所有数据
 	 * 
 	 * @param clazz
-	 * @param where
+	 * @param strWhere
 	 *            条件为空的时候查找所有数据
 	 * @param orderBy
 	 *            排序字段
 	 */
-	public <T> List<T> findAllByWhere(Class<T> clazz, String where, String orderBy)
+	public <T> List<T> findAllByWhere(Class<T> clazz, String strWhere, String orderBy)
 	{
 		checkTableExist(clazz);
-		return findAllBySql(clazz, SqlBuilder.getSelectSQLByWhere(clazz, where) + " ORDER BY '" + orderBy + "' DESC");
+		return findAllBySql(clazz, SqlBuilder.getSelectSQLByWhere(clazz, strWhere) + " ORDER BY " + orderBy);
 	}
 
 	/**
@@ -745,7 +930,7 @@ public class AbaseDao
 			List<T> list = new ArrayList<T>();
 			while (cursor.moveToNext())
 			{
-				T t = CursorUtils.getEntity(cursor, clazz);
+				T t = CursorUtils.getEntity(cursor, clazz, this);
 				list.add(t);
 			}
 			return list;
@@ -760,34 +945,6 @@ public class AbaseDao
 			cursor = null;
 		}
 		return null;
-	}
-
-	/**
-	 * 直接 通过 sql 查 返回 单个的 string 字符串
-	 * 
-	 * @param sql
-	 */
-	public String findStringBySql(String sql, String columName)
-	{
-		DbModel model = findDbModelBySQL(sql);
-		if (model != null) return model.getString(columName);
-		else return null;
-	}
-
-	/**
-	 * 直接 通过 sql 查 返回 多个的 string 字符串
-	 * 
-	 * @param sql
-	 */
-	public List<String> findAllStringBySql(String sql, String columName)
-	{
-		List<String> list = new ArrayList<String>();
-
-		for (DbModel dm : findDbModelListBySQL(sql))
-		{
-			list.add(dm.getString(columName));
-		}
-		return list;
 	}
 
 	/**
@@ -813,13 +970,6 @@ public class AbaseDao
 		}
 		return null;
 	}
-
-	/**
-	 * 批量
-	 * 
-	 * @param strSQL
-	 * @return
-	 */
 
 	public List<DbModel> findDbModelListBySQL(String strSQL)
 	{
@@ -893,97 +1043,33 @@ public class AbaseDao
 		if (config != null && config.isDebug()) android.util.Log.d("Debug SQL", ">>>>>>  " + sql);
 	}
 
-	public static class DaoConfig
+	/**
+	 * 在SD卡的指定目录上创建文件
+	 * 
+	 * @param sdcardPath
+	 * @param dbfilename
+	 * @return
+	 */
+	private SQLiteDatabase createDbFileOnSDCard(String sdcardPath, String dbfilename)
 	{
-		private String dbName = "abase.db";// 数据库名字
-		private int dbVersion = 1;// 数据库版本
-		private boolean debug = true;
-		private DbUpdateListener dbUpdateListener;
-
-		public String getDbName()
+		File dbf = new File(sdcardPath, dbfilename);
+		if (!dbf.exists())
 		{
-			return dbName;
-		}
-
-		public void setDbName(String dbName)
-		{
-			this.dbName = dbName;
-		}
-
-		public int getDbVersion()
-		{
-			return dbVersion;
-		}
-
-		public void setDbVersion(int dbVersion)
-		{
-			this.dbVersion = dbVersion;
-		}
-
-		public boolean isDebug()
-		{
-			return debug;
-		}
-
-		public void setDebug(boolean debug)
-		{
-			this.debug = debug;
-		}
-
-		public DbUpdateListener getDbUpdateListener()
-		{
-			return dbUpdateListener;
-		}
-
-		public void setDbUpdateListener(DbUpdateListener dbUpdateListener)
-		{
-			this.dbUpdateListener = dbUpdateListener;
-		}
-
-	}
-
-	class SqliteDbHelper extends SQLiteOpenHelper
-	{
-
-		private DbUpdateListener mDbUpdateListener;
-
-		public SqliteDbHelper(Context context, String name, int version, DbUpdateListener dbUpdateListener)
-		{
-			super(context, name, null, version);
-			this.mDbUpdateListener = dbUpdateListener;
-		}
-
-		public void onCreate(SQLiteDatabase db)
-		{
-		}
-
-		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
-		{
-			if (mDbUpdateListener != null) mDbUpdateListener.onUpgrade(db, oldVersion, newVersion);
-
-			else
-			{ // 清空所有的数据信息
-				Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type ='table'", null);
-				if (cursor != null)
-				{
-					while (cursor.moveToNext())
-					{
-						db.execSQL("DROP TABLE " + cursor.getString(0));
-					}
-				}
-				if (cursor != null)
-				{
-					cursor.close();
-					cursor = null;
-				}
+			try
+			{
+				if (dbf.createNewFile()) { return SQLiteDatabase.openOrCreateDatabase(dbf, null); }
+			}
+			catch (IOException ioex)
+			{
+				throw new DbException("数据库文件创建失败", ioex);
 			}
 		}
+		else
+		{
+			return SQLiteDatabase.openOrCreateDatabase(dbf, null);
+		}
 
-	}
-
-	public interface DbUpdateListener
-	{
-		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion);
+		return null;
 	}
 
 }

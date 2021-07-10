@@ -34,6 +34,7 @@ public class SysIntentUtil extends AbaseUtil
 	public static void install(Context activity, String path)
 	{
 		Intent intent = new Intent(Intent.ACTION_VIEW);
+		intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.setDataAndType(Uri.fromFile(new File(path)), "application/vnd.android.package-archive");
 		activity.startActivity(intent);
 	}
@@ -44,13 +45,14 @@ public class SysIntentUtil extends AbaseUtil
 		if (pkg == null) { return; }
 		Uri uri = Uri.fromParts("package", pkg, null);
 		Intent intent = new Intent(Intent.ACTION_DELETE, uri);
-		
+		intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(intent);
 	}
 
 	public static void callPhone(Context context, String number)
 	{
 		Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + number));
+		
 		context.startActivity(intent);
 	}
 
@@ -161,6 +163,7 @@ public class SysIntentUtil extends AbaseUtil
 		
 	}
 
+	
 	public static void goWeb(Context context,String url)
 	{
 		Intent i = new Intent();
