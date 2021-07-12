@@ -33,7 +33,7 @@ import com.jayqqaa12.abase.annotation.view.FindEngine;
 import com.jayqqaa12.abase.annotation.view.FindRes;
 import com.jayqqaa12.abase.annotation.view.FindRes.ResType;
 import com.jayqqaa12.abase.annotation.view.FindView;
-import com.jayqqaa12.abase.exception.AbaseException;
+import com.jayqqaa12.abase.core.activity.AbasePagerActivity;
 import com.jayqqaa12.abase.util.common.L;
 
 /**
@@ -76,16 +76,16 @@ public class Abase
 	private static boolean openActivtiy = true;
 	private static boolean openEngine = true;
 	private static boolean openRes = true;
-	
+
 	private static FindRes findRes = null;
 	private static FindEngine findEngine = null;
-	
+
 	private static Context context = null;
 	private static boolean scanParent = false;
 
 	// 缓存 找到的 parentView 数据
 	private static Map<Integer, View> parentViews = new HashMap<Integer, View>();
-
+	// pageviews 可以直接使用
 	private static Map<Integer, View> pageViews = new TreeMap<Integer, View>();
 
 	public static void cleanCache()
@@ -194,12 +194,10 @@ public class Abase
 					}
 				}
 
-			}
-			catch (IllegalArgumentException e)
+			} catch (IllegalArgumentException e)
 			{
 				e.printStackTrace();
-			}
-			catch (IllegalAccessException e)
+			} catch (IllegalAccessException e)
 			{
 				e.printStackTrace();
 			}
@@ -285,8 +283,7 @@ public class Abase
 					field.set(obj, ResType.TEXT_ARRAY);
 				}
 			}
-		}
-		catch (Exception e)
+		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -297,8 +294,9 @@ public class Abase
 		initViewForReflect(obj, obj.getWindow().getDecorView());
 	}
 
-	public static void initViewForReflect(Activity obj,View rootView)
+	public static void initViewForReflect(Activity obj, View rootView)
 	{
+		
 		Resources resources = obj.getResources();
 		if (!Abase.isOpenActivtiy()) return;
 
@@ -309,9 +307,9 @@ public class Abase
 		for (Field field : fields)
 		{
 			FindView find = field.getAnnotation(FindView.class);
-			
+
 			if (find == null) continue;
-			
+
 			View view = null;
 			try
 			{
@@ -342,7 +340,7 @@ public class Abase
 					if (pageViews.get(pageNum) != null) view = pageViews.get(pageNum);
 					else
 					{
-						//FIXME 可能出问题的地方 
+						// FIXME 可能出问题的地方
 						view = obj.getLayoutInflater().inflate(pageId, null);
 						if (view != null) pageViews.put(pageNum, view);
 					}
@@ -357,8 +355,7 @@ public class Abase
 				{
 					field.set(obj, rootView.findViewById(id));
 				}
-			}
-			catch (Exception e)
+			} catch (Exception e)
 			{
 				e.printStackTrace();
 				return;
@@ -416,6 +413,15 @@ public class Abase
 			if (pagerChangeBind) setPagerChangeClick(field, obj);
 
 		}
+		
+		
+		if (obj instanceof AbasePagerActivity)
+		{
+			((AbasePagerActivity) obj).pageViews =  new TreeMap<Integer, View>(pageViews);
+			
+			cleanCache();
+		}
+
 	}
 
 	private static void setPagerChangeClick(Field field, Object srcobj)
@@ -425,11 +431,10 @@ public class Abase
 			Object obj = field.get(srcobj);
 			if (obj instanceof ViewPager)
 			{
-				((ViewPager) obj).setOnPageChangeListener((OnPageChangeListener)srcobj);
+				((ViewPager) obj).setOnPageChangeListener((OnPageChangeListener) srcobj);
 			}
 
-		}
-		catch (Exception e)
+		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -444,11 +449,10 @@ public class Abase
 			Object obj = field.get(srcobj);
 			if (obj instanceof ExpandableListView)
 			{
-				((ExpandableListView) obj).setOnChildClickListener((OnChildClickListener)srcobj);
+				((ExpandableListView) obj).setOnChildClickListener((OnChildClickListener) srcobj);
 			}
 
-		}
-		catch (Exception e)
+		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -462,12 +466,11 @@ public class Abase
 			Object obj = field.get(srcobj);
 			if (obj instanceof View)
 			{
-				((View) obj).setOnTouchListener((OnTouchListener)srcobj);
-				((View) obj).setOnLongClickListener((OnLongClickListener)srcobj);
+				((View) obj).setOnTouchListener((OnTouchListener) srcobj);
+				((View) obj).setOnLongClickListener((OnLongClickListener) srcobj);
 
 			}
-		}
-		catch (Exception e)
+		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -481,10 +484,9 @@ public class Abase
 			Object obj = field.get(srcobj);
 			if (obj instanceof View)
 			{
-				((View) obj).setOnFocusChangeListener((OnFocusChangeListener)srcobj);
+				((View) obj).setOnFocusChangeListener((OnFocusChangeListener) srcobj);
 			}
-		}
-		catch (Exception e)
+		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -497,10 +499,9 @@ public class Abase
 			Object obj = field.get(srcobj);
 			if (obj instanceof TextView)
 			{
-				((TextView) obj).addTextChangedListener((TextWatcher)srcobj);
+				((TextView) obj).addTextChangedListener((TextWatcher) srcobj);
 			}
-		}
-		catch (Exception e)
+		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -514,10 +515,9 @@ public class Abase
 			Object obj = field.get(srcobj);
 			if (obj instanceof View)
 			{
-				((View) obj).setOnTouchListener((OnTouchListener)srcobj);
+				((View) obj).setOnTouchListener((OnTouchListener) srcobj);
 			}
-		}
-		catch (Exception e)
+		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -531,10 +531,9 @@ public class Abase
 			Object obj = field.get(srcobj);
 			if (obj instanceof AbsListView)
 			{
-				((AbsListView) obj).setOnScrollListener((OnScrollListener)srcobj);
+				((AbsListView) obj).setOnScrollListener((OnScrollListener) srcobj);
 			}
-		}
-		catch (Exception e)
+		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -551,12 +550,10 @@ public class Abase
 				((View) obj).setTag(tag);
 			}
 
-		}
-		catch (IllegalArgumentException e)
+		} catch (IllegalArgumentException e)
 		{
 			e.printStackTrace();
-		}
-		catch (IllegalAccessException e)
+		} catch (IllegalAccessException e)
 		{
 			e.printStackTrace();
 		}
@@ -575,12 +572,10 @@ public class Abase
 
 			}
 
-		}
-		catch (IllegalArgumentException e)
+		} catch (IllegalArgumentException e)
 		{
 			e.printStackTrace();
-		}
-		catch (IllegalAccessException e)
+		} catch (IllegalAccessException e)
 		{
 			e.printStackTrace();
 		}
@@ -598,12 +593,10 @@ public class Abase
 
 			}
 
-		}
-		catch (IllegalArgumentException e)
+		} catch (IllegalArgumentException e)
 		{
 			e.printStackTrace();
-		}
-		catch (IllegalAccessException e)
+		} catch (IllegalAccessException e)
 		{
 			e.printStackTrace();
 		}
@@ -621,8 +614,7 @@ public class Abase
 
 			}
 
-		}
-		catch (Exception e)
+		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -637,11 +629,10 @@ public class Abase
 			Object obj = field.get(srcobj);
 			if (obj instanceof CompoundButton)
 			{
-				((CompoundButton) obj).setOnCheckedChangeListener((OnCheckedChangeListener)srcobj);
+				((CompoundButton) obj).setOnCheckedChangeListener((OnCheckedChangeListener) srcobj);
 
 			}
-		}
-		catch (Exception e)
+		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -656,11 +647,10 @@ public class Abase
 			if (obj instanceof View)
 			{
 
-				((View) obj).setOnClickListener((OnClickListener)srcobj);
+				((View) obj).setOnClickListener((OnClickListener) srcobj);
 
 			}
-		}
-		catch (Exception e)
+		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -673,10 +663,9 @@ public class Abase
 			Object obj = field.get(srcobj);
 			if (obj instanceof View)
 			{
-				((View) obj).setOnLongClickListener((OnLongClickListener)srcobj);
+				((View) obj).setOnLongClickListener((OnLongClickListener) srcobj);
 			}
-		}
-		catch (Exception e)
+		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -689,10 +678,9 @@ public class Abase
 			Object obj = field.get(srcobj);
 			if (obj instanceof AbsListView)
 			{
-				((AbsListView) obj).setOnItemClickListener((OnItemClickListener)srcobj);
+				((AbsListView) obj).setOnItemClickListener((OnItemClickListener) srcobj);
 			}
-		}
-		catch (Exception e)
+		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -705,10 +693,9 @@ public class Abase
 			Object obj = field.get(srcobj);
 			if (obj instanceof AbsListView)
 			{
-				((AbsListView) obj).setOnItemLongClickListener((OnItemLongClickListener)srcobj);
+				((AbsListView) obj).setOnItemLongClickListener((OnItemLongClickListener) srcobj);
 			}
-		}
-		catch (Exception e)
+		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -721,11 +708,10 @@ public class Abase
 			Object obj = field.get(srcobj);
 			if (obj instanceof View)
 			{
-				((AbsListView) obj).setOnItemSelectedListener((OnItemSelectedListener)srcobj);
+				((AbsListView) obj).setOnItemSelectedListener((OnItemSelectedListener) srcobj);
 
 			}
-		}
-		catch (Exception e)
+		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}

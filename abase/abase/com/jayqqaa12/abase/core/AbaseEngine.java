@@ -14,6 +14,10 @@ import com.jayqqaa12.abase.util.ConfigUtil;
  * AbaseApp。getContext 获得 application Context 对象 当然 application Context 不能 成为
  * 生命周期 短的 类的 属性 否则 会使那个类 得不到 销毁。。
  * 
+ * 
+ * 如果 要用 abase acitivty onloadSuccess接口 请设置 activty  然后 不能通过 findEngine 来创建对象了
+ * 
+ * 
  * @author jayqqaa12
  * @date 2013-5-14
  */

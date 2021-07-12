@@ -1,5 +1,8 @@
 package com.jayqqaa12.abase.core.activity;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -20,8 +23,10 @@ import com.jayqqaa12.abase.util.common.T;
  * @author jayqqaa12. 
  * 
  */
-public class AbaseActivity extends Activity implements Listener
+public class AbaseActivity extends Activity implements Listener,LoadSuccess
 {
+
+	
 
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -167,6 +172,18 @@ public class AbaseActivity extends Activity implements Listener
 	{
 		super.onDestroy();
 		Abase.cleanCache();
+	}
+
+	
+	/***
+	 * 这个 接口 配合 abaseHttp  onSuccess 方法使用 可以用户 回调 Activity 的函数 
+	 */
+
+	@Override
+	public void onLoadSuccess(int what)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 }
