@@ -34,6 +34,10 @@ public class MsgUtil extends AbaseUtil
 	public static final int MSG_LEFT = 19;
 	public static final int MSG_START = 20;
 	public static final int MSG_FIND = 21;
+	public static final int MSG_LOAD=22;
+	public static final int MSG_REFRESH=23;
+	public static final int MSG_INIT=24;
+	
 	
 	
 	

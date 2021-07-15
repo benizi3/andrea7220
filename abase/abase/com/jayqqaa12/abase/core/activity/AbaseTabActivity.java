@@ -35,6 +35,7 @@ import android.widget.TextView.OnEditorActionListener;
 import com.jayqqaa12.abase.annotation.view.FindView;
 import com.jayqqaa12.abase.core.Abase;
 import com.jayqqaa12.abase.core.AbaseApp;
+import com.jayqqaa12.abase.core.listener.Listener;
 
 /**
  * 注意 这里的	TabHost tabHost = (TabHost) findViewById(android.R.id.tabhost);

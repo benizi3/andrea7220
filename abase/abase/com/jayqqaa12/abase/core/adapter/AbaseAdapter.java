@@ -115,8 +115,6 @@ public class AbaseAdapter<T> extends SimpleAdapter
 			{
 				final Object data = ReflectUtil.getValueAndParent(obj, from[i]);
 				
-
-				
 				String text = data == null ? "" : data.toString();
 				if (text == null)
 				{

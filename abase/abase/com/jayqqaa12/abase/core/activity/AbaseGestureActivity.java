@@ -1,5 +1,7 @@
 package com.jayqqaa12.abase.core.activity;
 
+import com.jayqqaa12.abase.util.Dir;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;

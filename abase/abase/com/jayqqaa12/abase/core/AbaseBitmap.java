@@ -338,8 +338,8 @@ public class AbaseBitmap {
 	
 		if (mImageCache != null) {
 			bitmap = mImageCache.getBitmapFromMemoryCache(uri);
+			
 		}
-	
 		if (bitmap != null) {
 			if(imageView instanceof ImageView){
 				((ImageView)imageView).setImageBitmap(bitmap);

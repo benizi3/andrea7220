@@ -15,6 +15,8 @@ import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 
 import com.jayqqaa12.abase.core.Abase;
+import com.jayqqaa12.abase.core.listener.Listener;
+import com.jayqqaa12.abase.core.listener.OnLoadStatus;
 import com.jayqqaa12.abase.util.common.T;
 
 /**
@@ -23,7 +25,7 @@ import com.jayqqaa12.abase.util.common.T;
  * @author jayqqaa12. 
  * 
  */
-public class AbaseActivity extends Activity implements Listener,LoadSuccess
+public class AbaseActivity extends Activity implements Listener,OnLoadStatus
 {
 
 	
@@ -172,6 +174,8 @@ public class AbaseActivity extends Activity implements Listener,LoadSuccess
 	{
 		super.onDestroy();
 		Abase.cleanCache();
+		
+		
 	}
 
 	
@@ -180,7 +184,7 @@ public class AbaseActivity extends Activity implements Listener,LoadSuccess
 	 */
 
 	@Override
-	public void onLoadSuccess(int what)
+	public void onLoadStatus(int what,Object obj)
 	{
 		// TODO Auto-generated method stub
 		

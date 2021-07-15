@@ -16,6 +16,11 @@ import android.widget.Toast;
  */
 public class T  extends AbaseUtil
 {
+	public static void show(String msg ,int time)
+	{
+		Toast.makeText(getContext(),msg,time).show();
+	}
+	
 	public static void ShortToast(String msg)
 	{
 		Toast.makeText(getContext(),msg,Toast.LENGTH_SHORT).show();

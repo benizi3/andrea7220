@@ -7,6 +7,8 @@ import android.view.View;
 
 /***
  * 
+ * 如果有 多个ListView 需要下拉刷新等 最好 把 lister 独立出来写一个
+ * 
  * @author 12
  *
  */
