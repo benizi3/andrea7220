@@ -175,7 +175,9 @@ public class  HttpHandler  <T> extends  AsyncTask<Object, Object, Object> implem
 			}
 			publishProgress(UPDATE_FAILURE,new HttpResponseException(status.getStatusCode(), status.getReasonPhrase()),status.getStatusCode() ,errorMsg);
 		} else {
+			
 			try {
+				
 				HttpEntity entity = response.getEntity();
 				Object responseBody = null;
 				if (entity != null) {

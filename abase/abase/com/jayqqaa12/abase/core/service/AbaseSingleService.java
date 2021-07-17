@@ -39,7 +39,6 @@ public abstract class AbaseSingleService extends Service implements Runnable
 	public void onCreate()
 	{
 		super.onCreate();
-		Abase.init(this);
 		
 		new Thread(this).start();
 	}

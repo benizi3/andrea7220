@@ -34,7 +34,6 @@ public class AbaseApp extends Application
 		super.onCreate();
 		applicationContext = getApplicationContext();
 		Abase.setContext(applicationContext);
-		Abase.init(this);
 	}
 
 	/**

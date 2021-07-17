@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import org.afinal.simplecache.ACache;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
@@ -15,6 +14,8 @@ import org.apache.http.util.EntityUtils;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+
+import com.jayqqaa12.abase.core.ACache;
 
 public class DownLoadUtil
 {

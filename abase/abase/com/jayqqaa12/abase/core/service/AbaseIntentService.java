@@ -29,13 +29,6 @@ public abstract class AbaseIntentService extends IntentService
 	}
 
 
-	@Override
-	public void onCreate()
-	{
-		super.onCreate();
-		Abase.init(this);
-		
-	}
 
 	protected Context getContext()
 	{

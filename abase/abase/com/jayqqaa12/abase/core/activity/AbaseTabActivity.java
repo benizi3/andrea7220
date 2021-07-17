@@ -44,162 +44,12 @@ import com.jayqqaa12.abase.core.listener.Listener;
  * @author jayqqaa12
  * @date 2013-4-15
  */
-public class AbaseTabActivity extends TabActivity implements Listener, OnTabChangeListener
+public class AbaseTabActivity extends TabActivity implements  OnTabChangeListener
 {
 
-	protected void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
-		Abase.init(this);
-	}
-	
-
-	// ////////////////////////////////////Listener//////////////////////////////////////////////////
-	@Override
-	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-	{
-	}
-
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-	{
-	}
-
-	@Override
-	public void onClick(View v)
-	{
-	}
-
-	@Override
-	public void onNothingSelected(AdapterView<?> parent)
-	{
-	}
-
-	@Override
-	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
-	{
-		return false;
-	}
-
-	@Override
-	public boolean onLongClick(View v)
-	{
-		return false;
-	}
-
-	@Override
-	public void onTabChanged(String tabId)
-	{
-
-	}
-	
-	@Override
-	public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-	{
-
-	}
-
-	@Override
-	public void onScrollStateChanged(AbsListView view, int scrollState)
-	{
-		
-	}
-
-	@Override
-	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
-	{
-		
-	}
-
-	@Override
-	public void onPageScrollStateChanged(int arg0)
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onPageScrolled(int arg0, float arg1, int arg2)
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onPageSelected(int arg0)
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean onChildClick(ExpandableListView arg0, View arg1, int arg2, int arg3, long arg4)
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean onTouch(View arg0, MotionEvent arg1)
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void onFocusChange(View arg0, boolean arg1)
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void afterTextChanged(Editable arg0)
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3)
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3)
-	{
-		// TODO Auto-generated method stub
-		
-	}
 
 
-	/**
-	 * 使用 getTabHost() 方式时使用 使用 系统 默认的 风格 同时 实现 IOC 为系统风格
-	 * 
-	 * @param contentLayoutId
-	 *            总的activity 的布局 文件 也就是TabContent
-	 * @param lables
-	 *            每个 tab的 标签
-	 * @param ContentId
-	 *            每个content 的id
-	 * 
-	 */
-	protected void initTab(int contentLayoutId, String[] lables, int[] ContentId)
-	{
-		TabHost tabHost = getTabHost();
-		LayoutInflater.from(this).inflate(contentLayoutId, tabHost.getTabContentView(), true);
 
-		int i = lables.length;
-		while (i-- > 0)
-		{
-			tabHost.addTab(tabHost.newTabSpec(lables[i]).setIndicator(lables[i]).setContent(ContentId[i]));
-
-		}
-		init(tabHost);
-
-	}
 
 	/**
 	 * 使用 getTabHost() 方式时使用 ， 自定义 风格时候用的 快捷方式 同时 实现 IOC 可实现 文字的 自动 装配
@@ -453,8 +303,14 @@ public class AbaseTabActivity extends TabActivity implements Listener, OnTabChan
 
 	private void init(TabHost tabHost)
 	{
-		Abase.initViewForReflect(this);
 		tabHost.setOnTabChangedListener(this);
+	}
+
+	@Override
+	public void onTabChanged(String tabId)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 	
