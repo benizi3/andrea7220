@@ -10,7 +10,7 @@ import android.telephony.TelephonyManager;
 import com.jayqqaa12.abase.core.AbaseUtil;
 import com.jayqqaa12.abase.util.ConfigUtil;
 import com.jayqqaa12.abase.util.ManageUtil;
-import com.jayqqaa12.abase.util.security.Validate;
+import com.jayqqaa12.abase.util.common.Validate;
 
 public class TelUtil extends AbaseUtil
 {

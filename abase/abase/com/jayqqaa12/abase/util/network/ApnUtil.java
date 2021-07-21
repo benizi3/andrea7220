@@ -9,8 +9,8 @@ import android.telephony.TelephonyManager;
 import com.jayqqaa12.abase.core.AbaseUtil;
 import com.jayqqaa12.abase.util.common.L;
 import com.jayqqaa12.abase.util.common.Provider;
+import com.jayqqaa12.abase.util.common.Validate;
 import com.jayqqaa12.abase.util.phone.TelUtil;
-import com.jayqqaa12.abase.util.security.Validate;
 
 /**
  * 1.点击"Network"将输出本机所处的网络环境。 2.点击"WAP"将设定 移动网络接入点为CMWAP。 3.点击"GPRS"将设定

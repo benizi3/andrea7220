@@ -50,6 +50,8 @@ import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.protocol.SyncBasicHttpContext;
+
+import com.jayqqaa12.abase.util.network.DownLoadUtil;
 /**
  *  http 封装
  * @author  jayqqaa12
@@ -66,11 +68,10 @@ public class AbaseHttp
 	private static int socketTimeout = 5 * 1000; // 超时时间，默认5秒
 	private static int maxRetries = 5;// 错误尝试次数，错误异常表请在RetryHandler添加
 	private static int httpThreadCount = 3;// http线程池数量
-
 	private final DefaultHttpClient httpClient;
 	private final HttpContext httpContext;
 	private String charset = "utf-8";
-
+	
 	private final Map<String, String> clientHeaderMap;
 
 	private static final ThreadFactory sThreadFactory = new ThreadFactory()
@@ -396,26 +397,44 @@ public class AbaseHttp
 	// ---------------------下载---------------------------------------
 	public HttpHandler<File> download(String url, String target, AjaxCallBack<File> callback)
 	{
-		return download(url, null, target, false, callback);
+		return download(url, null, target, false,0, callback);
 	}
 
 	public HttpHandler<File> download(String url, String target, boolean isResume, AjaxCallBack<File> callback)
 	{
-		return download(url, null, target, isResume, callback);
+		return download(url, null, target, isResume,0, callback);
+	}
+
+	/***
+	 * 12   add
+	 * 
+	 * @param url
+	 * @param target
+	 * @param isResume
+	 * @param autoGetLength  先获得 文件总长度  非常重要 有用服务器 只支持 简单的方式 所以断点续传会出错 
+	 * @param callback
+	 * @return
+	 */
+	public HttpHandler<File> download(String url, String target, boolean isResume, long totalLength , AjaxCallBack<File> callback)
+	{
+		return download(url, null, target, isResume,totalLength ,callback);
 	}
 
 	public HttpHandler<File> download(String url, AjaxParams params, String target, AjaxCallBack<File> callback)
 	{
-		return download(url, params, target, false, callback);
+		return download(url, params, target, false,0, callback);
 	}
 
-	public HttpHandler<File> download(String url, AjaxParams params, String target, boolean isResume, AjaxCallBack<File> callback)
+	public HttpHandler<File> download(String url, AjaxParams params, String target, boolean isResume,long totalLength, AjaxCallBack<File> callback)
 	{
 		final HttpGet get = new HttpGet(getUrlWithQueryString(url, params));
-		HttpHandler<File> handler = new HttpHandler<File>(httpClient, httpContext, callback, charset);
+		HttpHandler<File> handler = new HttpHandler<File>(httpClient, httpContext, callback, charset,totalLength);
 		handler.executeOnExecutor(executor, get, target, isResume);
 		return handler;
 	}
+	
+	
+	
 
 	protected <T> void sendRequest(DefaultHttpClient client, HttpContext httpContext, HttpUriRequest uriRequest, String contentType,
 			AjaxCallBack<T> ajaxCallBack)

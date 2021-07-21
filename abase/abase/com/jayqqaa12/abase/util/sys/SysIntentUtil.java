@@ -5,6 +5,7 @@ import java.io.File;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.provider.Settings;
 
 import com.jayqqaa12.abase.core.AbaseUtil;
 
@@ -137,6 +138,18 @@ public class SysIntentUtil extends AbaseUtil
 		context.startActivity(intent);
 
 	}
+	
+	
+	/**
+	 * 进入 设置的 管理 app 界面
+	 */
+	public static void goSettings(Context context)
+	{
+		Intent intent = new Intent(Settings.ACTION_SETTINGS);
+		context.startActivity(intent);
+
+	}
+
 
 	/**
 	 * 进入网络设置 界面 

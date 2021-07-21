@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.jayqqaa12.abase.util.security.Validate;
+import com.jayqqaa12.abase.util.common.Validate;
 
 /**
  * 媒体类型工具包

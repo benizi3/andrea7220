@@ -67,6 +67,21 @@ public class ACache
 	}
 
 	
+	/***
+	 * 判断是否 初始化过了
+	 * @param isInit
+	 */
+	public static boolean isInit(String cacheName)
+	{
+		ACache cache = create();
+		if (cache.getAsString(cacheName) == null)
+		{
+			cache.put(cacheName, "flage");
+			return true;
+		}
+		else return false;
+	}
+	
 	/**
 	 * 判断 数据 标记 是否 过期了 过期了  
 	 * 常常用来 做 服务器 的请求 缓存 

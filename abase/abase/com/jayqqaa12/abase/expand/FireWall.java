@@ -23,7 +23,7 @@ import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.abase.R;
+import com.jayqqaa12.abase.R;
 
 /**
  * iptables 通信的 类

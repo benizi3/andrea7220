@@ -13,7 +13,7 @@ import android.telephony.TelephonyManager;
 
 import com.android.internal.telephony.ITelephony;
 import com.jayqqaa12.abase.core.AbaseUtil;
-import com.jayqqaa12.abase.util.security.Validate;
+import com.jayqqaa12.abase.util.common.Validate;
 
 
 /**

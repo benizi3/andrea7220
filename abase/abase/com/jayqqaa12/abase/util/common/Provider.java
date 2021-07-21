@@ -12,6 +12,7 @@ public class Provider
 	public static final String DELETE="delete";
 	public static final String INSERT="insert";
 	public static final String QUERY ="query";
+	public static final String UPDATE = "update";
 	
 	/** 全部的APN */
 	public static final Uri ALL_APN_URI = Uri.parse("content://telephony/carriers");
