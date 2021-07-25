@@ -36,6 +36,7 @@ import com.jayqqaa12.abase.annotation.view.FindView;
 import com.jayqqaa12.abase.core.Abase;
 import com.jayqqaa12.abase.core.AbaseApp;
 import com.jayqqaa12.abase.core.listener.Listener;
+import com.lidroid.xutils.ViewUtils;
 
 /**
  * 注意 这里的	TabHost tabHost = (TabHost) findViewById(android.R.id.tabhost);
@@ -48,6 +49,13 @@ public class AbaseTabActivity extends TabActivity implements  OnTabChangeListene
 {
 
 
+	@Override
+	protected void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+		
+		ViewUtils.inject(this);
+	}
 
 
 

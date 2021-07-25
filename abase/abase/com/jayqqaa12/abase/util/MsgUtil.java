@@ -2,7 +2,9 @@ package com.jayqqaa12.abase.util;
 
 
 import android.os.Handler;
+import android.os.Handler.Callback;
 import android.os.Message;
+import android.provider.CallLog.Calls;
 
 import com.jayqqaa12.abase.core.AbaseUtil;
 
@@ -38,8 +40,15 @@ public class MsgUtil extends AbaseUtil
 	public static final int MSG_REFRESH=23;
 	public static final int MSG_INIT=24;
 	
-	
-	
+	public static void sendMessage(Callback callback, int what,Object obj){
+		
+		
+		Message msg = new Message();
+		msg.what = what;
+		msg.obj =obj;
+		callback.handleMessage(msg);
+		
+	}
 	
 
 	public static void sendMessage(Handler callback, int what)
