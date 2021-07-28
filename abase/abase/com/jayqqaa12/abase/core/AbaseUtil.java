@@ -10,7 +10,6 @@ import android.content.Context;
  * 设置  Abase.setContext(context)
  * 并且 传递 一个 context 给 他，
  * 
- * @throws  NULLPaintException
  * @author jayqqaa12
  * @date 2013-5-14
  */

@@ -1,10 +1,7 @@
 package com.jayqqaa12.abase.util;
 
 import android.content.Context;
-import android.content.res.Resources;
 
-import com.jayqqaa12.abase.annotation.view.FindRes;
-import com.jayqqaa12.abase.annotation.view.FindRes.ResType;
 import com.jayqqaa12.abase.core.Abase;
 
 /**
@@ -50,50 +47,7 @@ public class ResUtil
 
 	}
 
-	public static Object getResValue(FindRes res, Resources resources)
-	{
-
-		int id = res.id();
-		ResType type = res.type();
-		Object value = null;
-
-		if (type == ResType.BOOLEAN)
-		{
-			resources.getBoolean(id);
-		}
-		else if (type == ResType.COLOR)
-		{
-			value = resources.getColor(id);
-		}
-		else if (type == ResType.DRAWABLE)
-		{
-			value = resources.getDrawable(id);
-		}
-		else if (type == ResType.INT)
-		{
-			value = resources.getInteger(id);
-		}
-		else if (type == ResType.INT_ARRAY)
-		{
-			value = resources.getIntArray(id);
-		}
-		else if (type == ResType.STRING)
-		{
-			value = resources.getString(id);
-		}
-		else if (type == ResType.STRING_ARRAY)
-		{
-			value = resources.getStringArray(id);
-		}
-		else if (type == ResType.TEXT)
-		{
-			value = resources.getText(id);
-		}
-
-		return value;
-
-	}
-
+	
 	public static Context getContext()
 	{
 

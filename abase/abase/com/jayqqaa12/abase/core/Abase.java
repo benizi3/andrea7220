@@ -1,41 +1,35 @@
 package com.jayqqaa12.abase.core;
 
-import java.lang.reflect.Field;
+import java.util.Stack;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
-import android.content.res.Resources;
 
-import com.jayqqaa12.abase.annotation.view.FindRes;
-import com.jayqqaa12.abase.annotation.view.FindRes.ResType;
 
-/**
+/***
  * 
  * 
+ * 重新架构 原先的设计不太理想 直接推翻了
  * 
- * Abase is a not much technical content of the framework of <br>
- * the main application is multiplexed <br>
- * Android some code. at the same time to speed up the development of <br>
- * can achieve activity IOC and simple SQLite ORM <br>
- * ORM afinal <br>
- * reference frame to use Abase inherit AbaseApp <br>
- * If you don't want to inherit from AbaseApp <br>
- * and want to use Abase (tools like) <br>
- * remember in your current application class <br>
- * set Abase.setContext (context) <br>
- * and pass a context to him, <br>
- * if the attribute setScanParent =true<br>
- * scanning the parent class
  * 
- * @author jayqqaa12 (www.jayqqaa12.com)<br>
+ * 现在 把自己有的工具类 保留   核心功能集成 其他 开源项目
  * 
+ * 
+ * 这个类还可以用来 管理 activity
+ * 
+ * @author 12
+ *
  */
 public class Abase
 {
 
-
+	private static Stack<Activity> activityStack;
+	private static Abase instance;
+	
+	private Abase(){}
+	
 	private static Context context = null;
-
-
 
 	public static Context getContext()
 	{
@@ -49,66 +43,86 @@ public class Abase
 		Abase.context = context.getApplicationContext();
 	}
 
-
-
-
-
+	
 	/**
-	 * 绑定资源。
-	 * 
+	 * 单一实例
 	 */
-	public static void bindAllRes(Object obj, Field field, FindRes res, Resources resources)
-	{
-		try
-		{
-			if (res != null)
-			{
-				ResType type = res.type();
-
-				int id = res.id();
-				if (type == ResType.BOOLEAN)
-				{
-					field.set(obj, resources.getBoolean(id));
-
-				}
-				else if (type == ResType.COLOR)
-				{
-					field.set(obj, resources.getColor(id));
-				}
-				else if (type == ResType.DRAWABLE)
-				{
-					field.set(obj, resources.getDrawable(id));
-				}
-				else if (type == ResType.INT)
-				{
-					field.set(obj, resources.getInteger(id));
-				}
-				else if (type == ResType.INT_ARRAY)
-				{
-					field.set(obj, resources.getIntArray(id));
-				}
-				else if (type == ResType.STRING)
-				{
-					field.set(obj, resources.getString(id));
-				}
-				else if (type == ResType.STRING_ARRAY)
-				{
-					field.set(obj, resources.getStringArray(id));
-				}
-				else if (type == ResType.TEXT)
-				{
-					field.set(obj, resources.getText(id));
-				}
-				else if (type == ResType.TEXT_ARRAY)
-				{
-					field.set(obj, ResType.TEXT_ARRAY);
-				}
-			}
-		} catch (Exception e)
-		{
-			e.printStackTrace();
+	public static Abase getAppManager(){
+		if(instance==null){
+			instance=new Abase();
+		}
+		return instance;
+	}
+	/**
+	 * 添加Activity到堆栈
+	 */
+	public void addActivity(Activity activity){
+		if(activityStack==null){
+			activityStack=new Stack<Activity>();
+		}
+		activityStack.add(activity);
+	}
+	/**
+	 * 获取当前Activity（堆栈中最后一个压入的）
+	 */
+	public Activity currentActivity(){
+		Activity activity=activityStack.lastElement();
+		return activity;
+	}
+	/**
+	 * 结束当前Activity（堆栈中最后一个压入的）
+	 */
+	public void finishActivity(){
+		Activity activity=activityStack.lastElement();
+		finishActivity(activity);
+	}
+	/**
+	 * 结束指定的Activity
+	 */
+	public void finishActivity(Activity activity){
+		if(activity!=null){
+			activityStack.remove(activity);
+			activity.finish();
+			activity=null;
 		}
 	}
+	/**
+	 * 结束指定类名的Activity
+	 */
+	public void finishActivity(Class<?> cls){
+		for (Activity activity : activityStack) {
+			if(activity.getClass().equals(cls) ){
+				finishActivity(activity);
+			}
+		}
+	}
+	/**
+	 * 结束所有Activity
+	 */
+	public void finishAllActivity(){
+		
+		if(activityStack==null) return ;
+		
+		for (int i = 0, size = activityStack.size(); i < size; i++){
+            if (null != activityStack.get(i)){
+            	activityStack.get(i).finish();
+            }
+	    }
+		activityStack.clear();
+	}
+	/**
+	 * 退出应用程序
+	 */
+	public void AppExit(Context context) {
+		try {
+			finishAllActivity();
+			ActivityManager activityMgr= (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+			activityMgr.restartPackage(context.getPackageName());
+			System.exit(0);
+		} catch (Exception e) {	}
+	}
+	
+
 
 
 

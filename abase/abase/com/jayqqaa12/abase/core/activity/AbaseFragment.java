@@ -5,8 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.lidroid.xutils.ViewUtils;
-
 public class AbaseFragment extends Fragment
 {
 
@@ -18,7 +16,6 @@ public class AbaseFragment extends Fragment
 		ViewGroup parent = (ViewGroup) rootView.getParent();
 		if (parent != null) parent.removeView(rootView);
 
-		ViewUtils.inject(this, rootView);
 		return rootView;
 	}
 

@@ -1,0 +1,2 @@
+int raw busybox_g1 0x7f020000
+int raw iptables_armv5 0x7f020001
