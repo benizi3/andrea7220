@@ -58,7 +58,7 @@ public class VersionUtil extends AbaseUtil
 	 */
 	public static boolean isNewVersion(int serverVersion)
 	{
-		return serverVersion ==VersionUtil.getVersionCode();
+		return serverVersion >VersionUtil.getVersionCode();
 	}
 
 }

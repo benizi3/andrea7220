@@ -30,7 +30,7 @@ public class TimeUtil
 	
 	public static void initTimeout(){
 		
-		ConfigUtil.setValue(TIMESTAMP, 0);
+		ConfigUtil.setValue(TIMESTAMP, 0L);
 		
 	}
 
