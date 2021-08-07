@@ -17,6 +17,7 @@ import net.tsz.afinal.http.HttpHandler;
 import net.tsz.afinal.http.RetryHandler;
 import net.tsz.afinal.http.SyncRequestHandler;
 
+import org.androidannotations.annotations.EBean;
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
 import org.apache.http.HttpEntity;
@@ -65,8 +66,8 @@ public class AbaseHttp
 	private static final String ENCODING_GZIP = "gzip";
 
 	private static int maxConnections = 10; // http请求最大并发连接数
-	private static int socketTimeout = 15 * 1000; // 超时时间，默认5秒
-	private static int maxRetries = 20;// 错误尝试次数，错误异常表请在RetryHandler添加
+	private static int socketTimeout = 15 * 1000; // 超时时间，默认15秒
+	private static int maxRetries = 5;// 错误尝试次数，错误异常表请在RetryHandler添加
 	private static int httpThreadCount = 3;// http线程池数量
 	private final DefaultHttpClient httpClient;
 	private final HttpContext httpContext;

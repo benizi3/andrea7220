@@ -27,6 +27,13 @@ public class T  extends AbaseUtil
 	}
 	
 	
+	public static void ShortToast(int msgId)
+	{
+		Toast.makeText(getContext(),getContext().getText(msgId),Toast.LENGTH_SHORT).show();
+	}
+	
+	
+	
 	public static void LongToast( String msg)
 	{
 		

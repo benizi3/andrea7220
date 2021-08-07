@@ -22,6 +22,15 @@ public class Validate {
 	}
 	
 	
+
+	/**
+	 * 验证字符串有效性
+	 */
+	public static boolean isEmpty(String str){
+		
+		return !notEmpty(str);
+	}
+	
 	
 	
 	/**

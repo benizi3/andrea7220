@@ -15,77 +15,77 @@ import android.view.View;
 public class DialogUtil
 {
 
-	 /**
-	    * 无网络弹出的提示窗口
-	    */
-		public static void showNotNetworkDialog(final Activity activity) { 
-			
-			Dialog dialog = new AlertDialog.Builder(activity)	     
-	  			   .setMessage("网络连接失败，请检查重试！")// 设置内容       
-	  			   .setPositiveButton("退出",//确定按钮      
-	        new DialogInterface.OnClickListener() {
-	           public void onClick(DialogInterface dialog,  int which) {
-	        	   activity.finish();
-	           } 
-	         }).setNegativeButton("设置", //設置按钮
-	        new DialogInterface.OnClickListener() {       
-	         public void onClick(DialogInterface dialog, int whichButton) { 
-	        activity.startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
-	        activity.finish();
-	         }       
-	         }).create(); 
-	         dialog.show();
-	        } 
-		
-		
+	/**
+	 * 无网络弹出的提示窗口
+	 */
+	public static void showNotNetworkDialog(final Activity activity)
+	{
 
-		 /**
-		    * 无网络弹出的提示窗口
-		    */
-			public static void showChangeApnDialog(final Activity activity) { 
-				
-				Dialog dialog = new AlertDialog.Builder(activity)	     
-		  			   .setMessage("当前接入点是WAP,可能无法访问互联网,请修改接入点")// 设置内容       
-		  			   .setPositiveButton("退出",//确定按钮      
-		        new DialogInterface.OnClickListener() {
-		           public void onClick(DialogInterface dialog,  int which) {
-		        	   activity.finish();
-		           } 
-		         }).setNegativeButton("设置", //設置按钮
-		        new DialogInterface.OnClickListener() {       
-		         public void onClick(DialogInterface dialog, int whichButton) { 
-		        activity.startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
-		        activity.finish();
-		         }       
-		         }).create();
-		         dialog.show();
-		        } 
-			
-			
-		
-		
-		
-		
-		/**
-		 * 一个 点击 退出的  对话框 
-		 * @param activity
-		 */
-		public static void showExitDialog(final Activity activity,String msg){
-			
-			
-			 Dialog dialog = new AlertDialog.Builder(activity)	     
-			   .setMessage(msg)// 设置内容       
-			   .setPositiveButton("退出",new DialogInterface.OnClickListener(){
-				   public void onClick(DialogInterface dialog, int which) {
-					   activity.finish();
-				   };
-			   } ).create();
-			 dialog.show();
-		}
-	
-		
-		
-		
+		Dialog dialog = new AlertDialog.Builder(activity).setMessage("网络连接失败，请检查重试！")// 设置内容
+				.setPositiveButton("设置", // 設置按钮
+						new DialogInterface.OnClickListener()
+						{
+							public void onClick(DialogInterface dialog, int whichButton)
+							{
+								activity.startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
+								activity.finish();
+							}
+						}).setNegativeButton("退出",// 确定按钮
+						new DialogInterface.OnClickListener()
+						{
+							public void onClick(DialogInterface dialog, int which)
+							{
+								activity.finish();
+							}
+						}).create();
+		dialog.show();
+	}
+
+	/**
+	 * 无网络弹出的提示窗口
+	 */
+	public static void showChangeApnDialog(final Activity activity)
+	{
+
+		Dialog dialog = new AlertDialog.Builder(activity).setMessage("当前接入点是WAP,可能无法访问互联网,请修改接入点")// 设置内容
+				.setPositiveButton("退出",// 确定按钮
+						new DialogInterface.OnClickListener()
+						{
+							public void onClick(DialogInterface dialog, int which)
+							{
+								activity.finish();
+							}
+						}).setNegativeButton("设置", // 設置按钮
+						new DialogInterface.OnClickListener()
+						{
+							public void onClick(DialogInterface dialog, int whichButton)
+							{
+								activity.startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
+								activity.finish();
+							}
+						}).create();
+		dialog.show();
+	}
+
+	/**
+	 * 一个 点击 退出的 对话框
+	 * 
+	 * @param activity
+	 */
+	public static void showExitDialog(final Activity activity, String msg)
+	{
+
+		Dialog dialog = new AlertDialog.Builder(activity).setMessage(msg)// 设置内容
+				.setPositiveButton("退出", new DialogInterface.OnClickListener()
+				{
+					public void onClick(DialogInterface dialog, int which)
+					{
+						activity.finish();
+					};
+				}).create();
+		dialog.show();
+	}
+
 	public static void showSingleChoiceDiaog(Context context, String title, String[] items, int checkedItem,
 			DialogInterface.OnClickListener oklistener, DialogInterface.OnClickListener canellistener)
 	{
@@ -138,7 +138,7 @@ public class DialogUtil
 			@Override
 			public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event)
 			{
-				if (keyCode == KeyEvent.KEYCODE_SEARCH ) return true;
+				if (keyCode == KeyEvent.KEYCODE_SEARCH) return true;
 				else return false;
 			}
 		});
@@ -150,7 +150,7 @@ public class DialogUtil
 	 * @param context
 	 * @param mydialog
 	 * @param b
-	 * @param view
+	 * @param title
 	 * @return
 	 */
 	public static Dialog createDialog(Context context, int style, boolean cancelable, int contentId)
@@ -168,8 +168,7 @@ public class DialogUtil
 				else return false;
 			}
 		});
-		
-		
+
 		return dialog;
 	}
 
@@ -193,7 +192,7 @@ public class DialogUtil
 	 * @param context
 	 * @param mydialog
 	 * @param b
-	 * @param view
+	 * @param title
 	 * @return
 	 */
 	public static Dialog showDialog(Context context, int style, boolean cancelable, int contentId)

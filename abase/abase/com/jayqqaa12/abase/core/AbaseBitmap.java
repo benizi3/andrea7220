@@ -6,6 +6,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
+import org.androidannotations.annotations.EBean;
+
 import net.tsz.afinal.bitmap.core.BitmapCache;
 import net.tsz.afinal.bitmap.core.BitmapDisplayConfig;
 import net.tsz.afinal.bitmap.core.BitmapProcess;
@@ -55,7 +57,7 @@ public class AbaseBitmap {
 	}
 	
 	////////////////////////// config method start////////////////////////////////////
-	private AbaseBitmap(Context context) {
+	public AbaseBitmap(Context context) {
 		mContext = context;
 		mConfig = new AbaseBitmapConfig(context);
 		configDiskCachePath(Utils.getDiskCacheDir(context, "afinalCache").getAbsolutePath());//配置缓存路径

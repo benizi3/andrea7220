@@ -1,14 +1,14 @@
 package com.jayqqaa12.abase.util;
 
-import java.io.File;
 import java.io.Serializable;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
+
+import com.jayqqaa12.abase.exception.AbaseException;
 
 public class IntentUtil
 {
@@ -162,6 +162,10 @@ public class IntentUtil
 		else if (content instanceof Serializable)
 		{
 			intent.putExtra(name, (Serializable) content);
+		}
+		else {
+			
+			throw new AbaseException("object must implements Serializable");
 		}
 	}
 

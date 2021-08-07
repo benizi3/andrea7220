@@ -36,6 +36,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.androidannotations.annotations.EBean;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -49,9 +50,6 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
-/**
- * @author Michael Yang（www.yangfuhai.com） update at 2013.08.07
- */
 public class ACache
 {
 	public static final int TIME_HOUR = 60 * 60;
@@ -66,6 +64,8 @@ public class ACache
 		return get(Abase.getContext(), "ACache");
 	}
 
+
+	
 	
 	/***
 	 * 判断是否 初始化过了
@@ -140,7 +140,7 @@ public class ACache
 		return "_" + android.os.Process.myPid();
 	}
 
-	private ACache(File cacheDir, long max_size, int max_count)
+	public ACache(File cacheDir, long max_size, int max_count)
 	{
 		if (!cacheDir.exists() && !cacheDir.mkdirs()) { throw new RuntimeException("can't make dirs in " + cacheDir.getAbsolutePath()); }
 		mCache = new ACacheManager(cacheDir, max_size, max_count);

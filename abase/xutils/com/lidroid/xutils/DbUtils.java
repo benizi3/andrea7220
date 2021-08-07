@@ -20,6 +20,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
+
+import com.jayqqaa12.abase.core.Abase;
 import com.lidroid.xutils.db.sqlite.*;
 import com.lidroid.xutils.db.table.*;
 import com.lidroid.xutils.exception.DbException;
@@ -91,11 +93,18 @@ public class DbUtils {
 
         return dao;
     }
+    
+    public static DbUtils create() {
+    	
+    	return create(Abase.getContext());
+    }
 
     public static DbUtils create(Context context) {
         DaoConfig config = new DaoConfig(context);
         return getInstance(config);
     }
+    
+    
 
     public static DbUtils create(Context context, String dbName) {
         DaoConfig config = new DaoConfig(context);
