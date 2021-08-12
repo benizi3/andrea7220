@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="gridmargin">4dp</dimen>
+    
+    <dimen name="padding_buttom">5dp</dimen>
+     <dimen name="font_size">20sp</dimen>
+   
+    
+</resources>

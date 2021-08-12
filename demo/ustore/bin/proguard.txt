@@ -1,0 +1,96 @@
+# view res/layout/admini.xml #generated:52
+# view res/layout/fullscreenimg.xml #generated:7
+# view res/layout/ranking.xml #generated:63
+-keep class android.support.v4.view.ViewPager { <init>(...); }
+
+# view AndroidManifest.xml #generated:126
+-keep class com.baidu.location.f { <init>(...); }
+
+# view AndroidManifest.xml #generated:52
+-keep class com.ustore.activity.Admin { <init>(...); }
+
+# view AndroidManifest.xml #generated:56
+-keep class com.ustore.activity.Classification { <init>(...); }
+
+# view AndroidManifest.xml #generated:72
+-keep class com.ustore.activity.Classify { <init>(...); }
+
+# view AndroidManifest.xml #generated:64
+-keep class com.ustore.activity.DownDetails { <init>(...); }
+
+# view AndroidManifest.xml #generated:80
+-keep class com.ustore.activity.FenleiActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:88
+-keep class com.ustore.activity.FullScreenImgActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:48
+-keep class com.ustore.activity.Home { <init>(...); }
+
+# view AndroidManifest.xml #generated:76
+-keep class com.ustore.activity.InstallAppList { <init>(...); }
+
+# view AndroidManifest.xml #generated:33
+-keep class com.ustore.activity.Main { <init>(...); }
+
+# view AndroidManifest.xml #generated:60
+-keep class com.ustore.activity.Ranking { <init>(...); }
+
+# view AndroidManifest.xml #generated:44
+-keep class com.ustore.activity.Search { <init>(...); }
+
+# view AndroidManifest.xml #generated:68
+-keep class com.ustore.activity.Subject { <init>(...); }
+
+# view AndroidManifest.xml #generated:92
+-keep class com.ustore.activity.UpdateListActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:84
+-keep class com.ustore.activity.ZhuanTiActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:104
+-keep class com.ustore.receiver.ApkReceiver { <init>(...); }
+
+# view AndroidManifest.xml #generated:97
+-keep class com.ustore.receiver.DeviceStateReceiver { <init>(...); }
+
+# view AndroidManifest.xml #generated:116
+-keep class com.ustore.service.DownloadService { <init>(...); }
+
+# view AndroidManifest.xml #generated:112
+-keep class com.ustore.service.IService { <init>(...); }
+
+# view AndroidManifest.xml #generated:114
+-keep class com.ustore.service.PService { <init>(...); }
+
+# view AndroidManifest.xml #generated:117
+-keep class com.ustore.service.UpdateService { <init>(...); }
+
+# view AndroidManifest.xml #generated:124
+-keep class com.ustore.service.UserService { <init>(...); }
+
+# view AndroidManifest.xml #generated:28
+-keep class com.ustore.util.App { <init>(...); }
+
+# view res/layout/home.xml #generated:32
+-keep class com.ustore.view.Gallery1 { <init>(...); }
+
+# onClick res/layout/downdetails.xml #generated:33
+# onClick res/layout/downdetails.xml #generated:43
+# onClick res/layout/fenlei.xml #generated:103
+# onClick res/layout/fenlei.xml #generated:117
+# onClick res/layout/fenlei.xml #generated:139
+# onClick res/layout/fenlei.xml #generated:153
+# onClick res/layout/fenlei.xml #generated:31
+# onClick res/layout/fenlei.xml #generated:45
+# onClick res/layout/fenlei.xml #generated:67
+# onClick res/layout/fenlei.xml #generated:81
+# onClick res/layout/header.xml #generated:20
+# onClick res/layout/header.xml #generated:29
+# onClick res/layout/home.xml #generated:105
+# onClick res/layout/home.xml #generated:120
+# onClick res/layout/home.xml #generated:135
+# onClick res/layout/home.xml #generated:66
+# onClick res/layout/home.xml #generated:81
+-keepclassmembers class * { *** onClickBar(...); }
+

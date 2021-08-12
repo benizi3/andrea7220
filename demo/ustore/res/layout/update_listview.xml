@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="@drawable/listselector" >
+		
+	<ImageView 
+	    android:id="@+id/m1"	
+        android:layout_width="50dp"
+        android:layout_height="50dp" 
+        android:layout_marginLeft="20dp"
+          android:layout_centerVertical="true"
+        android:src="@drawable/default_icon" 
+         />
+	
+	<TextView android:id="@+id/t1"
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"
+		android:layout_toRightOf="@+id/m1"		
+		android:paddingLeft="16dp"
+		android:textColor="#333333"
+		android:layout_marginTop="7dp"
+		android:textSize="14sp"
+		android:maxEms="10"
+	/>
+	<TextView android:id="@+id/t2"
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/t1"		
+		android:layout_toRightOf="@+id/m1"		
+		android:paddingLeft="18dp"
+		android:textColor="#333333"
+		android:textSize="12sp"
+	/>	
+	
+ <!--  <TextView android:id="@+id/apptext"
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"
+		android:visibility="gone" />	
+		
+       <RelativeLayout android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"   
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp" >
+    
+  <ImageView
+        android:id="@+id/appbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/install" />
+    
+      <TextView
+        android:id="@+id/btntext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/install"
+        android:layout_centerHorizontal="true"
+        android:textSize="12sp"
+        android:textColor="#a6a6a6"
+        android:layout_below="@+id/appbutton" /> 
+      
+    </RelativeLayout>-->
+ 
+</RelativeLayout>

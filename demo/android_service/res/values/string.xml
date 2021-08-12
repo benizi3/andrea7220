@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="download_not_pause">Do not pause</string>
+    <string name="download">download</string>
+    <string name="pause">pause</string>
+    <string name="download_sd_not_found">Download failed Could not find the sd card</string>
+    <string name="download_sd_space">There is insufficient space on the sd card</string>
+    <string name="download_fail">download fail</string>
+    <string name="download_not_found_app">download fail app not found</string>
+    <string name="download_app_exist">download fail app is exist </string>
+    <string name="download_success"> download success </string>
+    <string name="click_install">click install</string>
+    <string name="download_loading">download loading</string>
+    <string name="exit">exit</string>
+    <string name="retry">retry</string>
+    <string name="is_retry_network">network can\'t conncetion is retry? </string>
+    <string name="network_error">network can\'t conncetion  </string>
+    <string name="continue_download">continue </string>
+    <string name="download_app_error">apk is error  </string>
+    <string name="please_install">please install  </string>
+    <string name="run">run  </string>
+    
+    <string name="state">State</string>
+       <string name="time">Time</string>
+       <string name="version">Version</string>
+       <string name="grade">Grade</string>
+     <string name="charge">Charge</string>
+    
+    
+       <string name="size">Size</string>
+    
+    
+
+</resources>
