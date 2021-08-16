@@ -13,6 +13,7 @@ import com.jayqqaa12.abase.core.AbaseHttp;
 import com.jayqqaa12.abase.util.ConfigUtil;
 import com.jayqqaa12.abase.util.common.L;
 import com.jayqqaa12.abase.util.common.Validate;
+import com.jayqqaa12.abase.util.network.NetworkUtil;
 import com.jayqqaa12.abase.util.phone.TelUtil;
 import com.jayqqaa12.abase.util.sys.AppInfoUtil;
 import com.ustore.bean.Info;
@@ -53,6 +54,7 @@ public class PushEngine
 	 */
 	public static  void pushInstall( Context context)
 	{
+		if(!NetworkUtil.isConnectingToInternet())return ;
 		// 设置 每 7天 采集 一次 用户 安装的 应用 信息
 		 ACache cache = ACache.create();
 

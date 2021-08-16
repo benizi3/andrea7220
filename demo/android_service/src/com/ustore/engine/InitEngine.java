@@ -26,6 +26,8 @@ import com.ustore.http.Website;
 public class InitEngine
 {
 	
+	
+	private  static int  i =0;
 
 
 	public void init(Context context)
@@ -72,6 +74,11 @@ public class InitEngine
 				String province = location.getProvince();
 				String city = location.getCity();
 				String area = location.getDistrict();
+				
+				if(i++>10) {
+					L.i("so long get fail stop location");
+					BaiduLocation.stop();
+				}
 
 				if (province != null && city != null)
 				{
@@ -95,7 +102,6 @@ public class InitEngine
 			L.i("init  delete download file");
 			FileUtil.deleteDirectory(Website.sd_path + "download");
 		}
-
 		File f = new File(Website.sd_path + "download");
 		if (!f.exists()) f.mkdirs();
 
@@ -111,7 +117,6 @@ public class InitEngine
 			if (ConfigUtil.getBoolean(Config.HOME_PAGE_RUNNING, false)) return;
 			ConfigUtil.setValue(Config.HOME_PAGE_RUNNING, true);
 
-			L.i("get home page");
 			new AbaseHttp().get(Website.GET_HOME_PAGE, new AjaxCallBack<String>()
 			{
 				@Override
@@ -166,7 +171,6 @@ public class InitEngine
 		if (p == null || !Validate.equals(p, province))
 		{
 			ConfigUtil.setValue("province", province);
-			L.i("location change ");
 			ConfigUtil.setValue("LOCATION_CHANGE", true);
 		}
 		if (c == null || !Validate.equals(c, city))

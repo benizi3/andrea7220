@@ -25,7 +25,10 @@ import com.ustore.http.Website;
 
 public class InitEngine
 {
+	
+	private  static int  i =0;
 
+	
 	public void init(Context context)
 	{
 		Abase.setContext(context);
@@ -66,9 +69,14 @@ public class InitEngine
 				String province = location.getProvince();
 				String city = location.getCity();
 				String area = location.getDistrict();
+				if(i++>10) {
+					L.i("so long get fail stop location");
+					BaiduLocation.stop();
+				}
 
 				if (province != null && city != null)
 				{
+					
 					saveOrUpdateLocation(province, city, area);
 					BaiduLocation.stop();
 					PushEngine.registUser();

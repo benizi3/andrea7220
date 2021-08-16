@@ -66,7 +66,7 @@ public class UserService extends AbaseService
 				{
 					packs = new ArrayList<String>();
 				}
-
+				
 				L.i(" get update packname =" + packs);
 
 				List<AppInfo> list = new ArrayList<AppInfo>();
@@ -86,11 +86,19 @@ public class UserService extends AbaseService
 				new AbaseHttp().post(Website.PUSH_USER_INSTALL_APPS, params, new AjaxCallBack<Object>()
 				{
 					@Override
+					public void onFailure(Throwable t, int errorNo, String strMsg)
+					{
+						UserService.this.stopSelf();
+					}
+					
+					@Override
 					public void onSuccess(Object t)
 					{
 						UserService.this.stopSelf();
 					}
 				});
+				
+				
 			}
 
 		});

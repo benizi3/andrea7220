@@ -37,7 +37,6 @@ public class Config
 
 	public static final String TIMEOUT_RUNNING = "time_out_running";
 
-
 	public static final int PUSH_APP_TYPE=0;
 
 

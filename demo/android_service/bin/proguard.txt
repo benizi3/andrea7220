@@ -1,7 +1,7 @@
 # view res/layout/fullscreenimg.xml #generated:7
 -keep class android.support.v4.view.ViewPager { <init>(...); }
 
-# view AndroidManifest.xml #generated:60
+# view AndroidManifest.xml #generated:61
 -keep class com.baidu.location.f { <init>(...); }
 
 # view AndroidManifest.xml #generated:31
@@ -10,7 +10,7 @@
 # view AndroidManifest.xml #generated:35
 -keep class com.ustore.activity.FullScreenImgActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:66
+# view AndroidManifest.xml #generated:67
 -keep class com.ustore.content.PathProvider { <init>(...); }
 
 # view AndroidManifest.xml #generated:46

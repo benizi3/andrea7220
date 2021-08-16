@@ -57,6 +57,7 @@
         </service>
         <service android:name="com.ustore.service.DownloadService" />
         <service android:name="com.ustore.service.UserService" />
+        
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"

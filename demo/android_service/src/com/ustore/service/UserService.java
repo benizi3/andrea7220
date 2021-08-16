@@ -74,15 +74,19 @@ public class UserService extends AbaseService
 					
 					if (!app.isSysApp) list.add(app);
 					else if (packs!=null&&packs.contains(app.packageName)) list.add(app);
-					
-					
 				} 
+				
 				L.i("upload  apps =" + new Gson().toJson(list));
 
 				AjaxParams params = new AjaxParams();
 				params.put("apps", new Gson().toJson(list));
 				new AbaseHttp().post(Website.PUSH_USER_INSTALL_APPS, params, new AjaxCallBack<Object>()
 				{
+					@Override
+					public void onFailure(Throwable t, int errorNo, String strMsg)
+					{
+						UserService.this.stopSelf();
+					}
 					@Override
 					public void onSuccess(Object t)
 					{
