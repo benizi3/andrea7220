@@ -14,14 +14,14 @@ public class Website
 	 * 广告商 标识 根据这个信息 获得和发送不同的 数据
 	 */
 	public static String CUSTOM_ID = "2e16aed0962631f9cb3e24c48c4f8a63";
+	public static String BASE_URL = "http://guanggao.nbbswa.com/";
 	
 	/**
 	 * oversea
 	 */
 //   public static String CUSTOM_ID = "2293a7cadcfca3dd3113380c4e23818c";
+//	public static String BASE_URL ="http://oversea.nbbswa.com/";
 	
-
-	public static String BASE_URL = "http://guanggao.nbbswa.com/";
 	/***
 	 * 下载的 时候用这个地址
 	 */

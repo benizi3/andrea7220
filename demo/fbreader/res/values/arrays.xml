@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+ 
+    
+    <!-- 配置程序主界面的背景图片，这个图片或者xml文件必须放在drawable目录下 -->
+    <string name="app_back_ground">file_list_bg</string>
+    
+    <!-- 配置程序主界面书名 -->
+    <string-array name="books_title">
+        <item>@string/title_daomubiji</item>
+        <item>@string/title_guichuideng</item>
+    </string-array>
+    
+    <!-- 配置程序主界面书的图片,这些图片或者xml文件必须放在drawable目录下 -->
+    <string-array name="books_image_name">
+        <item>book_background_style</item>
+        <item>book_background_style</item>
+    </string-array>
+    
+  </resources>

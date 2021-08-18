@@ -1,6 +1,5 @@
 package com.ustore.http;
 
-import com.jayqqaa12.abase.util.ResUtil;
 import com.jayqqaa12.abase.util.sys.RootUtil;
 
 

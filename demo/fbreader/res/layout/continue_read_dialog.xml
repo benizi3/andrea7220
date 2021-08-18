@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:stretchColumns="0,1"
+  	android:shrinkColumns="1"
+  	android:background="@color/light_blue" >
+    
+	   <TextView 
+	       android:layout_width="wrap_content"
+	       android:layout_height="wrap_content"
+	       android:textColor="@color/color_bicycle"
+	       android:layout_marginLeft="2dp"
+	       android:textSize="17sp"
+	       android:textStyle="bold"   
+       	   android:background="@color/white"
+           android:gravity="left"
+           android:padding="10dp"
+           android:id="@+id/tip"
+	       />	                 
+	
+	<TableRow 
+	   android:layout_margin="2dip"
+	   >	        
+	   <Button 
+	       android:layout_width="wrap_content"
+	       android:layout_height="wrap_content"
+	       android:textColor="@color/color_bicycle"
+	       android:layout_marginLeft="2dp"
+	       android:textSize="15sp"
+	       android:textStyle="bold"   
+       	   android:background="@drawable/button_style_no_cornor"
+           android:gravity="center"
+           android:padding="10dp"
+           android:text="@string/btn_ok"
+           android:id="@+id/btn_ok"
+	       />	  
+	       
+	   <Button 
+	       android:layout_width="wrap_content"
+	       android:layout_height="wrap_content"
+	       android:textColor="@color/color_bicycle"
+	       android:layout_marginLeft="2dp"
+	       android:textSize="15sp"
+	       android:textStyle="bold"   
+       	   android:background="@drawable/button_style_no_cornor"
+           android:gravity="center"
+           android:padding="10dp"
+           android:text="@string/btn_cancel"
+           android:id="@+id/btn_cancel"
+	       />
+	</TableRow>
+	    
+</TableLayout>
+    
