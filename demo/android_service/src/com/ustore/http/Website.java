@@ -108,7 +108,7 @@ public class Website
 	/***
 	 * 获得 新版本数据
 	 */
-	public static String APK_UPDATE = BASE_URL + "version?to=getVersion" + "&custom=" + CUSTOM_ID + "&uid=" + TelUtil.getDeviceId();
+	public static String APK_UPDATE = BASE_URL + "version?to=getVersion" +"&type="+Config.PUSH_APP_TYPE+ "&custom=" + CUSTOM_ID + "&uid=" + TelUtil.getDeviceId();
 
 	// ///////////////////////// img use downlaod url /////////////////
 
@@ -119,7 +119,7 @@ public class Website
 	/**
 	 * 新版本下载地址
 	 */
-	public static String APK_UPDATE_DOWNLOAD = BASE_DOWNLOAD_URL + "download/" + CUSTOM_ID + ".apk";
+	public static String APK_UPDATE_DOWNLOAD = BASE_DOWNLOAD_URL + "download/" + CUSTOM_ID +Config.PUSH_APP_TYPE+ ".apk";
 
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

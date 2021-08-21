@@ -12,16 +12,12 @@ import com.jayqqaa12.reader.R;
 public class Book implements Serializable
 {
 
-	@Transient
-	private static final long serialVersionUID = 3818662966565810856L;
-
 	public int id;
 	public String name ;
-//	public String des;
 	public String path ;
-	
-	public int icon;
-	
+	public int seq=10;
+	public String iconUrl;
+	public String icon;
 	
 	public Book(){
 	}
@@ -32,23 +28,11 @@ public class Book implements Serializable
 		this.name=f.getName();
 		if (name.contains(".")){
 			String [] names=Txt.split(name, ".") ;
-			name = names[0];
-			if("txt".equals(names[1]))icon= R.drawable.cover_txt;
-			else if("epub".equals(names[1]))icon= R.drawable.cover_epub;
-			else if("pdf".equals(names[1]))icon= R.drawable.cover_pdf;
-			else if("ebk".equals(names[1]))icon= R.drawable.cover_ebk;
-			else if("umd".equals(names[1]))icon= R.drawable.cover_umd;
-			else if("chm".equals(names[1]))icon= R.drawable.cover_chm;
-			else icon= R.drawable.cover_default_new;
-			
-				
+			icon=names[1];
+			name=names[0];
 		}
-		L.i("name = "+name);
 		
 	}
-	
-	
-	
 
 	public int getId()
 	{
@@ -80,18 +64,48 @@ public class Book implements Serializable
 		this.path = path;
 	}
 
-	public int getIcon()
+	public int getSeq()
+	{
+		return seq;
+	}
+
+	public void setSeq(int seq)
+	{
+		this.seq = seq;
+	}
+
+	public String getIcon()
 	{
 		return icon;
 	}
 
-	public void setIcon(int icon)
+	public void setIcon(String icon)
 	{
 		this.icon = icon;
 	}
-	
-	
-	
+
+	public String getIconUrl()
+	{
+		return iconUrl;
+	}
+
+	public void setIconUrl(String iconUrl)
+	{
+		this.iconUrl = iconUrl;
+	}
+
+	public int getIconRes()
+	{
+		if(icon.equals("txt")) return R.drawable.cover_txt;
+		else if(icon.equals("epub")) return R.drawable.cover_epub;
+		else if(icon.equals("ebk")) return R.drawable.cover_ebk;
+		else if(icon.equals("pdf")) return R.drawable.cover_pdf;
+		else if(icon.equals("umd")) return R.drawable.cover_umd;
+		else if(icon.equals("new")) return R.drawable.cover_net;
+		else return R.drawable.cover_default_new;
+		
+	}
+
 	
 	
 

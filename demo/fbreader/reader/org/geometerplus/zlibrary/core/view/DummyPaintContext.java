@@ -23,6 +23,8 @@ import org.geometerplus.zlibrary.core.util.ZLColor;
 import org.geometerplus.zlibrary.core.filesystem.ZLFile;
 import org.geometerplus.zlibrary.core.image.ZLImageData;
 
+import android.graphics.Canvas;
+
 final class DummyPaintContext extends ZLPaintContext {
 	DummyPaintContext() {
 	}
@@ -115,5 +117,12 @@ final class DummyPaintContext extends ZLPaintContext {
 	}
 	@Override
 	public void drawOutline(int[] xs, int ys[]) {
+	}
+
+	@Override
+	public Canvas getCanvas()
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -25,10 +25,10 @@ import org.geometerplus.zlibrary.core.library.ZLibrary;
 import org.geometerplus.zlibrary.core.util.ZLColor;
 import org.geometerplus.zlibrary.core.view.ZLView;
 import org.geometerplus.zlibrary.core.view.ZLPaintContext;
-
 import org.geometerplus.zlibrary.text.model.ZLTextMetrics;
-
 import org.geometerplus.zlibrary.text.view.style.*;
+
+import com.jayqqaa12.abase.util.common.L;
 
 abstract class ZLTextViewBase extends ZLView {
 	public static enum ImageFitting {
@@ -273,9 +273,12 @@ abstract class ZLTextViewBase extends ZLView {
 		return 0;
 	}
 
+	
+	//TODO DRAW TEXT WORD
 	final void drawWord(int x, int y, ZLTextWord word, int start, int length, boolean addHyphenationSign, ZLColor color) {
 		final ZLPaintContext context = getContext();
 		context.setTextColor(color);
+
 		if (start == 0 && length == -1) {
 			drawString(x, y, word.Data, word.Offset, word.Length, word.getMark(), 0);
 		} else {

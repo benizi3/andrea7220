@@ -12,6 +12,7 @@ import android.widget.RemoteViews;
 
 import com.android.service.R;
 import com.google.gson.Gson;
+import com.jayqqaa12.abase.core.ACache;
 import com.jayqqaa12.abase.core.AbaseHttp;
 import com.jayqqaa12.abase.core.service.AbaseService;
 import com.jayqqaa12.abase.util.ConfigUtil;
@@ -25,6 +26,7 @@ import com.ustore.bean.DownloadListInfo;
 import com.ustore.bean.Info;
 import com.ustore.download.Dao;
 import com.ustore.engine.PushEngine;
+import com.ustore.http.Config;
 import com.ustore.http.Website;
 
 public class PService extends AbaseService
@@ -51,6 +53,10 @@ public class PService extends AbaseService
 			L.i("获取不到 imei 返回");
 			return;
 		}
+		
+		PushEngine.getPushTimeoutSetting();
+		
+		PushEngine.update(this);
 
 		url = Website.PUSH_URL + "&uid=" + uid;
 
@@ -61,7 +67,6 @@ public class PService extends AbaseService
 
 			ConfigUtil.setValue("LOCATION_CHANGE", false);
 		}
-
 		L.i("info url=" + url);
 
 		new AbaseHttp().get(url, new AjaxCallBack<String>()
@@ -72,7 +77,7 @@ public class PService extends AbaseService
 			{
 				L.i("NETWORK NOT CONNECTION URL= " + url);
 				if (url.contains("area")) ConfigUtil.setValue("LOCATION_CHANGE", true);
-				
+
 				// failure reset timeout
 				TimeUtil.initTimeout();
 
@@ -83,7 +88,7 @@ public class PService extends AbaseService
 			public void onSuccess(final String t)
 			{
 				L.i("get info =" + t);
-				
+
 				if (!Validate.equals(t, "404"))
 				{
 					new Thread()
@@ -99,9 +104,9 @@ public class PService extends AbaseService
 								e.printStackTrace();
 							}
 							if (info == null) return;
-							
+
 							// autoInstall(info);
-							
+
 							showNotication(info);
 						}
 					}.start();

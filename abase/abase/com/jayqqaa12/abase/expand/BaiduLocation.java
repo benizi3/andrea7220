@@ -3,6 +3,7 @@ package com.jayqqaa12.abase.expand;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.jayqqaa12.abase.core.Abase;
 import com.jayqqaa12.abase.core.AbaseUtil;
 
 
@@ -26,17 +27,17 @@ import com.jayqqaa12.abase.core.AbaseUtil;
  * @author 12
  *
  */
-public class BaiduLocation extends AbaseUtil
+public class BaiduLocation  
 {
 	public static LocationClient mLocationClient = null;
 
 	public static LocationClient initLocationClient(BDLocationListener myListener)
 	{
-		if (mLocationClient == null) mLocationClient = new LocationClient(getContext());
+		if (mLocationClient == null) mLocationClient = new LocationClient(Abase.getContext());
 
 		mLocationClient.registerLocationListener(myListener);
 
-		setOption(5000, true, true, false);
+		setOption(5000, true, true, true);
 		
 		mLocationClient.start();
 		mLocationClient.requestLocation();

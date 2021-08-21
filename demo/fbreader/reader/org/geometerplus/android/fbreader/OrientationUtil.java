@@ -19,6 +19,8 @@
 
 package org.geometerplus.android.fbreader;
 
+import com.jayqqaa12.reader.R;
+
 import android.app.Activity;
 import android.content.Intent;
 
@@ -31,6 +33,7 @@ public abstract class OrientationUtil {
 
 	public static void startActivityForResult(Activity current, Intent intent, int requestCode) {
 		current.startActivityForResult(intent.putExtra(KEY, current.getRequestedOrientation()), requestCode);
+		current.overridePendingTransition(R.anim.push_right_in, R.anim.push_keep);
 	}
 
 	public static void setOrientation(Activity activity, Intent intent) {

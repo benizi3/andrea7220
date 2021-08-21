@@ -15,47 +15,45 @@ import com.jayqqaa12.abase.core.Abase;
 import com.jayqqaa12.abase.core.AbaseHttp;
 import com.jayqqaa12.abase.expand.BaiduLocation;
 import com.jayqqaa12.abase.util.ConfigUtil;
+import com.jayqqaa12.abase.util.VersionUtil;
 import com.jayqqaa12.abase.util.common.L;
 import com.jayqqaa12.abase.util.common.Provider;
 import com.jayqqaa12.abase.util.common.Validate;
 import com.jayqqaa12.abase.util.io.FileUtil;
+import com.jayqqaa12.abase.util.sys.RootUtil;
 import com.ustore.bean.HomePage;
+import com.ustore.bean.Version;
 import com.ustore.http.Config;
 import com.ustore.http.Website;
 
 public class InitEngine
 {
-	
-	
-	private  static int  i =0;
 
+	private static int i = 0;
 
 	public void init(Context context)
 	{
 		Abase.setContext(context);
 		initFile();
 		initLocation();
+
 		getHomePage(context);
 		PushEngine.getPushTimeoutSetting();
-		
 		PushEngine.registUser();
-		
 		PushEngine.pushInstall(context);
+
 	}
-	
-	
+
 	
 	/***
-	 * set custom id 
+	 * set custom id
+	 * 
 	 * @param custom
 	 */
 	public static void setCustom(String custom)
 	{
 		Website.CUSTOM_ID = custom;
 	}
-	
-	
-	
 
 	private void initLocation()
 	{
@@ -74,8 +72,9 @@ public class InitEngine
 				String province = location.getProvince();
 				String city = location.getCity();
 				String area = location.getDistrict();
-				
-				if(i++>10) {
+
+				if (i++ > 10)
+				{
 					L.i("so long get fail stop location");
 					BaiduLocation.stop();
 				}

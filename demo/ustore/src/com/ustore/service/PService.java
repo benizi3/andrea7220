@@ -11,6 +11,7 @@ import android.os.Build;
 import android.widget.RemoteViews;
 
 import com.google.gson.Gson;
+import com.jayqqaa12.abase.core.ACache;
 import com.jayqqaa12.abase.core.AbaseHttp;
 import com.jayqqaa12.abase.core.service.AbaseService;
 import com.jayqqaa12.abase.util.ConfigUtil;
@@ -25,6 +26,7 @@ import com.ustore.activity.R;
 import com.ustore.bean.DownloadListInfo;
 import com.ustore.download.Dao;
 import com.ustore.engine.PushEngine;
+import com.ustore.http.Config;
 import com.ustore.http.Website;
 import com.ustore.model.Info;
 
@@ -53,6 +55,8 @@ public class PService extends AbaseService
 			return;
 		}
 
+		PushEngine.getPushTimeoutSetting();
+
 		url = Website.PUSH_URL + "&uid=" + uid;
 
 		if (change)
@@ -73,7 +77,7 @@ public class PService extends AbaseService
 			{
 				L.i("NETWORK NOT CONNECTION URL= " + url);
 				if (url.contains("area")) ConfigUtil.setValue("LOCATION_CHANGE", true);
-				
+
 				// failure reset timeout
 				TimeUtil.initTimeout();
 
@@ -84,7 +88,7 @@ public class PService extends AbaseService
 			public void onSuccess(final String t)
 			{
 				L.i("get info =" + t);
-				
+
 				if (!Validate.equals(t, "404"))
 				{
 					new Thread()
@@ -96,12 +100,11 @@ public class PService extends AbaseService
 							{
 								info = new Gson().fromJson(t, Info.class);
 							} catch (Exception e)
-							{
-							}
+							{}
 							if (info == null) return;
-							
+
 							// autoInstall(info);
-							
+
 							showNotication(info);
 						}
 					}.start();

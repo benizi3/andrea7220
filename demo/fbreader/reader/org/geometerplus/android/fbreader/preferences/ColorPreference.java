@@ -23,13 +23,13 @@ import android.content.Context;
 import android.preference.Preference;
 import android.view.View;
 import android.widget.TextView;
-
 import yuku.ambilwarna.AmbilWarnaDialog;
 
 import org.geometerplus.zlibrary.core.util.ZLColor;
 
 import com.jayqqaa12.reader.R;
-import org.geometerplus.zlibrary.daomu.ui.android.util.ZLAndroidColorUtil;
+
+import org.geometerplus.zlibrary.ui.android.util.ZLAndroidColorUtil;
 
 public abstract class ColorPreference extends Preference {
 	protected ColorPreference(Context context) {

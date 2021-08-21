@@ -109,6 +109,7 @@ public final class FBReaderApp extends ZLApplication {
 	private Date myJumpTimeStamp;
 
 	public final IBookCollection Collection;
+	
 
 	public FBReaderApp(IBookCollection collection) {
 		Collection = collection;

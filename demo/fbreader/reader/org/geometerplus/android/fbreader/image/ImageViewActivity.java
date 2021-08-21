@@ -29,11 +29,9 @@ import android.view.*;
 
 import org.geometerplus.zlibrary.core.image.*;
 import org.geometerplus.zlibrary.core.util.ZLColor;
-
-import org.geometerplus.zlibrary.daomu.ui.android.library.ZLAndroidLibrary;
-import org.geometerplus.zlibrary.daomu.ui.android.image.ZLAndroidImageData;
-import org.geometerplus.zlibrary.daomu.ui.android.util.ZLAndroidColorUtil;
-
+import org.geometerplus.zlibrary.ui.android.image.ZLAndroidImageData;
+import org.geometerplus.zlibrary.ui.android.library.ZLAndroidLibrary;
+import org.geometerplus.zlibrary.ui.android.util.ZLAndroidColorUtil;
 import org.geometerplus.android.fbreader.OrientationUtil;
 
 public class ImageViewActivity extends Activity {
@@ -55,7 +53,7 @@ public class ImageViewActivity extends Activity {
 		);
 
 		Thread.setDefaultUncaughtExceptionHandler(
-			new org.geometerplus.zlibrary.daomu.ui.android.library.UncaughtExceptionHandler(this)
+			new org.geometerplus.zlibrary.ui.android.library.UncaughtExceptionHandler(this)
 		);
 
 		setContentView(new ImageView());

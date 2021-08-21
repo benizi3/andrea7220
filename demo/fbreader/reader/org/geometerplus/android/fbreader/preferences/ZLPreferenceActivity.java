@@ -27,8 +27,9 @@ import android.content.Intent;
 
 import org.geometerplus.zlibrary.core.options.*;
 import org.geometerplus.zlibrary.core.resources.ZLResource;
-
 import org.geometerplus.android.fbreader.OrientationUtil;
+
+import com.jayqqaa12.reader.R;
 
 abstract class ZLPreferenceActivity extends android.preference.PreferenceActivity {
 	public static String SCREEN_KEY = "screen";
@@ -112,11 +113,6 @@ abstract class ZLPreferenceActivity extends android.preference.PreferenceActivit
 		return preference;
 	}
 
-	/*
-	protected Category createCategory() {
-		return new CategoryImpl(myScreen, Resource);
-	}
-	*/
 
 	protected abstract void init(Intent intent);
 
@@ -124,7 +120,7 @@ abstract class ZLPreferenceActivity extends android.preference.PreferenceActivit
 	protected void onCreate(Bundle bundle) {
 		super.onCreate(bundle);
 
-		Thread.setDefaultUncaughtExceptionHandler(new org.geometerplus.zlibrary.daomu.ui.android.library.UncaughtExceptionHandler(this));
+		Thread.setDefaultUncaughtExceptionHandler(new org.geometerplus.zlibrary.ui.android.library.UncaughtExceptionHandler(this));
 
 		myScreen = getPreferenceManager().createPreferenceScreen(this);
 
@@ -143,5 +139,13 @@ abstract class ZLPreferenceActivity extends android.preference.PreferenceActivit
 	@Override
 	protected void onNewIntent(Intent intent) {
 		OrientationUtil.setOrientation(this, intent);
+	}
+	
+	@Override
+	public void finish()
+	{
+		super.finish();
+		
+		overridePendingTransition(R.anim.push_keep, R.anim.push_right_out);
 	}
 }

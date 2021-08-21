@@ -19,6 +19,7 @@
 
 package org.geometerplus.zlibrary.core.view;
 
+import org.geometerplus.fbreader.fbreader.FBReaderApp;
 import org.geometerplus.zlibrary.core.application.ZLApplication;
 
 abstract public class ZLView {
@@ -27,6 +28,12 @@ abstract public class ZLView {
 
 	protected ZLView(ZLApplication application) {
 		Application = application;
+	}
+	
+	protected FBReaderApp reader;
+	public void setReader(FBReaderApp reader){
+		
+		this.reader=reader;
 	}
 
 	protected final void setContext(ZLPaintContext context) {

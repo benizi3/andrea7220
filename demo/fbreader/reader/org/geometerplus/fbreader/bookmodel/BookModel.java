@@ -22,9 +22,10 @@ package org.geometerplus.fbreader.bookmodel;
 import java.util.List;
 
 import org.geometerplus.zlibrary.text.model.*;
-
 import org.geometerplus.fbreader.book.Book;
 import org.geometerplus.fbreader.formats.FormatPlugin;
+
+import com.jayqqaa12.abase.util.common.L;
 
 public abstract class BookModel {
 	public static BookModel createModel(Book book) throws BookReadingException {
@@ -32,6 +33,7 @@ public abstract class BookModel {
 
 		System.err.println("using plugin: " + plugin.supportedFileType() + "/" + plugin.type());
 
+		
 		final BookModel model;
 		switch (plugin.type()) {
 			case NATIVE:
@@ -43,7 +45,6 @@ public abstract class BookModel {
 			default:
 				throw new BookReadingException("unknownPluginType", plugin.type().toString(), null);
 		}
-
 		plugin.readModel(model);
 		return model;
 	}

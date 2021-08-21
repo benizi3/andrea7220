@@ -14,6 +14,7 @@ import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.PowerManager;
 import android.telephony.TelephonyManager;
+import android.view.LayoutInflater;
 import android.view.WindowManager;
 
 import com.jayqqaa12.abase.core.AbaseUtil;
@@ -91,5 +92,12 @@ public class ManageUtil extends AbaseUtil
 	{
 		return (WifiManager) getContext().getSystemService(Context.WIFI_SERVICE);
 	}
+	
+
+	public static LayoutInflater getInflater()
+	{
+		return  (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	}
+	
 
 }

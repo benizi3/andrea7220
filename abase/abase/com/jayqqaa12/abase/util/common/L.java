@@ -2,6 +2,7 @@ package com.jayqqaa12.abase.util.common;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.reflect.Array;
 
 import android.util.Log;
 
@@ -27,6 +28,8 @@ public class L
 	private static final int PRINTLN = 1;
 	
 	
+	
+
 	public static void d( Object message)
 	{
 		if (LOG_LEVEL > DEBUG) Log.d(TAG.DEBUG, message+"");

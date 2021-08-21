@@ -115,7 +115,6 @@ public class Main extends Activity
 
 			if (diff >= 2 && ACache.isPastDue("version_update_check", 30 * ACache.TIME_DAY))
 			{
-
 				// 重新提示更新
 				ConfigUtil.setValue(Config.VERSION_DIALOG, true);
 				ConfigUtil.setValue(Config.VERSION_CHECK_COUNT, 0);

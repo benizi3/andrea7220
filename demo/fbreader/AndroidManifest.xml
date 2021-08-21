@@ -6,9 +6,8 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:maxSdkVersion="10"
-        android:minSdkVersion="5"
-        android:targetSdkVersion="9" />
+        android:minSdkVersion="8"
+        android:targetSdkVersion="17" />
 
     <supports-screens
         android:anyDensity="true"
@@ -37,22 +36,27 @@
         android:icon="@drawable/fbreader"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.NoTitleBar" >
-        <activity 
-            android:screenOrientation="portrait"
-            android:name="com.jayqqaa12.reader.ui.MainActivity_" >
+        <activity
+            android:name="com.jayqqaa12.reader.ui.MainActivity_"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-        <!--  file manage -->
-        <activity   android:screenOrientation="portrait" android:name="com.jayqqaa12.filemanage.FileActivity_"></activity>
-        
-        
-        <!--  fb activity -->
-        
+        <activity
+            android:name="com.jayqqaa12.reader.ui.DeleteBookDialog_"
+            android:theme="@style/MyDialogStyleBottom" />
+
+        <!-- file manage -->
+        <activity
+            android:name="com.jayqqaa12.reader.ui.FileActivity_"
+            android:screenOrientation="portrait" >
+        </activity>
+
+        <!-- fb activity -->
+
         <activity
             android:name="org.geometerplus.android.fbreader.error.BookReadingErrorActivity"
             android:process=":error"
@@ -65,7 +69,6 @@
                 <data android:scheme="BookReadingException" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name=".error.BugReportActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -218,14 +221,6 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/android:Theme.Dialog" />
         <activity
-            android:name="org.geometerplus.android.fbreader.style.StyleListActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/android:Theme.Dialog" />
-        <activity
-            android:name="org.geometerplus.android.fbreader.style.EditStyleActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/android:Theme.Dialog" />
-        <activity
             android:name="org.geometerplus.android.fbreader.image.ImageViewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:process=":imageView"
@@ -241,136 +236,13 @@
         </service>
 
         <activity
-            android:name="org.geometerplus.android.fbreader.library.BookInfoActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:process=":library"
-            android:theme="@style/android:Theme" />
-        <activity
-            android:name="org.geometerplus.android.fbreader.library.LibrarySearchActivity"
-            android:process=":library"
-            android:theme="@android:style/Theme.NoDisplay" >
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
-        </activity>
-        <activity
-            android:name="org.geometerplus.android.fbreader.library.LibraryActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTask"
-            android:process=":library"
-            android:theme="@style/android:Theme" >
-            <meta-data
-                android:name="android.app.default_searchable"
-                android:value="org.geometerplus.android.fbreader.library.LibrarySearchActivity" />
-        </activity>
-        <activity
             android:name="org.geometerplus.android.fbreader.TOCActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/android:Theme" />
         <activity
-            android:name="org.geometerplus.android.fbreader.BookmarksActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTask"
-            android:process=":bookmarks"
-            android:theme="@style/android:Theme" >
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
-        </activity>
-        <activity
-            android:name="org.geometerplus.android.fbreader.BookmarkEditActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/android:Theme.Dialog" />
-        <activity
             android:name="org.geometerplus.android.fbreader.preferences.PreferenceActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/android:Theme" />
-        <activity
-            android:name="org.geometerplus.android.fbreader.preferences.EditBookInfoActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:process=":library"
-            android:theme="@style/android:Theme" />
-        <activity
-            android:name="org.geometerplus.android.fbreader.network.BookDownloader"
-            android:process=":networkLibrary"
-            android:theme="@android:style/Theme.NoDisplay" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="*"
-                    android:scheme="http" />
-                <data android:pathPattern=".*\\.epub" />
-                <data android:pathPattern=".*\\.oeb" />
-                <data android:pathPattern=".*\\.fb2" />
-                <data android:pathPattern=".*\\.fb2\\.zip" />
-                <data android:pathPattern=".*\\.mobi" />
-                <data android:pathPattern=".*\\.prc" />
-                <data android:pathPattern=".*\\.txt" />
-                <data android:pathPattern=".*\\.rtf" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="*"
-                    android:scheme="http" />
-                <data android:mimeType="application/epub+zip" />
-                <data android:mimeType="application/x-pilot-prc" />
-                <data android:mimeType="application/x-mobipocket-ebook" />
-                <data android:mimeType="application/x-fictionbook+xml" />
-                <data android:mimeType="application/x-fictionbook" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="*rus.ec"
-                    android:mimeType="application/zip"
-                    android:scheme="http" />
-                <data
-                    android:host="lib.ololo.cc"
-                    android:mimeType="application/zip"
-                    android:scheme="http" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="*"
-                    android:scheme="book" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="*"
-                    android:scheme="epub" />
-            </intent-filter>
-        </activity>
         <activity
             android:name="com.paragon.dictionary.fbreader.OpenDictionaryActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />

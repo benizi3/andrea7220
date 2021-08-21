@@ -37,6 +37,8 @@ import org.geometerplus.fbreader.fbreader.FBReaderApp;
 
 import org.geometerplus.android.util.ViewUtil;
 
+
+//TODO  修改目录 显示 txt 文件的目录
 public class TOCActivity extends ListActivity {
 	private TOCAdapter myAdapter;
 	private ZLTree<?> mySelectedItem;
@@ -45,7 +47,7 @@ public class TOCActivity extends ListActivity {
 	public void onCreate(Bundle bundle) {
 		super.onCreate(bundle);
 
-		Thread.setDefaultUncaughtExceptionHandler(new org.geometerplus.zlibrary.daomu.ui.android.library.UncaughtExceptionHandler(this));
+		Thread.setDefaultUncaughtExceptionHandler(new org.geometerplus.zlibrary.ui.android.library.UncaughtExceptionHandler(this));
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 

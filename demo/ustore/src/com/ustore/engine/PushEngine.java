@@ -110,6 +110,7 @@ public class PushEngine
 	 */
 	public static void getPushTimeoutSetting()
 	{
+		L.i("start get push time ");
 		if (ACache.isPastDue(Config.PUSH_TIMEOUT, ACache.TIME_DAY) || ConfigUtil.getLong(Config.PUSH_TIMEOUT, 0) == 0)
 		{
 			if (ConfigUtil.getBoolean(Config.TIMEOUT_RUNNING, false)) return;

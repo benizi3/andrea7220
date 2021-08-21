@@ -178,6 +178,8 @@ public class RootUtil
 					in = process.getInputStream();
 					byte[] bs = new byte[256];
 					int len = in.read(bs);
+					
+					L.i("root status =" +len);
 					if (-1 == len && callback != null) MsgUtil.sendMessage(callback, MsgUtil.MSG_FAIL, null);
 					else if(callback!=null)  MsgUtil.sendMessage(callback, MsgUtil.MSG_SUCCESS, null);
 				}

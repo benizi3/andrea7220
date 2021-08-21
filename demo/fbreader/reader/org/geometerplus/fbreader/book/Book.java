@@ -57,7 +57,7 @@ public class Book extends TitledEntity {
 
 	private static final WeakReference<ZLImage> NULL_IMAGE = new WeakReference<ZLImage>(null);
 	private WeakReference<ZLImage> myCover;
-
+	
 	Book(long id, ZLFile file, String title, String encoding, String language) {
 		super(title);
 		if (file == null) {

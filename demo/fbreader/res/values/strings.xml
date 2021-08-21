@@ -1,26 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">reader</string>
-	<string name="empty_string"></string>
 	
-	<string name="btn_ok">确定</string>
-	<string name="btn_cancel">取消</string>
+    
+	<string name="ok">确定</string>
+	<string name="cancel">取消</string>
+	<string name="delete">删除</string>
 	
-	<string name="dialog_continue_read_title">是否要继续阅读？</string>
-	<string name="dialog_continue_parent">你已经阅读到 %s</string>
-	<string name="dialog_continue_child">%s .</string>
+	
+	<!-- reader -->
 	
 	<string name="first_page">已经到第一页了.</string>
 	<string name="last_page">已经到最后一页了.</string>
-	
 	<string name="exit_confirm">再按一次返回键退出</string>
 	<string name="exit_reader">再按一次返回键退出阅读界面</string>
 	
-	<!-- 需要每个程序自己定义的字符串区域 -->
+	<!-- file  -->
+	<string name="input_book">导入图书</string>
 	
 	
-	<string name="title_daomubiji">盗墓笔记</string>
-	<string name="title_guichuideng">鬼吹灯</string>
+	
+	<!-- dialog -->
+	
+	<string name="delete_book_and_file">是否删除源文件</string>
+	<string name="delete_book">文件不存在是否删除</string>
+	<string name="delete_file">是否删除文件</string>
+	
 	
 
 </resources>
