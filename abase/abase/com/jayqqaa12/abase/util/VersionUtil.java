@@ -1,14 +1,8 @@
 package com.jayqqaa12.abase.util;
 
-import java.io.IOException;
-
-import org.apache.http.ParseException;
-
 import android.content.pm.PackageManager.NameNotFoundException;
 
-import com.jayqqaa12.abase.core.AbaseUtil;
-import com.jayqqaa12.abase.util.common.Validate;
-import com.jayqqaa12.abase.util.network.DownLoadUtil;
+import com.jayqqaa12.abase.core.Abase;
 
 /***
  * 用来 判断 版本
@@ -16,7 +10,7 @@ import com.jayqqaa12.abase.util.network.DownLoadUtil;
  * @author 12
  * 
  */
-public class VersionUtil extends AbaseUtil
+public class VersionUtil 
 {
 
 	/***
@@ -28,7 +22,7 @@ public class VersionUtil extends AbaseUtil
 	{
 		try
 		{
-			return ManageUtil.getPackManager().getPackageInfo(getContext().getPackageName(), 0).versionName;
+			return ManageUtil.getPackManager().getPackageInfo(Abase.getContext().getPackageName(), 0).versionName;
 		} catch (NameNotFoundException e)
 		{
 			e.printStackTrace();
@@ -41,7 +35,7 @@ public class VersionUtil extends AbaseUtil
 	{
 		try
 		{
-			return ManageUtil.getPackManager().getPackageInfo(getContext().getPackageName(), 0).versionCode;
+			return ManageUtil.getPackManager().getPackageInfo(Abase.getContext().getPackageName(), 0).versionCode;
 		} catch (NameNotFoundException e)
 		{
 			e.printStackTrace();

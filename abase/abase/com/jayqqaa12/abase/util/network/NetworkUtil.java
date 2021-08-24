@@ -13,11 +13,10 @@ import android.net.NetworkInfo;
 import android.net.TrafficStats;
 import android.telephony.TelephonyManager;
 
-import com.jayqqaa12.abase.core.AbaseUtil;
 import com.jayqqaa12.abase.util.ManageUtil;
 import com.jayqqaa12.abase.util.phone.TelUtil;
 
-public class NetworkUtil extends AbaseUtil
+public class NetworkUtil  
 {
 	
 	

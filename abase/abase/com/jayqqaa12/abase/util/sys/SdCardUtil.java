@@ -3,17 +3,16 @@ package com.jayqqaa12.abase.util.sys;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
-import com.jayqqaa12.abase.core.Abase;
-import com.jayqqaa12.abase.core.AbaseUtil;
-import com.jayqqaa12.abase.util.TextUtil;
-
 import android.content.Context;
 import android.os.Environment;
 import android.os.StatFs;
 import android.os.storage.StorageManager;
 import android.text.format.Formatter;
 
-public class SdCardUtil extends AbaseUtil
+import com.jayqqaa12.abase.core.Abase;
+import com.jayqqaa12.abase.util.TextUtil;
+
+public class SdCardUtil  
 {
 	
 	/**
@@ -37,7 +36,7 @@ public class SdCardUtil extends AbaseUtil
 	 */
 	public static String [] getSdCardPath(){
 		
-		StorageManager sm = (StorageManager) Abase.getContext().getSystemService(Context.STORAGE_SERVICE);
+		StorageManager sm = (StorageManager)  Abase.getContext().getSystemService(Context.STORAGE_SERVICE);
 		String[] paths=null;
 		try
 		{
@@ -75,7 +74,7 @@ public class SdCardUtil extends AbaseUtil
 		StatFs stat = new StatFs(path.getPath());
 		long blockSize = stat.getBlockSize();
 		long availableBlocks = stat.getAvailableBlocks();
-		return Formatter.formatFileSize(getContext(), availableBlocks * blockSize);
+		return Formatter.formatFileSize(Abase.getContext(), availableBlocks * blockSize);
 	}
 	
 	/**

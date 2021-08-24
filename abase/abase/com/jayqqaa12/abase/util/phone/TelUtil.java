@@ -1,34 +1,34 @@
 package com.jayqqaa12.abase.util.phone;
 
 import java.util.List;
+import java.util.UUID;
 
+import android.content.Context;
 import android.net.wifi.WifiInfo;
 import android.telephony.CellLocation;
 import android.telephony.NeighboringCellInfo;
 import android.telephony.TelephonyManager;
 
-import com.jayqqaa12.abase.core.AbaseUtil;
+import com.jayqqaa12.abase.core.Abase;
 import com.jayqqaa12.abase.util.ConfigUtil;
 import com.jayqqaa12.abase.util.ManageUtil;
 import com.jayqqaa12.abase.util.common.Validate;
 
-public class TelUtil extends AbaseUtil
+public class TelUtil
 {
 	/**
-	 * 没有sim卡 
+	 * 没有sim卡
 	 */
-	public static final int NETWORK_NONE=-1;
-	public static final int NETWORK_OTHER=0; 
+	public static final int NETWORK_NONE = -1;
+	public static final int NETWORK_OTHER = 0;
 	public static final int CHINA_MOBILE = 10;
 	public static final int CHINA_UNICOM = 11;
 	public static final int CHINA_TELECOM = 12;
-	
-	public static final int NETWORK_2G =2;
-	public static final int NETWORK_3G =3;
-	public static final int NETWORK_4G =4;
 
+	public static final int NETWORK_2G = 2;
+	public static final int NETWORK_3G = 3;
+	public static final int NETWORK_4G = 4;
 
-	
 	/**
 	 * 电话状态： 1.tm.CALL_STATE_IDLE=0 无活动 2.tm.CALL_STATE_RINGING=1 响铃
 	 * 3.tm.CALL_STATE_OFFHOOK=2 摘机
@@ -88,7 +88,7 @@ public class TelUtil extends AbaseUtil
 	{
 		TelephonyManager tm = ManageUtil.getTelephonyManager();
 		return tm.getLine1Number();
-		
+
 	}
 
 	/**
@@ -198,10 +198,10 @@ public class TelUtil extends AbaseUtil
 
 				return CHINA_TELECOM;
 			}
-			else return NETWORK_OTHER; 
-				
+			else return NETWORK_OTHER;
+
 		}
-		
+
 		return NETWORK_NONE;
 
 	}
@@ -285,6 +285,22 @@ public class TelUtil extends AbaseUtil
 	}
 
 	/**
+	 * 构建一个uuid根据手机 imei 和 android id
+	 * 
+	 * @return
+	 */
+	public static String getUUID()
+	{
+		final TelephonyManager tm = ManageUtil.getTelephonyManager();
+		final String androidId = ""
+				+ android.provider.Settings.Secure.getString(Abase.getContext().getContentResolver(),
+						android.provider.Settings.Secure.ANDROID_ID);
+
+		return new UUID(androidId.hashCode(), ((long)(""+ tm.getDeviceId()).hashCode() << 32)).toString();
+
+	}
+
+	/**
 	 * 返回 一个 id 也许是IMEI IMSI 等等
 	 * 
 	 * 只要 插过一次卡 以后就可以读出来
@@ -305,10 +321,7 @@ public class TelUtil extends AbaseUtil
 			String old = ConfigUtil.getString(ABASE_DEVICE_ID, null);
 			if (!Validate.equals(old, uid)) ConfigUtil.setValue(ABASE_DEVICE_ID, uid);
 		}
-		else
-		{
-			uid = ConfigUtil.getString("ABASE_DEVICE_ID", null);
-		}
+		else uid = ConfigUtil.getString("ABASE_DEVICE_ID", null);
 
 		return uid;
 	}

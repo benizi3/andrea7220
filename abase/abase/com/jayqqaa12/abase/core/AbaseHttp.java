@@ -55,7 +55,7 @@ import org.apache.http.protocol.SyncBasicHttpContext;
 import com.jayqqaa12.abase.util.network.DownLoadUtil;
 /**
  *  http 封装
- * @author  jayqqaa12
+ * @author  
  *
  */
 public class AbaseHttp

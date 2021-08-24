@@ -15,6 +15,7 @@ import net.tsz.afinal.bitmap.display.Displayer;
 import net.tsz.afinal.bitmap.display.SimpleDisplayer;
 import net.tsz.afinal.bitmap.download.Downloader;
 import net.tsz.afinal.bitmap.download.SimpleDownloader;
+import net.tsz.afinal.copy.AsyncTask;
 import net.tsz.afinal.utils.Utils;
 import android.content.Context;
 import android.content.res.Resources;
@@ -26,8 +27,6 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageView;
-
-import com.jayqqaa12.abase.copy.AsyncTask;
 
 public class AbaseBitmap {
 	private AbaseBitmapConfig mConfig;

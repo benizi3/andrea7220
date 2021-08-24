@@ -14,7 +14,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Debug.MemoryInfo;
 import android.text.format.Formatter;
 
-import com.jayqqaa12.abase.core.AbaseUtil;
+import com.jayqqaa12.abase.core.Abase;
 import com.jayqqaa12.abase.model.TaskInfo;
 import com.jayqqaa12.abase.util.ManageUtil;
 
@@ -24,7 +24,7 @@ import com.jayqqaa12.abase.util.ManageUtil;
  * @author  jayqqaa12
  *
  */
-public class TaskUtil extends AbaseUtil
+public class TaskUtil  
 {
 
 	/**
@@ -53,7 +53,7 @@ public class TaskUtil extends AbaseUtil
 	public static List<TaskInfo> getRunningAppProcesses()
 	{
 		List<TaskInfo> taskinfos = new ArrayList<TaskInfo>();
-		PackageManager pm = getContext().getPackageManager();
+		PackageManager pm = Abase.getContext().getPackageManager();
 		ActivityManager am = ManageUtil.getActivityManager();
 
 		for (RunningAppProcessInfo info : am.getRunningAppProcesses())
@@ -77,7 +77,7 @@ public class TaskUtil extends AbaseUtil
 				MemoryInfo[] memoryinfos = am.getProcessMemoryInfo(new int[] { pid });
 				int memory = memoryinfos[0].getTotalPrivateDirty();
 				taskinfo.memorySize = memory * 1024;
-				taskinfo.memory = Formatter.formatFileSize(getContext(), memory * 1024);
+				taskinfo.memory = Formatter.formatFileSize(Abase.getContext(), memory * 1024);
 				taskinfos.add(taskinfo);
 				taskinfo = null;
 			}

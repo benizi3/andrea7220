@@ -7,15 +7,13 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Environment;
 
-import com.jayqqaa12.abase.core.AbaseUtil;
-
 /**
  * 提供各种 系统 广播的 动态 注册
  * 
  * @author jayqqaa12
  * @date 2013-5-15
  */
-public class ReceiverUtil extends AbaseUtil
+public class ReceiverUtil  
 {
 
 	

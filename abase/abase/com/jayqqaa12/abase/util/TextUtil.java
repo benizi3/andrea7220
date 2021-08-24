@@ -2,9 +2,7 @@ package com.jayqqaa12.abase.util;
 
 import java.text.DecimalFormat;
 
-import com.jayqqaa12.abase.core.AbaseUtil;
-
-public class TextUtil extends AbaseUtil
+public class TextUtil 
 {
 
 

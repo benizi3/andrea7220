@@ -3,13 +3,10 @@ package com.jayqqaa12.abase.util.ui;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
-import android.view.animation.Animation.AnimationListener;
 import android.view.animation.TranslateAnimation;
-import android.widget.RelativeLayout;
-
-import com.jayqqaa12.abase.core.AbaseUtil;
 
 
 /**
@@ -17,7 +14,7 @@ import com.jayqqaa12.abase.core.AbaseUtil;
 * @author jayqqaa12 
 * @date 2013-6-5
  */
-public class AnimUitl extends AbaseUtil
+public class AnimUitl  
 {
 	/**
 	 * alpha 动画  淡入 

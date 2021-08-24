@@ -4,7 +4,6 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.jayqqaa12.abase.core.Abase;
-import com.jayqqaa12.abase.core.AbaseUtil;
 
 
 /***

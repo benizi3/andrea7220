@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.telephony.TelephonyManager;
 
-import com.jayqqaa12.abase.core.AbaseUtil;
+import com.jayqqaa12.abase.core.Abase;
 import com.jayqqaa12.abase.util.common.L;
 import com.jayqqaa12.abase.util.common.Provider;
 import com.jayqqaa12.abase.util.common.Validate;
@@ -18,7 +18,7 @@ import com.jayqqaa12.abase.util.phone.TelUtil;
  * 
  * 必需 为 系统应用 或者有系统权限
  */
-public class ApnUtil extends AbaseUtil
+public class ApnUtil  
 {
 
 	
@@ -150,7 +150,7 @@ public class ApnUtil extends AbaseUtil
 	{
 		boolean result = false;
 
-		ContentResolver contentResolver = getContext().getContentResolver();
+		ContentResolver contentResolver = Abase.getContext().getContentResolver();
 		Cursor cursor = contentResolver.query(Provider.PREFERRED_APN_URI, null, null, null, null);
 		if (cursor != null)
 		{
@@ -174,14 +174,14 @@ public class ApnUtil extends AbaseUtil
 		}
 		ContentValues values = new ContentValues();
 		values.put("apn_id", _id);
-		ContentResolver resolver = getContext().getContentResolver();
+		ContentResolver resolver = Abase.getContext().getContentResolver();
 		resolver.update(Provider.PREFERRED_APN_URI, values, null, null);
 	}
 
 	private static int findAPNId(ContentValues cv)
 	{
 		int id = -1;
-		ContentResolver contentResolver = getContext().getContentResolver();
+		ContentResolver contentResolver = Abase.getContext().getContentResolver();
 		Cursor cursor = contentResolver.query(Provider.ALL_APN_URI, null, null, null, null);
 		if (cursor != null)
 		{
@@ -207,7 +207,7 @@ public class ApnUtil extends AbaseUtil
 	private static int insertAPN(ContentValues value)
 	{
 		int apn_Id = -1;
-		ContentResolver resolver = getContext().getContentResolver();
+		ContentResolver resolver = Abase.getContext().getContentResolver();
 
 		Uri newRow = resolver.insert(Provider.ALL_APN_URI, value);
 		if (newRow != null)

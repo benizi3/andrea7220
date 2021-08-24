@@ -12,7 +12,7 @@ import android.provider.CallLog;
 import android.telephony.TelephonyManager;
 
 import com.android.internal.telephony.ITelephony;
-import com.jayqqaa12.abase.core.AbaseUtil;
+import com.jayqqaa12.abase.core.Abase;
 import com.jayqqaa12.abase.util.common.Validate;
 
 
@@ -21,12 +21,12 @@ import com.jayqqaa12.abase.util.common.Validate;
 * @author jayqqaa12 
 * @date 2013-6-8
  */
-public class CallUtil extends AbaseUtil
+public class CallUtil 
 {
 
 	public static TelephonyManager getTelephonyManager()
 	{
-		return (TelephonyManager) getContext().getSystemService(Context.TELEPHONY_SERVICE);
+		return (TelephonyManager) Abase.getContext().getSystemService(Context.TELEPHONY_SERVICE);
 	}
 
 	
@@ -133,7 +133,7 @@ public class CallUtil extends AbaseUtil
 	 */
 	public static void deleteCallLog(String number)
 	{
-		ContentResolver resolver = getContext().getContentResolver();
+		ContentResolver resolver =Abase.getContext().getContentResolver();
 		Cursor cursor = resolver.query(CallLog.Calls.CONTENT_URI, null, "number=?", new String[] { number }, null);
 		if (cursor.moveToFirst())
 		{// 查询到了呼叫记录

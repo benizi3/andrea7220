@@ -8,9 +8,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 
-import com.jayqqaa12.abase.core.AbaseUtil;
+import com.jayqqaa12.abase.core.Abase;
 
-public class ContactUtil extends AbaseUtil
+public class ContactUtil  
 {
 
 
@@ -29,7 +29,7 @@ public class ContactUtil extends AbaseUtil
 	{
 
 		List<String> numbers = new ArrayList<String>();
-		ContentResolver resolver = getContext().getContentResolver();
+		ContentResolver resolver = Abase.getContext().getContentResolver();
 
 		Uri id_uri = Uri.parse("content://com.android.contacts/raw_contacts");
 		Uri data_uri = Uri.parse("content://com.android.contacts/data");
@@ -59,7 +59,7 @@ public class ContactUtil extends AbaseUtil
 	public static Cursor getAllSms()
 	{
 		
-		ContentResolver resolver = getContext().getContentResolver();
+		ContentResolver resolver = Abase.getContext().getContentResolver();
 		Uri uri = Uri.parse("content://sms/");
 		Cursor cursor = resolver.query(uri, null,
 				null, null, "date desc");
@@ -78,7 +78,7 @@ public class ContactUtil extends AbaseUtil
 		String[] projection = { ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER };
 
 		// 将自己添加到 msPeers 中
-		Cursor cursor = getContext().getContentResolver()//
+		Cursor cursor = Abase.getContext().getContentResolver()//
 				.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, projection, // Which
 						ContactsContract.CommonDataKinds.Phone.NUMBER + "=?", // WHERE
 						new String[] { number }, //

@@ -4,6 +4,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jayqqaa12.abase.util.IntentUtil;
+
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,12 @@ public   class AbaseBaseAdapter<T> extends BaseAdapter
 
 	public AbaseBaseAdapter()
 	{}
+	
+	
+	public AbaseBaseAdapter (Class clazz, Context context )
+	{
+		setItemView(clazz, context);
+	}
 
 	public AbaseBaseAdapter (Class clazz, Context context, List<T>  data)
 	{
@@ -35,7 +43,7 @@ public   class AbaseBaseAdapter<T> extends BaseAdapter
 
 	public void setItemView(Class clazz, Context context)
 	{
-		this.clazz = clazz;
+		this.clazz = IntentUtil.getSubClass(clazz);
 		this.context = context;
 	}
 

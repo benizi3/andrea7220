@@ -69,6 +69,11 @@ public class AbaseApp extends Application
 		return (T) tempMap.get(key);
 	}
 	
+	public static void removeObject(String key)
+	{
+		tempMap.remove(key);
+	}
+	
 	/**
 	 * 用完以后 清理 一下  temp 
 	 */

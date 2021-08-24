@@ -17,19 +17,19 @@ import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.WindowManager;
 
-import com.jayqqaa12.abase.core.AbaseUtil;
+import com.jayqqaa12.abase.core.Abase;
 
-public class ManageUtil extends AbaseUtil
+public class ManageUtil  
 {
 
 	public static DevicePolicyManager getDevicePolicyManager()
 	{
-		return (DevicePolicyManager) getContext().getSystemService(Context.DEVICE_POLICY_SERVICE);
+		return (DevicePolicyManager) Abase.getContext().getSystemService(Context.DEVICE_POLICY_SERVICE);
 	}
 
 	public static KeyguardManager getKeyguardManager()
 	{
-		return (KeyguardManager) getContext().getSystemService(Context.KEYGUARD_SERVICE);
+		return (KeyguardManager) Abase.getContext().getSystemService(Context.KEYGUARD_SERVICE);
 	}
 
 	public static void registAdminDevice(Context context, Class<? extends DeviceAdminReceiver> admin)
@@ -48,55 +48,55 @@ public class ManageUtil extends AbaseUtil
 
 	public static LocationManager getLocationManager()
 	{
-		return (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+		return (LocationManager) Abase.getContext().getSystemService(Context.LOCATION_SERVICE);
 	}
 
 	public static WindowManager getWindowManager()
 	{
 
-		return (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+		return (WindowManager) Abase.getContext().getSystemService(Context.WINDOW_SERVICE);
 	}
 
 	public static ActivityManager getActivityManager()
 	{
-		return (ActivityManager) getContext().getSystemService(Context.ACTIVITY_SERVICE);
+		return (ActivityManager) Abase.getContext().getSystemService(Context.ACTIVITY_SERVICE);
 	}
 
 	public static NotificationManager getNotificationManager()
 	{
-		return (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+		return (NotificationManager) Abase.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
 	}
 
 	public static PackageManager getPackManager()
 	{
 
-		return getContext().getPackageManager();
+		return Abase.getContext().getPackageManager();
 	}
 
 	public static ConnectivityManager getConnectivtyManager()
 	{
-		return (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+		return (ConnectivityManager) Abase.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 	}
 
 	public static PowerManager getPowerManager()
 	{
-		return (PowerManager) getContext().getSystemService(Context.POWER_SERVICE);
+		return (PowerManager) Abase.getContext().getSystemService(Context.POWER_SERVICE);
 	}
 
 	public static TelephonyManager getTelephonyManager()
 	{
-		return (TelephonyManager) getContext().getSystemService(Context.TELEPHONY_SERVICE);
+		return (TelephonyManager) Abase.getContext().getSystemService(Context.TELEPHONY_SERVICE);
 	}
 
 	public static WifiManager getWifiManger()
 	{
-		return (WifiManager) getContext().getSystemService(Context.WIFI_SERVICE);
+		return (WifiManager) Abase.getContext().getSystemService(Context.WIFI_SERVICE);
 	}
 	
 
 	public static LayoutInflater getInflater()
 	{
-		return  (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		return  (LayoutInflater) Abase.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
 

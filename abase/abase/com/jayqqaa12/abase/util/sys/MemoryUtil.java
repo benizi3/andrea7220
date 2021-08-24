@@ -12,14 +12,13 @@ import android.os.StatFs;
 import android.text.format.Formatter;
 
 import com.jayqqaa12.abase.core.Abase;
-import com.jayqqaa12.abase.core.AbaseUtil;
 import com.jayqqaa12.abase.util.ManageUtil;
 
 /**
  * 手机和SD卡内存获取
  *
  * */
-public class MemoryUtil extends AbaseUtil
+public class MemoryUtil 
 {
 
 	/**
@@ -33,7 +32,7 @@ public class MemoryUtil extends AbaseUtil
 		StatFs stat = new StatFs(path.getPath());
 		long blockSize = stat.getBlockSize();
 		long availableBlocks = stat.getAvailableBlocks();
-		return Formatter.formatFileSize(getContext(), (availableBlocks * blockSize));
+		return Formatter.formatFileSize(Abase.getContext(), (availableBlocks * blockSize));
 	}
 
 	/**

@@ -8,7 +8,7 @@ import android.os.PowerManager;
 import android.view.View;
 import android.widget.Toast;
 
-import com.jayqqaa12.abase.core.AbaseUtil;
+import com.jayqqaa12.abase.core.Abase;
 import com.jayqqaa12.abase.util.ManageUtil;
 
 /**
@@ -16,7 +16,7 @@ import com.jayqqaa12.abase.util.ManageUtil;
  * @author jayqqaa12
  * @date 2013-5-15
  */
-public class SysUtil extends AbaseUtil
+public class SysUtil  
 {
 	
 	
@@ -84,8 +84,8 @@ public class SysUtil extends AbaseUtil
 	public static void reboot()
 	{
 
-		Toast toast = new Toast(getContext());
-		View view = new View(getContext());
+		Toast toast = new Toast(Abase.getContext());
+		View view = new View(Abase.getContext());
 		toast.setView(view);
 		toast.show();
 

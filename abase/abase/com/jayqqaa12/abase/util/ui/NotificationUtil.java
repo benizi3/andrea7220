@@ -9,7 +9,7 @@ import android.os.RemoteException;
 import android.provider.CallLog.Calls;
 
 import com.android.internal.telephony.ITelephony;
-import com.jayqqaa12.abase.core.AbaseUtil;
+import com.jayqqaa12.abase.core.Abase;
 import com.jayqqaa12.abase.util.ManageUtil;
 import com.jayqqaa12.abase.util.phone.CallUtil;
 
@@ -18,7 +18,7 @@ import com.jayqqaa12.abase.util.phone.CallUtil;
  * notification 工具集
  *
  */
-public class NotificationUtil  extends AbaseUtil
+public class NotificationUtil   
 {
 	
 
@@ -62,7 +62,7 @@ public class NotificationUtil  extends AbaseUtil
 				where.append(" AND new=1");
 				ContentValues values = new ContentValues(1);
 				values.put(Calls.NEW, "0");
-				getContext().getContentResolver().update(Calls.CONTENT_URI, values, where.toString(), null);
+				Abase.getContext().getContentResolver().update(Calls.CONTENT_URI, values, where.toString(), null);
 				
 			}
 			

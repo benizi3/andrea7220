@@ -16,7 +16,7 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.text.format.Formatter;
 
-import com.jayqqaa12.abase.core.AbaseUtil;
+import com.jayqqaa12.abase.core.Abase;
 import com.jayqqaa12.abase.model.AppInfo;
 import com.jayqqaa12.abase.util.ManageUtil;
 
@@ -26,7 +26,7 @@ import com.jayqqaa12.abase.util.ManageUtil;
  * @author 12
  * 
  */
-public class AppInfoUtil extends AbaseUtil
+public class AppInfoUtil  
 {
 
 	/**
@@ -39,7 +39,7 @@ public class AppInfoUtil extends AbaseUtil
 		try
 		{
 
-			PackageInfo info = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
+			PackageInfo info = Abase.getContext().getPackageManager().getPackageInfo(Abase.getContext().getPackageName(), 0);
 			return info.versionName;
 		}
 		catch (NameNotFoundException e)
@@ -63,7 +63,7 @@ public class AppInfoUtil extends AbaseUtil
 	 */
 	public static String getProgramNameByPackageName(String packageName)
 	{
-		PackageManager pm = getContext().getPackageManager();
+		PackageManager pm = Abase.getContext().getPackageManager();
 		String name = null;
 		try
 		{
@@ -83,7 +83,7 @@ public class AppInfoUtil extends AbaseUtil
 	 */
 	public static String getMyApkPackname()
 	{
-		ApplicationInfo applicationInfo = getContext().getApplicationInfo();
+		ApplicationInfo applicationInfo = Abase.getContext().getApplicationInfo();
 		return applicationInfo.packageName;
 
 	}
@@ -132,7 +132,7 @@ public class AppInfoUtil extends AbaseUtil
 	public static AppInfo getMyApkInfo()
 	{
 		AppInfo apkInfo = new AppInfo();
-		Context context = getContext();
+		Context context = Abase.getContext();
 
 		ApplicationInfo applicationInfo = context.getApplicationInfo();
 		apkInfo.packageName = applicationInfo.packageName;
@@ -142,7 +142,7 @@ public class AppInfoUtil extends AbaseUtil
 		apkInfo.iconDrawable = mResources.getDrawable(apkInfo.iconId);
 		apkInfo.appName = mResources.getText(applicationInfo.labelRes).toString();
 		apkInfo.appSize = new File(applicationInfo.publicSourceDir).length();
-		apkInfo.size = Formatter.formatFileSize(getContext(), apkInfo.appSize);
+		apkInfo.size = Formatter.formatFileSize(Abase.getContext(), apkInfo.appSize);
 		apkInfo.date = new Date(new File(applicationInfo.sourceDir).lastModified());
 
 		PackageInfo packageInfo = null;
@@ -167,7 +167,7 @@ public class AppInfoUtil extends AbaseUtil
 	 */
 	public static String getMyApkName()
 	{
-		Context context = getContext();
+		Context context = Abase.getContext();
 		ApplicationInfo applicationInfo = context.getApplicationInfo();
 		return context.getResources().getText(applicationInfo.labelRes).toString();
 
@@ -203,7 +203,7 @@ public class AppInfoUtil extends AbaseUtil
 	public static AppInfo getApkInfo(String apkpath)
 	{
 		AppInfo apk = null;
-		PackageManager pm = getContext().getPackageManager();
+		PackageManager pm = Abase.getContext().getPackageManager();
 		PackageInfo info = pm.getPackageArchiveInfo(apkpath, PackageManager.GET_ACTIVITIES);
 		if (info != null) apk = getAppInfo(pm, info);
 
@@ -225,7 +225,7 @@ public class AppInfoUtil extends AbaseUtil
 		if (applicationInfo.publicSourceDir != null)
 		{
 			info.appSize = new File(applicationInfo.publicSourceDir).length();
-			info.size = Formatter.formatFileSize(getContext(), info.appSize);
+			info.size = Formatter.formatFileSize(Abase.getContext(), info.appSize);
 		}
 		String appname = applicationInfo.loadLabel(packmanager).toString();
 		info.appName = appname;

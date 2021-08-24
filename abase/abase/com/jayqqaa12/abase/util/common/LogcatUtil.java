@@ -3,15 +3,11 @@ package com.jayqqaa12.abase.util.common;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.os.Environment;
-import android.util.Log;
-
-import com.jayqqaa12.abase.core.AbaseUtil;
 
 /**
  * 获得 logcat 的 日志 信息
@@ -21,7 +17,7 @@ import com.jayqqaa12.abase.core.AbaseUtil;
  * @author jayqqaa12
  * @date 2013-5-15
  */
-public class LogcatUtil extends AbaseUtil
+public class LogcatUtil  
 {
 
 	private static String cmd;

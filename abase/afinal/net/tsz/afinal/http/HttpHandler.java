@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
+import net.tsz.afinal.copy.AsyncTask;
 import net.tsz.afinal.http.entityhandler.EntityCallBack;
 import net.tsz.afinal.http.entityhandler.FileEntityHandler;
 import net.tsz.afinal.http.entityhandler.StringEntityHandler;
@@ -33,8 +34,6 @@ import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.protocol.HttpContext;
 
 import android.os.SystemClock;
-
-import com.jayqqaa12.abase.copy.AsyncTask;
 
 public class HttpHandler<T> extends AsyncTask<Object, Object, Object> implements EntityCallBack
 {

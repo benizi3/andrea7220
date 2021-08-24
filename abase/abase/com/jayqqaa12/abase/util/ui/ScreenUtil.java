@@ -4,10 +4,9 @@ import android.app.admin.DevicePolicyManager;
 import android.content.Context;
 import android.content.res.Configuration;
 
-import com.jayqqaa12.abase.core.AbaseUtil;
 import com.jayqqaa12.abase.util.ManageUtil;
 
-public class ScreenUtil extends AbaseUtil
+public class ScreenUtil 
 {
 	
 

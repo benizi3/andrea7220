@@ -20,10 +20,12 @@ import com.lidroid.xutils.db.table.Foreign;
 import com.lidroid.xutils.db.table.TableUtils;
 import com.lidroid.xutils.exception.DbException;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ForeignLazyLoader<T> {
-    private final Foreign foreignColumn;
+public class ForeignLazyLoader<T>   {
+
+	private final Foreign foreignColumn;
     private Object columnValue;
 
     public ForeignLazyLoader(Class<?> entityType, String columnName, Object value) {

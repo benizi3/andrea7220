@@ -1,9 +1,8 @@
 package com.jayqqaa12.abase.util.media;
 
-import com.jayqqaa12.abase.core.AbaseUtil;
 import com.jayqqaa12.abase.util.ManageUtil;
 
-public class KeyguardUtil extends AbaseUtil
+public class KeyguardUtil 
 {
 	
 	/**

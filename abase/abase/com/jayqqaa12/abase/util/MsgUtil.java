@@ -4,9 +4,6 @@ package com.jayqqaa12.abase.util;
 import android.os.Handler;
 import android.os.Handler.Callback;
 import android.os.Message;
-import android.provider.CallLog.Calls;
-
-import com.jayqqaa12.abase.core.AbaseUtil;
 
 
 /**
@@ -14,7 +11,7 @@ import com.jayqqaa12.abase.core.AbaseUtil;
 * @author jayqqaa12 
 * @date 2013-6-8
  */
-public class MsgUtil extends AbaseUtil
+public class MsgUtil 
 {
 	public static final int MSG_ADD = 1;
 	public static final int MSG_REMOVE = 2;

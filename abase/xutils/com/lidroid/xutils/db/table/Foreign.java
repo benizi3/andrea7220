@@ -16,6 +16,7 @@
 package com.lidroid.xutils.db.table;
 
 import android.database.Cursor;
+
 import com.lidroid.xutils.DbUtils;
 import com.lidroid.xutils.db.converter.ColumnConverter;
 import com.lidroid.xutils.db.converter.ColumnConverterFactory;
@@ -54,7 +55,7 @@ public class Foreign extends Column {
     @SuppressWarnings("unchecked")
     @Override
     public void setValue2Entity(Object entity, Cursor cursor, int index) {
-        Object filedValue = foreignColumnConverter.getFiledValue(cursor, index);
+        Object filedValue = foreignColumnConverter.getFieldValue(cursor, index);
         if (filedValue == null) return;
 
         Object value = null;

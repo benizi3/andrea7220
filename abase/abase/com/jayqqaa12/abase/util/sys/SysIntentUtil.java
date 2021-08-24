@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.provider.Settings;
 
-import com.jayqqaa12.abase.core.AbaseUtil;
-
 /**
  * 
  ******* System Action_View************
@@ -18,7 +16,7 @@ import com.jayqqaa12.abase.core.AbaseUtil;
  * @author jayqqaa12
  * @date 2013-5-15
  */
-public class SysIntentUtil extends AbaseUtil
+public class SysIntentUtil  
 {
 	
 	
