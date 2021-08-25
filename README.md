@@ -1,10 +1,10 @@
 
 
 ##abase简介 
-> *abase集成了本人常用的 util
-> *以及 androidannotations afinal xutils 开源框架然后
-> *按我个人习惯修改了一下
-> *追求的是最快速的项目构建
+ *abase集成了本人常用的 util
+ *以及 androidannotations afinal xutils 开源框架然后
+ *按我个人习惯修改了一下
+ *追求的是最快速的项目构建
 
 
 
