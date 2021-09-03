@@ -372,7 +372,7 @@ public   class AbaseBaseAdapter<T> extends BaseAdapter
 
 
 
-#其他开源项目  <a  href="http://git.oschina.net/jayqqaa12/JFinal_Authority">JFinal_Authority </a>
+#其他开源项目  <a  href="http://git.oschina.net/jayqqaa12/abase">Abase android快速开发工具 </a>
 
 
 
