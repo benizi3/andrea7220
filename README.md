@@ -370,12 +370,15 @@ public   class AbaseBaseAdapter<T> extends BaseAdapter
 
 ```
 
+## 捐赠
+如果您喜欢本项目，认为本项目确实给您带来方便和帮助非常感谢，您的捐赠，是我们前进的动力<br>
+<a href='https://me.alipay.com/12shu'> <img src='https://img.alipay.com/sys/personalprod/style/mc/btn-index.png' /> </a>
 
 
 #其他开源项目 
 #<a  href="http://git.oschina.net/jayqqaa12/abase-reader">abase-reader android 开源阅读器</a> <br>
 #<a  href="http://git.oschina.net/jayqqaa12/JFinal_Authority">JFinal_Authority Jfinal权限后台</a>
-
 # 关于作者 @12叔 <http://weibo.com/jayqqaa12>
+#联系方式 476335667@qq.com
 
 
