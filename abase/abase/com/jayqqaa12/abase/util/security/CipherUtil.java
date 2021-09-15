@@ -9,6 +9,12 @@ import javax.crypto.Cipher;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 
+
+/***
+ * 加密的
+ * @author 12
+ *
+ */
 public class CipherUtil
 {
 	public static final String ALGORITHM_DES = "DES";

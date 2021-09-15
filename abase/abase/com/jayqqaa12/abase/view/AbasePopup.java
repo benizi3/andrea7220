@@ -11,8 +11,21 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.PopupWindow;
 
 import com.jayqqaa12.abase.core.Abase;
-import com.jayqqaa12.abase.util.IntentUtil;
+import com.jayqqaa12.abase.util.common.ReflectUtil;
 
+
+/***
+ * 结合 androidannotations 
+ * 
+ * 使用方法  new AbasePopup(BindView.class)
+ * 
+ * 其中 bindview 为继承 bindview的子类
+ * 
+ * 原理类似 adapter的 itemview
+ * 
+ * @author 12
+ *
+ */
 public class AbasePopup extends PopupWindow
 {
 	private boolean isMenu = true;
@@ -35,7 +48,7 @@ public class AbasePopup extends PopupWindow
 		View view = null;
 		try
 		{
-			Method m = IntentUtil.getSubClass(clazz).getMethod("build", new Class[] { Context.class });
+			Method m = ReflectUtil.getSubClass(clazz).getMethod("build", new Class[] { Context.class });
 			view = (BindView) m.invoke(clazz, new Object[] { Abase.getContext() });
 
 			((BindView) view).bind();

@@ -9,7 +9,6 @@ import com.jayqqaa12.abase.util.common.L;
  * 
  * @author 12
  * 
- * 
  *         SystemClock.elapsedRealtime
  */
 public class TimeUtil

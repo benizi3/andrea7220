@@ -10,7 +10,7 @@ import android.view.animation.TranslateAnimation;
 
 
 /**
- * 动画 类  唯一 缺点是 参数 设置了 默认的  特殊 案例 自己 设 不要用这个 工具
+ * 常见动画 工具
 * @author jayqqaa12 
 * @date 2013-6-5
  */

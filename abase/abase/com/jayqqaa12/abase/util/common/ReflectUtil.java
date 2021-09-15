@@ -39,6 +39,27 @@ public class ReflectUtil
 		return result;
 
 	}
+	
+	
+	/***
+	 * 获取子类 _
+	 * @param clazz
+	 * @return
+	 */
+	public static Class getSubClass(Class clazz)
+	{
+		try
+		{
+			return Class.forName(clazz.getName() + "_");
+		
+		} catch (ClassNotFoundException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+
+	}
+	
 
 	/**
 	 * @return Field of value and parent class

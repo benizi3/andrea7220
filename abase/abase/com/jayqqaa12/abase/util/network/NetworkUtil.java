@@ -16,6 +16,12 @@ import android.telephony.TelephonyManager;
 import com.jayqqaa12.abase.util.ManageUtil;
 import com.jayqqaa12.abase.util.phone.TelUtil;
 
+
+/***
+ * 判断网络类型  网络连接等
+ * @author 12
+ *
+ */
 public class NetworkUtil  
 {
 	

@@ -10,6 +10,12 @@ import android.provider.ContactsContract;
 
 import com.jayqqaa12.abase.core.Abase;
 
+
+/**
+ * 获取联系人信息等
+ * @author 12
+ *
+ */
 public class ContactUtil  
 {
 

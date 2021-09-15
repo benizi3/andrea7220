@@ -15,7 +15,7 @@ import com.jayqqaa12.abase.core.Abase;
 import com.jayqqaa12.abase.util.ManageUtil;
 
 /**
- * 手机和SD卡内存获取
+ * 手机和 内存获取
  *
  * */
 public class MemoryUtil 

@@ -9,38 +9,26 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.jayqqaa12.abase.exception.AbaseException;
+import com.jayqqaa12.abase.util.common.ReflectUtil;
 
 public class IntentUtil
 {
 	
-	public static Class getSubClass(Class clazz)
-	{
-		try
-		{
-			return Class.forName(clazz.getName() + "_");
-		
-		} catch (ClassNotFoundException e)
-		{
-			e.printStackTrace();
-			return null;
-		}
 
-	}
-	
 	public static void startSubIntent(Context context, Class clazz, String name, Object content)
 	{
-		startSubIntent(context, getSubClass(clazz), name, content);
+		startSubIntent(context, ReflectUtil.getSubClass(clazz), name, content);
 	}
 	
 	public static void startSubIntent(Context context, Class clazz)
 	{
-		startIntent(context,getSubClass(clazz));
+		startIntent(context,ReflectUtil.getSubClass(clazz));
 	}
 	
 	
 	public static void startSubIntent(Context context, Class clazz, String[] name, Object[] content)
 	{
-		startIntent(context, getSubClass(clazz),name,content);
+		startIntent(context, ReflectUtil.getSubClass(clazz),name,content);
 	}
 
 	

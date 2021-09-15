@@ -17,7 +17,7 @@ import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.RootToolsException;
 
 /**
- * 部分方法 需要 加入 RootTool.jar 方可使用
+ *root 工具包
  * 
  * @author jayqqaa12
  * @date 2013-5-17

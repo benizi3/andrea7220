@@ -14,6 +14,12 @@ import com.jayqqaa12.abase.util.ConfigUtil;
 import com.jayqqaa12.abase.util.ManageUtil;
 import com.jayqqaa12.abase.util.common.Validate;
 
+
+/***
+ * 获取手机信息
+ * @author 12
+ *
+ */
 public class TelUtil
 {
 	/**

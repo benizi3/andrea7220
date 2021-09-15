@@ -6,6 +6,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+
+/***
+ * 日期操作 工具
+ * @author 12
+ *
+ */
 public class DateUtil
 {
 	public static final String HH_MM_SS = "HH:mm:ss";
