@@ -15,7 +15,7 @@
 
 package com.lidroid.xutils.db.sqlite;
 
-import com.lidroid.xutils.DbUtils;
+import com.jayqqaa12.abase.core.DbKit;
 import com.lidroid.xutils.db.table.*;
 import com.lidroid.xutils.exception.DbException;
 
@@ -31,7 +31,7 @@ public class SqlInfoBuilder {
 
     //*********************************************** insert sql ***********************************************
 
-    public static SqlInfo buildInsertSqlInfo(DbUtils db, Object entity) throws DbException {
+    public static SqlInfo buildInsertSqlInfo(DbKit db, Object entity) throws DbException {
 
         List<KeyValue> keyValueList = entity2KeyValueList(db, entity);
         if (keyValueList.size() == 0) return null;
@@ -63,7 +63,7 @@ public class SqlInfoBuilder {
 
     //*********************************************** replace sql ***********************************************
 
-    public static SqlInfo buildReplaceSqlInfo(DbUtils db, Object entity) throws DbException {
+    public static SqlInfo buildReplaceSqlInfo(DbKit db, Object entity) throws DbException {
 
         List<KeyValue> keyValueList = entity2KeyValueList(db, entity);
         if (keyValueList.size() == 0) return null;
@@ -148,7 +148,7 @@ public class SqlInfoBuilder {
 
     //*********************************************** update sql ***********************************************
 
-    public static SqlInfo buildUpdateSqlInfo(DbUtils db, Object entity, String... updateColumnNames) throws DbException {
+    public static SqlInfo buildUpdateSqlInfo(DbKit db, Object entity, String... updateColumnNames) throws DbException {
 
         List<KeyValue> keyValueList = entity2KeyValueList(db, entity);
         if (keyValueList.size() == 0) return null;
@@ -185,7 +185,7 @@ public class SqlInfoBuilder {
         return result;
     }
 
-    public static SqlInfo buildUpdateSqlInfo(DbUtils db, Object entity, WhereBuilder whereBuilder, String... updateColumnNames) throws DbException {
+    public static SqlInfo buildUpdateSqlInfo(DbKit db, Object entity, WhereBuilder whereBuilder, String... updateColumnNames) throws DbException {
 
         List<KeyValue> keyValueList = entity2KeyValueList(db, entity);
         if (keyValueList.size() == 0) return null;
@@ -271,7 +271,7 @@ public class SqlInfoBuilder {
         return kv;
     }
 
-    public static List<KeyValue> entity2KeyValueList(DbUtils db, Object entity) {
+    public static List<KeyValue> entity2KeyValueList(DbKit db, Object entity) {
 
         List<KeyValue> keyValueList = new ArrayList<KeyValue>();
 

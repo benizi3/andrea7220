@@ -21,32 +21,46 @@ public class SysIntentUtil
 	
 	
 
-	public static void install(Context context, File file)
-	{
-		Intent intent = new Intent();
-		intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK);
-		intent.setAction(intent.ACTION_VIEW);
-		intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
-		context.startActivity(intent);
-	}
-
+	/**
+	 * FLAG_ACTIVITY_NEW_TASK
+	 * 
+	 * @param activity
+	 * @param path
+	 */
 	public static void install(Context activity, String path)
 	{
-		Intent intent = new Intent(Intent.ACTION_VIEW);
+		Intent intent =getInstallIntent(path);
 		intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK);
-		intent.setDataAndType(Uri.fromFile(new File(path)), "application/vnd.android.package-archive");
 		activity.startActivity(intent);
 	}
+	
+	
 
-	// uninstall a apk
+	public static Intent getInstallIntent(String path){
+		Intent intent = new Intent(Intent.ACTION_VIEW);
+		intent.setDataAndType(Uri.fromFile(new File(path)), "application/vnd.android.package-archive");
+		return intent;
+	}
+	
+	/**
+	 * FLAG_ACTIVITY_NEW_TASK
+	 * @param path
+	 * @return
+	 */
 	public static void uninstall(Context context, String pkg)
 	{
 		if (pkg == null) { return; }
-		Uri uri = Uri.fromParts("package", pkg, null);
-		Intent intent = new Intent(Intent.ACTION_DELETE, uri);
+		Intent intent = getUnInstallIntent(pkg);
 		intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(intent);
 	}
+	
+	public static Intent getUnInstallIntent(String pkg){
+		Uri uri = Uri.fromParts("package", pkg, null);
+		Intent intent = new Intent(Intent.ACTION_DELETE, uri);
+		return intent;
+	}
+
 
 	public static void callPhone(Context context, String number)
 	{

@@ -19,13 +19,15 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+
 import com.lidroid.xutils.bitmap.core.BitmapSize;
 
 public class BitmapDisplayConfig {
 
     private BitmapSize bitmapMaxSize;
-    private Animation animation;
+    private Animation animation  ;
     private Drawable loadingDrawable;
     private Drawable loadFailedDrawable;
     private boolean autoRotation = false;

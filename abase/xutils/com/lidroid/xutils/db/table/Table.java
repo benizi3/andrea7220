@@ -17,7 +17,7 @@ package com.lidroid.xutils.db.table;
 
 import android.text.TextUtils;
 
-import com.lidroid.xutils.DbUtils;
+import com.jayqqaa12.abase.core.DbKit;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +45,7 @@ public class Table {
         this.columnMap = TableUtils.getColumnMap(entityType);
     }
 
-    public static synchronized Table get(DbUtils db, Class<?> entityType) {
+    public static synchronized Table get(DbKit db, Class<?> entityType) {
         String tableKey = db.getDaoConfig().getDbName() + "#" + entityType.getCanonicalName();
         Table table = tableMap.get(tableKey);
         if (table == null) {
@@ -56,12 +56,12 @@ public class Table {
         return table;
     }
 
-    public static synchronized void remove(DbUtils db, Class<?> entityType) {
+    public static synchronized void remove(DbKit db, Class<?> entityType) {
         String tableKey = db.getDaoConfig().getDbName() + "#" + entityType.getCanonicalName();
         tableMap.remove(tableKey);
     }
 
-    public static synchronized void remove(DbUtils db, String tableName) {
+    public static synchronized void remove(DbKit db, String tableName) {
         if (tableMap.size() > 0) {
             String key = null;
             for (Map.Entry<String, Table> entry : tableMap.entrySet()) {

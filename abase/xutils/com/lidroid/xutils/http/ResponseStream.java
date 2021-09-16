@@ -15,8 +15,9 @@
 
 package com.lidroid.xutils.http;
 
-import com.lidroid.xutils.HttpUtils;
+import com.jayqqaa12.abase.core.AbaseHttp;
 import com.lidroid.xutils.util.IOUtils;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.protocol.HTTP;
 
@@ -111,8 +112,8 @@ public class ResponseStream extends InputStream {
                 sb.append(line);
             }
             _directResult = sb.toString();
-            if (requestUrl != null && HttpUtils.sHttpCache.isEnabled(requestMethod)) {
-                HttpUtils.sHttpCache.put(requestUrl, _directResult, expiry);
+            if (requestUrl != null && AbaseHttp.sHttpCache.isEnabled(requestMethod)) {
+                AbaseHttp.sHttpCache.put(requestUrl, _directResult, expiry);
             }
             return _directResult;
         } finally {

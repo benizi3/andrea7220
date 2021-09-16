@@ -1,6 +1,7 @@
 package com.jayqqaa12.abase.util;
 
 import java.io.Serializable;
+import java.sql.Ref;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,6 +14,17 @@ import com.jayqqaa12.abase.util.common.ReflectUtil;
 
 public class IntentUtil
 {
+	
+	public static Intent getSubIntent(Context context ,Class clazz){
+		
+		return  new Intent(context,ReflectUtil.getSubClass(clazz));
+	}
+	
+	
+	public static void startSubService(Context context, Class clazz)
+	{
+		startService(context,ReflectUtil.getSubClass(clazz));
+	}
 	
 
 	public static void startSubIntent(Context context, Class clazz, String name, Object content)

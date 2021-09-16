@@ -16,7 +16,8 @@
 package com.lidroid.xutils.bitmap.download;
 
 import android.content.Context;
-import com.lidroid.xutils.BitmapUtils;
+
+import com.jayqqaa12.abase.core.AbaseBitmap;
 
 import java.io.OutputStream;
 
@@ -29,7 +30,7 @@ public abstract class Downloader {
      * @param outputStream
      * @return The expiry time stamp or -1 if failed to download.
      */
-    public abstract long downloadToStream(String uri, OutputStream outputStream, final BitmapUtils.BitmapLoadTask<?> task);
+    public abstract long downloadToStream(String uri, OutputStream outputStream, final AbaseBitmap.BitmapLoadTask<?> task);
 
     private Context context;
     private long defaultExpiry;

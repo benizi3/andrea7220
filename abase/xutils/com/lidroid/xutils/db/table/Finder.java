@@ -2,7 +2,7 @@ package com.lidroid.xutils.db.table;
 
 import android.database.Cursor;
 
-import com.lidroid.xutils.DbUtils;
+import com.jayqqaa12.abase.core.DbKit;
 import com.lidroid.xutils.db.sqlite.ColumnDbType;
 import com.lidroid.xutils.db.sqlite.FinderLazyLoader;
 import com.lidroid.xutils.exception.DbException;
@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class Finder extends Column {
 
-    public DbUtils db;
+    public DbKit db;
 
     private final String valueColumnName;
     private final String targetColumnName;

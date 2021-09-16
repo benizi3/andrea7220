@@ -15,10 +15,11 @@
 
 package com.lidroid.xutils.http;
 
-import com.lidroid.xutils.HttpUtils;
+import com.jayqqaa12.abase.core.AbaseHttp;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.callback.DefaultHttpRedirectHandler;
 import com.lidroid.xutils.http.callback.HttpRedirectHandler;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpRequestRetryHandler;
@@ -68,8 +69,8 @@ public class SyncHttpHandler {
             try {
                 requestUrl = request.getURI().toString();
                 requestMethod = request.getMethod();
-                if (HttpUtils.sHttpCache.isEnabled(requestMethod)) {
-                    String result = HttpUtils.sHttpCache.get(requestUrl);
+                if (AbaseHttp.sHttpCache.isEnabled(requestMethod)) {
+                    String result = AbaseHttp.sHttpCache.get(requestUrl);
                     if (result != null) {
                         return new ResponseStream(result);
                     }

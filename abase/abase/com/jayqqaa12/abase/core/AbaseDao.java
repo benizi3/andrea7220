@@ -3,22 +3,19 @@ package com.jayqqaa12.abase.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.androidannotations.annotations.EBean;
+
 import com.jayqqaa12.abase.util.common.L;
-import com.lidroid.xutils.DbUtils;
+import com.jayqqaa12.abase.util.common.T;
 import com.lidroid.xutils.db.sqlite.Selector;
 import com.lidroid.xutils.db.sqlite.WhereBuilder;
 import com.lidroid.xutils.exception.DbException;
 
+@EBean
 public class AbaseDao
 {
-	private static DbUtils db = DbUtils.create(Abase.getContext());
-	private static AbaseDao dao = new AbaseDao();
+	private static DbKit db = DbKit.create(Abase.getContext());
 
-	public static AbaseDao create()
-	{
-
-		return dao;
-	}
 
 	public boolean save(Object entity)
 	{
@@ -41,12 +38,12 @@ public class AbaseDao
 	 * @return
 	 */
 
-	public  <T>T saveAndFind(Object entity, Selector selector)
+	public <T> T saveAndFind(Object entity, Selector selector)
 	{
 		try
 		{
 			db.save(entity);
-			return  db.findFirst(selector);
+			return db.findFirst(selector);
 
 		} catch (Exception e)
 		{
@@ -101,8 +98,7 @@ public class AbaseDao
 			return false;
 		}
 	}
-	
-	
+
 	public boolean deleteAll(Class<?> clazz)
 	{
 
@@ -117,9 +113,10 @@ public class AbaseDao
 			return false;
 		}
 	}
-	
-	public boolean delete(Class<?> entityType, WhereBuilder whereBuilder ){
-		
+
+	public boolean delete(Class<?> entityType, WhereBuilder whereBuilder)
+	{
+
 		try
 		{
 			db.delete(entityType, whereBuilder);
@@ -204,6 +201,54 @@ public class AbaseDao
 			e.printStackTrace();
 			return new ArrayList<T>(1);
 		}
+	}
+
+	public <T> List<T> findAll(Selector selector)
+	{
+
+		try
+		{
+			List<T> list = db.findAll(selector);
+			if (list == null) return new ArrayList<T>(1);
+			else return list;
+
+		} catch (DbException e)
+		{
+			L.e(" read db error " + e.getMessage());
+			e.printStackTrace();
+			return new ArrayList<T>(1);
+		}
+	}
+
+	public boolean saveOrUpdate(Object entity)
+	{
+
+		try
+		{
+			db.saveOrUpdate(entity);
+
+			return true;
+		} catch (DbException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+
+	}
+
+	public boolean saveOrUpdateAll(List<?> entities)
+	{
+
+		try
+		{
+			db.saveOrUpdateAll(entities);
+			return true;
+		} catch (DbException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+
 	}
 
 }

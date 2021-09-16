@@ -17,6 +17,9 @@ public class ListViewUtil
 {
 	
 	/***
+	 * 
+	 * 请在 setAdapter 之前 添加
+	 * 
 	 *  下拉 刷新 显示的页脚
 	 * @param lv
 	 * @param context

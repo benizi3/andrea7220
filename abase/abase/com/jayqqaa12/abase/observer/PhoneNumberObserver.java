@@ -5,7 +5,7 @@ import android.database.ContentObserver;
 import android.os.Handler;
 
 import com.jayqqaa12.abase.util.phone.CallUtil;
-import com.jayqqaa12.abase.util.ui.NotificationUtil;
+import com.jayqqaa12.abase.util.ui.NotifiyUtil;
 
 /**
  * 

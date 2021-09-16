@@ -16,11 +16,14 @@
 package com.lidroid.xutils.http;
 
 import android.os.SystemClock;
-import com.lidroid.xutils.HttpUtils;
+
+import com.jayqqaa12.abase.core.AbaseHttp;
+import com.jayqqaa12.abase.util.common.L;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.callback.*;
 import com.lidroid.xutils.util.OtherUtils;
 import com.lidroid.xutils.util.core.CompatibleAsyncTask;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolException;
@@ -36,326 +39,413 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.UnknownHostException;
 
+public class HttpHandler<T> extends CompatibleAsyncTask<Object, Object, Void> implements RequestCallBackHandler
+{
 
-public class HttpHandler<T> extends CompatibleAsyncTask<Object, Object, Void> implements RequestCallBackHandler {
+	private final AbstractHttpClient client;
+	private final HttpContext context;
 
-    private final AbstractHttpClient client;
-    private final HttpContext context;
+	private final StringDownloadHandler mStringDownloadHandler = new StringDownloadHandler();
+	private final FileDownloadHandler mFileDownloadHandler = new FileDownloadHandler();
 
-    private final StringDownloadHandler mStringDownloadHandler = new StringDownloadHandler();
-    private final FileDownloadHandler mFileDownloadHandler = new FileDownloadHandler();
+	private HttpRedirectHandler httpRedirectHandler;
 
-    private HttpRedirectHandler httpRedirectHandler;
+	public void setHttpRedirectHandler(HttpRedirectHandler httpRedirectHandler)
+	{
+		if (httpRedirectHandler != null)
+		{
+			this.httpRedirectHandler = httpRedirectHandler;
+		}
+	}
 
-    public void setHttpRedirectHandler(HttpRedirectHandler httpRedirectHandler) {
-        if (httpRedirectHandler != null) {
-            this.httpRedirectHandler = httpRedirectHandler;
-        }
-    }
+	private String requestUrl;
+	private String requestMethod;
+	private HttpRequestBase request;
+	private boolean isUploading = true;
+	private RequestCallBack<T> callback;
 
-    private String requestUrl;
-    private String requestMethod;
-    private HttpRequestBase request;
-    private boolean isUploading = true;
-    private RequestCallBack<T> callback;
+	private int retriedCount = 0;
+	private String fileSavePath = null;
+	private boolean isDownloadingFile = false;
+	private boolean autoResume = false; // Whether the downloading could
+										// continue from the point of
+										// interruption.
+	private boolean autoRename = false; // Whether rename the file by response
+										// header info when the download
+										// completely.
+	private String charset; // The default charset of response header info.
 
-    private int retriedCount = 0;
-    private String fileSavePath = null;
-    private boolean isDownloadingFile = false;
-    private boolean autoResume = false; // Whether the downloading could continue from the point of interruption.
-    private boolean autoRename = false; // Whether rename the file by response header info when the download completely.
-    private String charset; // The default charset of response header info.
+	private long expiry = HttpCache.getDefaultExpiryTime();
+	private long totalLenth;
+	private State state = State.WAITING;
 
-    public HttpHandler(AbstractHttpClient client, HttpContext context, String charset, RequestCallBack<T> callback) {
-        this.client = client;
-        this.context = context;
-        this.callback = callback;
-        this.charset = charset;
-        this.client.setRedirectHandler(notUseApacheRedirectHandler);
-    }
+	public HttpHandler(AbstractHttpClient client, HttpContext context, String charset, RequestCallBack<T> callback)
+	{
+		this.client = client;
+		this.context = context;
+		this.callback = callback;
+		this.charset = charset;
+		this.client.setRedirectHandler(notUseApacheRedirectHandler);
+	}
 
-    private State state = State.WAITING;
 
-    public State getState() {
-        return state;
-    }
+	public HttpHandler(AbstractHttpClient client, HttpContext context, String charset, long totalLength, RequestCallBack<T> callback)
+	{
+		this(client, context, charset, callback);
+		this.totalLenth = totalLength;
+	}
 
-    private long expiry = HttpCache.getDefaultExpiryTime();
+	public State getState()
+	{
+		return state;
+	}
 
-    public void setExpiry(long expiry) {
-        this.expiry = expiry;
-    }
+	/***
+	 * 设置 要下载文件的长度 特殊服务器的需求
+	 * 
+	 * @param totalLength
+	 */
+	public void setTotalLength(long totalLength)
+	{
 
-    public void setRequestCallBack(RequestCallBack<T> callback) {
-        this.callback = callback;
-    }
+		this.totalLenth = totalLength;
+	}
 
-    public RequestCallBack<T> getRequestCallBack() {
-        return this.callback;
-    }
+	/***
+	 * 设置 缓存时间
+	 * @param expiry
+	 */
+	public void setExpiry(long expiry)
+	{
+		this.expiry = expiry;
+	}
 
-    // 执行请求
-    @SuppressWarnings("unchecked")
-    private ResponseInfo<T> sendRequest(HttpRequestBase request) throws HttpException {
+	public void setRequestCallBack(RequestCallBack<T> callback)
+	{
+		this.callback = callback;
+	}
 
-        HttpRequestRetryHandler retryHandler = client.getHttpRequestRetryHandler();
-        while (true) {
+	public RequestCallBack<T> getRequestCallBack()
+	{
+		return this.callback;
+	}
 
-            if (autoResume && isDownloadingFile) {
-                File downloadFile = new File(fileSavePath);
-                long fileLen = 0;
-                if (downloadFile.isFile() && downloadFile.exists()) {
-                    fileLen = downloadFile.length();
-                }
-                if (fileLen > 0) {
-                    request.setHeader("RANGE", "bytes=" + fileLen + "-");
-                }
-            }
+	// 执行请求
+	@SuppressWarnings("unchecked")
+	private ResponseInfo<T> sendRequest(HttpRequestBase request) throws HttpException
+	{
 
-            boolean retry = true;
-            IOException exception = null;
-            try {
-                requestMethod = request.getMethod();
-                if (HttpUtils.sHttpCache.isEnabled(requestMethod)) {
-                    String result = HttpUtils.sHttpCache.get(requestUrl);
-                    if (result != null) {
-                        return new ResponseInfo<T>(null, (T) result, true);
-                    }
-                }
+		HttpRequestRetryHandler retryHandler = client.getHttpRequestRetryHandler();
+		while (true)
+		{
 
-                ResponseInfo<T> responseInfo = null;
-                if (!isCancelled()) {
-                    HttpResponse response = client.execute(request, context);
-                    responseInfo = handleResponse(response);
-                }
-                return responseInfo;
-            } catch (UnknownHostException e) {
-                exception = e;
-                retry = retryHandler.retryRequest(exception, ++retriedCount, context);
-            } catch (IOException e) {
-                exception = e;
-                retry = retryHandler.retryRequest(exception, ++retriedCount, context);
-            } catch (NullPointerException e) {
-                exception = new IOException(e.getMessage());
-                exception.initCause(e);
-                retry = retryHandler.retryRequest(exception, ++retriedCount, context);
-            } catch (HttpException e) {
-                throw e;
-            } catch (Throwable e) {
-                exception = new IOException(e.getMessage());
-                exception.initCause(e);
-                retry = retryHandler.retryRequest(exception, ++retriedCount, context);
-            }
-            if (!retry) {
-                throw new HttpException(exception);
-            }
-        }
-    }
+			if (autoResume && isDownloadingFile)
+			{
+				File downloadFile = new File(fileSavePath);
+				long fileLen = 0;
+				if (downloadFile.isFile() && downloadFile.exists())
+				{
+					fileLen = downloadFile.length();
+				}
+				// if (fileLen > 0) {
+				// request.setHeader("RANGE", "bytes=" + fileLen + "-");
+				// }
+				/**
+				 * 12 modify 实践中 部分 服务器 只支持 这种 方式的断点续传 要提前知道文件长度
+				 */
+				if (fileLen > 0)
+				{
+					if (totalLenth == 0) request.setHeader("RANGE", "bytes=" + fileLen + "-");
+					else  request.setHeader("RANGE", "bytes=" + fileLen + "-" + (totalLenth - 1));
 
-    @Override
-    protected Void doInBackground(Object... params) {
-        if (this.state == State.STOPPED || params == null || params.length == 0) return null;
+				}
 
-        if (params.length > 3) {
-            fileSavePath = String.valueOf(params[1]);
-            isDownloadingFile = fileSavePath != null;
-            autoResume = (Boolean) params[2];
-            autoRename = (Boolean) params[3];
-        }
+			}
 
-        try {
-            if (this.state == State.STOPPED) return null;
-            // init request & requestUrl
-            request = (HttpRequestBase) params[0];
-            requestUrl = request.getURI().toString();
-            if (callback != null) {
-                callback.setRequestUrl(requestUrl);
-            }
+			boolean retry = true;
+			IOException exception = null;
+			try
+			{
+				requestMethod = request.getMethod();
+				if (AbaseHttp.sHttpCache.isEnabled(requestMethod))
+				{
+					String result = AbaseHttp.sHttpCache.get(requestUrl);
+					if (result != null) { return new ResponseInfo<T>(null, (T) result, true); }
+				}
 
-            this.publishProgress(UPDATE_START);
+				ResponseInfo<T> responseInfo = null;
+				if (!isCancelled())
+				{
+					HttpResponse response = client.execute(request, context);
+					responseInfo = handleResponse(response);
+				}
+				return responseInfo;
+			} catch (UnknownHostException e)
+			{
+				exception = e;
+				retry = retryHandler.retryRequest(exception, ++retriedCount, context);
+			} catch (IOException e)
+			{
+				exception = e;
+				retry = retryHandler.retryRequest(exception, ++retriedCount, context);
+			} catch (NullPointerException e)
+			{
+				exception = new IOException(e.getMessage());
+				exception.initCause(e);
+				retry = retryHandler.retryRequest(exception, ++retriedCount, context);
+			} catch (HttpException e)
+			{
+				throw e;
+			} catch (Throwable e)
+			{
+				exception = new IOException(e.getMessage());
+				exception.initCause(e);
+				retry = retryHandler.retryRequest(exception, ++retriedCount, context);
+			}
+			if (!retry) { throw new HttpException(exception); }
+		}
+	}
 
-            lastUpdateTime = SystemClock.uptimeMillis();
+	@Override
+	protected Void doInBackground(Object... params)
+	{
+		if (this.state == State.STOPPED || params == null || params.length == 0) return null;
 
-            ResponseInfo<T> responseInfo = sendRequest(request);
-            if (responseInfo != null) {
-                this.publishProgress(UPDATE_SUCCESS, responseInfo);
-                return null;
-            }
-        } catch (HttpException e) {
-            this.publishProgress(UPDATE_FAILURE, e, e.getMessage());
-        }
+		if (params.length > 3)
+		{
+			fileSavePath = String.valueOf(params[1]);
+			isDownloadingFile = fileSavePath != null;
+			autoResume = (Boolean) params[2];
+			autoRename = (Boolean) params[3];
+		}
 
-        return null;
-    }
+		try
+		{
+			if (this.state == State.STOPPED) return null;
+			// init request & requestUrl
+			request = (HttpRequestBase) params[0];
+			requestUrl = request.getURI().toString();
+			if (callback != null)
+			{
+				callback.setRequestUrl(requestUrl);
+			}
 
-    private final static int UPDATE_START = 1;
-    private final static int UPDATE_LOADING = 2;
-    private final static int UPDATE_FAILURE = 3;
-    private final static int UPDATE_SUCCESS = 4;
+			this.publishProgress(UPDATE_START);
 
-    @Override
-    @SuppressWarnings("unchecked")
-    protected void onProgressUpdate(Object... values) {
-        if (this.state == State.STOPPED || values == null || values.length == 0 || callback == null) return;
-        switch ((Integer) values[0]) {
-            case UPDATE_START:
-                this.state = State.STARTED;
-                callback.onStart();
-                break;
-            case UPDATE_LOADING:
-                if (values.length != 3) return;
-                this.state = State.LOADING;
-                callback.onLoading(
-                        Long.valueOf(String.valueOf(values[1])),
-                        Long.valueOf(String.valueOf(values[2])),
-                        isUploading);
-                break;
-            case UPDATE_FAILURE:
-                if (values.length != 3) return;
-                this.state = State.FAILURE;
-                callback.onFailure((HttpException) values[1], (String) values[2]);
-                break;
-            case UPDATE_SUCCESS:
-                if (values.length != 2) return;
-                this.state = State.SUCCESS;
-                callback.onSuccess((ResponseInfo<T>) values[1]);
-                break;
-            default:
-                break;
-        }
-    }
+			lastUpdateTime = SystemClock.uptimeMillis();
 
-    @SuppressWarnings("unchecked")
-    private ResponseInfo<T> handleResponse(HttpResponse response) throws HttpException, IOException {
-        if (response == null) {
-            throw new HttpException("response is null");
-        }
-        if (isCancelled()) return null;
+			ResponseInfo<T> responseInfo = sendRequest(request);
+			if (responseInfo != null)
+			{
+				this.publishProgress(UPDATE_SUCCESS, responseInfo);
+				return null;
+			}
+		} catch (HttpException e)
+		{
+			this.publishProgress(UPDATE_FAILURE, e, e.getMessage());
+		}
 
-        StatusLine status = response.getStatusLine();
-        int statusCode = status.getStatusCode();
-        if (statusCode < 300) {
-            Object result = null;
-            HttpEntity entity = response.getEntity();
-            if (entity != null) {
-                isUploading = false;
-                if (isDownloadingFile) {
-                    autoResume = autoResume && OtherUtils.isSupportRange(response);
-                    String responseFileName = autoRename ? OtherUtils.getFileNameFromHttpResponse(response) : null;
-                    result = mFileDownloadHandler.handleEntity(entity, this, fileSavePath, autoResume, responseFileName);
-                } else {
-                    result = mStringDownloadHandler.handleEntity(entity, this, charset);
-                    if (HttpUtils.sHttpCache.isEnabled(requestMethod)) {
-                        HttpUtils.sHttpCache.put(requestUrl, (String) result, expiry);
-                    }
-                }
-            }
-            return new ResponseInfo<T>(response, (T) result, false);
-        } else if (statusCode == 301 || statusCode == 302) {
-            if (httpRedirectHandler == null) {
-                httpRedirectHandler = new DefaultHttpRedirectHandler();
-            }
-            HttpRequestBase request = httpRedirectHandler.getDirectRequest(response);
-            if (request != null) {
-                return this.sendRequest(request);
-            }
-        } else if (statusCode == 416) {
-            throw new HttpException(statusCode, "maybe the file has downloaded completely");
-        } else {
-            throw new HttpException(statusCode, status.getReasonPhrase());
-        }
-        return null;
-    }
+		return null;
+	}
 
-    /**
-     * stop request task.
-     */
-    public void stop() {
-        this.state = State.STOPPED;
+	private final static int UPDATE_START = 1;
+	private final static int UPDATE_LOADING = 2;
+	private final static int UPDATE_FAILURE = 3;
+	private final static int UPDATE_SUCCESS = 4;
 
-        if (request != null && !request.isAborted()) {
-            try {
-                request.abort();
-            } catch (Throwable e) {
-            }
-        }
-        if (!this.isCancelled()) {
-            try {
-                this.cancel(true);
-            } catch (Throwable e) {
-            }
-        }
+	@Override
+	@SuppressWarnings("unchecked")
+	protected void onProgressUpdate(Object... values)
+	{
+		if (this.state == State.STOPPED || values == null || values.length == 0 || callback == null) return;
+		switch ((Integer) values[0])
+		{
+		case UPDATE_START:
+			this.state = State.STARTED;
+			callback.onStart();
+			break;
+		case UPDATE_LOADING:
+			if (values.length != 3) return;
+			this.state = State.LOADING;
+			callback.onLoading(Long.valueOf(String.valueOf(values[1])), Long.valueOf(String.valueOf(values[2])), isUploading);
+			break;
+		case UPDATE_FAILURE:
+			if (values.length != 3) return;
+			this.state = State.FAILURE;
+			callback.onFailure((HttpException) values[1], (String) values[2]);
+			break;
+		case UPDATE_SUCCESS:
+			if (values.length != 2) return;
+			this.state = State.SUCCESS;
+			callback.onSuccess((ResponseInfo<T>) values[1]);
+			break;
+		default:
+			break;
+		}
+	}
 
-        if (callback != null) {
-            callback.onStopped();
-        }
-    }
+	@SuppressWarnings("unchecked")
+	private ResponseInfo<T> handleResponse(HttpResponse response) throws HttpException, IOException
+	{
+		if (response == null) { throw new HttpException("response is null"); }
+		if (isCancelled()) return null;
 
-    public boolean isStopped() {
-        return this.state == State.STOPPED;
-    }
+		StatusLine status = response.getStatusLine();
+		int statusCode = status.getStatusCode();
+		if (statusCode < 300)
+		{
+			Object result = null;
+			HttpEntity entity = response.getEntity();
+			if (entity != null)
+			{
+				isUploading = false;
+				if (isDownloadingFile)
+				{
+					autoResume = autoResume && OtherUtils.isSupportRange(response);
+					String responseFileName = autoRename ? OtherUtils.getFileNameFromHttpResponse(response) : null;
+					result = mFileDownloadHandler.handleEntity(entity, this, fileSavePath, autoResume, responseFileName);
+				}
+				else
+				{
+					result = mStringDownloadHandler.handleEntity(entity, this, charset);
+					if (AbaseHttp.sHttpCache.isEnabled(requestMethod))
+					{
+						AbaseHttp.sHttpCache.put(requestUrl, (String) result, expiry);
+					}
+				}
+			}
+			return new ResponseInfo<T>(response, (T) result, false);
+		}
+		else if (statusCode == 301 || statusCode == 302)
+		{
+			if (httpRedirectHandler == null)
+			{
+				httpRedirectHandler = new DefaultHttpRedirectHandler();
+			}
+			HttpRequestBase request = httpRedirectHandler.getDirectRequest(response);
+			if (request != null) { return this.sendRequest(request); }
+		}
+		else if (statusCode == 416)
+		{
+			throw new HttpException(statusCode, "maybe the file has downloaded completely");
+		}
+		else
+		{
+			throw new HttpException(statusCode, status.getReasonPhrase());
+		}
+		return null;
+	}
 
-    private long lastUpdateTime;
+	/**
+	 * stop request task.
+	 */
+	public void stop()
+	{
+		this.state = State.STOPPED;
 
-    @Override
-    public boolean updateProgress(long total, long current, boolean forceUpdateUI) {
-        if (callback != null && this.state != State.STOPPED) {
-            if (forceUpdateUI) {
-                this.publishProgress(UPDATE_LOADING, total, current);
-            } else {
-                long currTime = SystemClock.uptimeMillis();
-                if (currTime - lastUpdateTime >= callback.getRate()) {
-                    lastUpdateTime = currTime;
-                    this.publishProgress(UPDATE_LOADING, total, current);
-                }
-            }
-        }
-        return this.state != State.STOPPED;
-    }
+		if (request != null && !request.isAborted())
+		{
+			try
+			{
+				request.abort();
+			} catch (Throwable e)
+			{}
+		}
+		if (!this.isCancelled())
+		{
+			try
+			{
+				this.cancel(true);
+			} catch (Throwable e)
+			{}
+		}
 
-    public enum State {
-        WAITING(0), STARTED(1), LOADING(2), FAILURE(3), STOPPED(4), SUCCESS(5);
-        private int value = 0;
+		if (callback != null)
+		{
+			callback.onStopped();
+		}
+	}
 
-        State(int value) {
-            this.value = value;
-        }
+	public boolean isStopped()
+	{
+		return this.state == State.STOPPED;
+	}
 
-        public static State valueOf(int value) {
-            switch (value) {
-                case 0:
-                    return WAITING;
-                case 1:
-                    return STARTED;
-                case 2:
-                    return LOADING;
-                case 3:
-                    return FAILURE;
-                case 4:
-                    return STOPPED;
-                case 5:
-                    return SUCCESS;
-                default:
-                    return FAILURE;
-            }
-        }
+	private long lastUpdateTime;
 
-        public int value() {
-            return this.value;
-        }
-    }
+	@Override
+	public boolean updateProgress(long total, long current, boolean forceUpdateUI)
+	{
+		if (callback != null && this.state != State.STOPPED)
+		{
+			if (forceUpdateUI)
+			{
+				this.publishProgress(UPDATE_LOADING, total, current);
+			}
+			else
+			{
+				long currTime = SystemClock.uptimeMillis();
+				if (currTime - lastUpdateTime >= callback.getRate())
+				{
+					lastUpdateTime = currTime;
+					this.publishProgress(UPDATE_LOADING, total, current);
+				}
+			}
+		}
+		return this.state != State.STOPPED;
+	}
 
-    private static final NotUseApacheRedirectHandler notUseApacheRedirectHandler = new NotUseApacheRedirectHandler();
+	public enum State
+	{
+		WAITING(0), STARTED(1), LOADING(2), FAILURE(3), STOPPED(4), SUCCESS(5);
+		private int value = 0;
 
-    private static final class NotUseApacheRedirectHandler implements RedirectHandler {
-        @Override
-        public boolean isRedirectRequested(HttpResponse httpResponse, HttpContext httpContext) {
-            return false;
-        }
+		State(int value)
+		{
+			this.value = value;
+		}
 
-        @Override
-        public URI getLocationURI(HttpResponse httpResponse, HttpContext httpContext) throws ProtocolException {
-            return null;
-        }
-    }
+		public static State valueOf(int value)
+		{
+			switch (value)
+			{
+			case 0:
+				return WAITING;
+			case 1:
+				return STARTED;
+			case 2:
+				return LOADING;
+			case 3:
+				return FAILURE;
+			case 4:
+				return STOPPED;
+			case 5:
+				return SUCCESS;
+			default:
+				return FAILURE;
+			}
+		}
+
+		public int value()
+		{
+			return this.value;
+		}
+	}
+
+	private static final NotUseApacheRedirectHandler notUseApacheRedirectHandler = new NotUseApacheRedirectHandler();
+
+	private static final class NotUseApacheRedirectHandler implements RedirectHandler
+	{
+		@Override
+		public boolean isRedirectRequested(HttpResponse httpResponse, HttpContext httpContext)
+		{
+			return false;
+		}
+
+		@Override
+		public URI getLocationURI(HttpResponse httpResponse, HttpContext httpContext) throws ProtocolException
+		{
+			return null;
+		}
+	}
 }

@@ -1,6 +1,9 @@
 package com.jayqqaa12.abase.util.sys;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +18,7 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.text.format.Formatter;
+import android.util.DisplayMetrics;
 
 import com.jayqqaa12.abase.core.Abase;
 import com.jayqqaa12.abase.model.AppInfo;
@@ -26,8 +30,45 @@ import com.jayqqaa12.abase.util.ManageUtil;
  * @author 12
  * 
  */
-public class AppInfoUtil  
+public class AppInfoUtil
 {
+
+	/***
+	 * 判断 apk 包 是否能解析
+	 * 
+	 * @param apkPath
+	 * @return
+	 */
+	public static boolean isRightApk(String apkPath)
+	{
+		
+		return ManageUtil.getPackManager().getPackageArchiveInfo(apkPath, PackageManager.GET_ACTIVITIES) != null;
+	}
+
+	/***
+	 * 
+	 * 从apk 文件中获取 启动的 intent
+	 * 
+	 * 如果null 说明 有问题
+	 * 
+	 * @param path
+	 * @return
+	 */
+	public static Intent getIntentFromApk(String path)
+	{
+
+		Intent intent = null;
+		try
+		{
+			intent = ManageUtil.getPackManager().getLaunchIntentForPackage(getApkInfo(path).packageName);
+		} catch (Exception e)
+		{
+			return null;
+		}
+
+		return intent;
+
+	}
 
 	/**
 	 * 获得 版本号
@@ -41,8 +82,7 @@ public class AppInfoUtil
 
 			PackageInfo info = Abase.getContext().getPackageManager().getPackageInfo(Abase.getContext().getPackageName(), 0);
 			return info.versionName;
-		}
-		catch (NameNotFoundException e)
+		} catch (NameNotFoundException e)
 		{
 			e.printStackTrace();
 			return "0";
@@ -68,8 +108,7 @@ public class AppInfoUtil
 		try
 		{
 			name = pm.getApplicationLabel(pm.getApplicationInfo(packageName, PackageManager.GET_META_DATA)).toString();
-		}
-		catch (NameNotFoundException e)
+		} catch (NameNotFoundException e)
 		{
 			e.printStackTrace();
 		}
@@ -114,8 +153,7 @@ public class AppInfoUtil
 				apk.packageName = info.activityInfo.packageName;
 
 				apks.add(apk);
-			}
-			catch (NameNotFoundException e)
+			} catch (NameNotFoundException e)
 			{
 				e.printStackTrace();
 			}
@@ -152,8 +190,7 @@ public class AppInfoUtil
 			apkInfo.versionCode = packageInfo.versionCode;
 			apkInfo.versionName = packageInfo.versionName;
 
-		}
-		catch (NameNotFoundException e)
+		} catch (NameNotFoundException e)
 		{
 			e.printStackTrace();
 		}
@@ -195,6 +232,32 @@ public class AppInfoUtil
 	}
 
 	/**
+	 * 
+	 * 返回 文件夹里的apk 信息
+	 * 
+	 * @param apkpath
+	 * @return
+	 */
+	public static List<AppInfo> getApkInfoList(String dirPath)
+	{
+		List<AppInfo> list = new ArrayList<AppInfo>();
+		File[] files = new File(dirPath).listFiles();
+
+		if (files == null) return new ArrayList<AppInfo>(1);
+
+		for (File f : files)
+		{
+			if (f.getPath().endsWith(".apk"))
+			{
+				AppInfo info = AppInfoUtil.getApkInfo(f.toString());
+				if (info != null) list.add(info);
+			}
+		}
+		return list;
+
+	}
+
+	/**
 	 * 根据 路径 返回 apk 信息
 	 * 
 	 * @param apkpath
@@ -205,9 +268,124 @@ public class AppInfoUtil
 		AppInfo apk = null;
 		PackageManager pm = Abase.getContext().getPackageManager();
 		PackageInfo info = pm.getPackageArchiveInfo(apkpath, PackageManager.GET_ACTIVITIES);
-		if (info != null) apk = getAppInfo(pm, info);
+		if (info != null) apk = getApkinfo(apkpath, pm, info);
 
 		return apk;
+	}
+
+	/**
+	 * 读取安装包信息
+	 */
+	public static AppInfo getApkinfo(String path, PackageManager pm, PackageInfo info)
+	{
+		AppInfo appinfo = new AppInfo();
+		appinfo.path = path;
+		try
+		{
+			ApplicationInfo applicationInfo = null;// 安装包版本信息管理器
+			String PATH_PackageParser = null;
+			String PATH_AssetManager = null;
+
+			if (path.endsWith(".apk"))
+			{
+				if (info != null)
+				{
+					CharSequence label = null;// 名字
+
+					applicationInfo = info.applicationInfo;
+					appinfo.packageName = applicationInfo.packageName;
+					appinfo.versionName = info.versionName;
+					appinfo.versionCode = info.versionCode;
+
+					PATH_PackageParser = "android.content.pm.PackageParser";
+					PATH_AssetManager = "android.content.res.AssetManager";
+					try
+					{// 获取安装包的图标和显示的名称
+						Class<?> pkgParserCls = Class.forName(PATH_PackageParser);
+						Class<?>[] typeArgs = new Class[1];
+						typeArgs[0] = String.class;
+						Constructor<?> pkgParserCt = pkgParserCls.getConstructor(typeArgs);
+						Object[] valueArgs = new Object[1];
+						valueArgs[0] = path.toString();
+						Object pkgParser = pkgParserCt.newInstance(valueArgs);
+						DisplayMetrics metrics = new DisplayMetrics();
+						typeArgs = new Class[4];
+						typeArgs[0] = File.class;
+						typeArgs[1] = String.class;
+						typeArgs[2] = DisplayMetrics.class;
+						typeArgs[3] = Integer.TYPE;
+						Method pkgParser_parsePackageMtd = pkgParserCls.getDeclaredMethod("parsePackage", typeArgs);
+						valueArgs = new Object[4];
+						valueArgs[0] = new File(path.toString());
+						valueArgs[1] = path.toString();
+						valueArgs[2] = metrics;
+						valueArgs[3] = 0;
+						Object pkgParserPkg = pkgParser_parsePackageMtd.invoke(pkgParser, valueArgs);
+						// 应用程序信息包, 这个公开的, 不过有些函数, 变量没公开
+						Field appInfoFld = pkgParserPkg.getClass().getDeclaredField("applicationInfo");
+						ApplicationInfo infor = (ApplicationInfo) appInfoFld.get(pkgParserPkg);
+
+						Class<?> assetMagCls = Class.forName(PATH_AssetManager);
+						Constructor<?> assetMagCt = assetMagCls.getConstructor((Class[]) null);
+						Object assetMag = assetMagCt.newInstance((Object[]) null);
+						typeArgs = new Class[1];
+						typeArgs[0] = String.class;
+						Method assetMag_addAssetPathMtd = assetMagCls.getDeclaredMethod("addAssetPath", typeArgs);
+						valueArgs = new Object[1];
+						valueArgs[0] = path.toString();
+						assetMag_addAssetPathMtd.invoke(assetMag, valueArgs);
+						Resources res = Abase.getContext().getResources();
+						typeArgs = new Class[3];
+						typeArgs[0] = assetMag.getClass();
+						typeArgs[1] = res.getDisplayMetrics().getClass();
+						typeArgs[2] = res.getConfiguration().getClass();
+						Constructor<Resources> resCt = Resources.class.getConstructor(typeArgs);
+						valueArgs = new Object[3];
+						valueArgs[0] = assetMag;
+						valueArgs[1] = res.getDisplayMetrics();
+						valueArgs[2] = res.getConfiguration();
+						res = (Resources) resCt.newInstance(valueArgs);
+						if (infor.labelRes != 0) label = res.getText(infor.labelRes);
+						if (label == null) label = "无此apk标签信息";
+
+						appinfo.appName = label.toString();
+						if (infor.icon != 0) appinfo.iconDrawable = res.getDrawable(infor.icon);
+
+						appinfo.isInstall = isInstall(pm, appinfo.packageName, appinfo.versionCode);
+
+					} catch (Exception e)
+					{
+						e.printStackTrace();
+					}
+
+				}
+
+			}
+
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return appinfo;
+	}
+
+	/***
+	 * 判断是否安装
+	 * 
+	 * @param pm
+	 * @param packageName
+	 * @param versionCode
+	 * @return
+	 */
+	public static boolean isInstall(PackageManager pm, String packageName, int versionCode)
+	{
+		for (PackageInfo pi : pm.getInstalledPackages(PackageManager.GET_UNINSTALLED_PACKAGES))
+		{
+			if (packageName.endsWith(pi.packageName) && versionCode == pi.versionCode) return true;
+		}
+
+		return false;
 	}
 
 	private static AppInfo getAppInfo(PackageManager packmanager, PackageInfo packageInfo)
@@ -227,8 +405,7 @@ public class AppInfoUtil
 			info.appSize = new File(applicationInfo.publicSourceDir).length();
 			info.size = Formatter.formatFileSize(Abase.getContext(), info.appSize);
 		}
-		String appname = applicationInfo.loadLabel(packmanager).toString();
-		info.appName = appname;
+		info.appName = applicationInfo.loadLabel(packmanager).toString();
 
 		if (!filterApp(applicationInfo))
 		{
@@ -240,7 +417,7 @@ public class AppInfoUtil
 			// 系统应用 不知道时间
 			info.date = new Date(new File(applicationInfo.sourceDir).lastModified());
 		}
-		
+
 		// TODO 判断 ROOT 进来的 SYSTEM app 目前的办法是 需要 有一个 常用 第三方 应用的 名单 然后 排除掉
 		// 但是应该有更好的办法
 

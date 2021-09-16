@@ -35,6 +35,14 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
+
+
+/***
+ * 注意 数据过大时 io速度过慢 请放在 线程中
+ * 
+ * @author 12
+ *
+ */
 public class ACache
 {
 	public static final int TIME_HOUR = 60 * 60;
@@ -49,8 +57,6 @@ public class ACache
 		return get(Abase.getContext(), "ACache");
 	}
 
-
-	
 	
 	/***
 	 * 判断是否 初始化过了

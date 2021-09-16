@@ -17,7 +17,7 @@ package com.lidroid.xutils.db.table;
 
 import android.database.Cursor;
 
-import com.lidroid.xutils.DbUtils;
+import com.jayqqaa12.abase.core.DbKit;
 import com.lidroid.xutils.db.converter.ColumnConverter;
 import com.lidroid.xutils.db.converter.ColumnConverterFactory;
 import com.lidroid.xutils.db.sqlite.ColumnDbType;
@@ -30,7 +30,7 @@ import java.util.List;
 
 public class Foreign extends Column {
 
-    public DbUtils db;
+    public DbKit db;
 
     private final String foreignColumnName;
     private final ColumnConverter foreignColumnConverter;

@@ -92,7 +92,7 @@ public class BitmapGlobalConfig {
 
     public String getDiskCachePath() {
         if (TextUtils.isEmpty(diskCachePath)) {
-            diskCachePath = BitmapCommonUtils.getDiskCacheDir(mContext, "xBitmapCache");
+            diskCachePath = BitmapCommonUtils.getDiskCacheDir(mContext, "abaseBitmapCache");
         }
         return diskCachePath;
     }

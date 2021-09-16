@@ -18,7 +18,8 @@ package com.lidroid.xutils.bitmap.core;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
-import com.lidroid.xutils.BitmapUtils;
+
+import com.jayqqaa12.abase.core.AbaseBitmap;
 import com.lidroid.xutils.bitmap.BitmapCommonUtils;
 import com.lidroid.xutils.bitmap.BitmapDisplayConfig;
 import com.lidroid.xutils.bitmap.BitmapGlobalConfig;
@@ -129,7 +130,7 @@ public class BitmapCache {
         }
     }
 
-    public Bitmap downloadBitmap(String uri, BitmapDisplayConfig config, final BitmapUtils.BitmapLoadTask<?> task) {
+    public Bitmap downloadBitmap(String uri, BitmapDisplayConfig config, final AbaseBitmap.BitmapLoadTask<?> task) {
 
         BitmapMeta bitmapMeta = new BitmapMeta();
 

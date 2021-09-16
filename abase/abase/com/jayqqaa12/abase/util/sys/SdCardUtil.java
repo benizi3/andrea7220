@@ -12,9 +12,14 @@ import android.text.format.Formatter;
 import com.jayqqaa12.abase.core.Abase;
 import com.jayqqaa12.abase.util.TextUtil;
 
+/**
+ * 
+ * @author 12
+ *
+ */
 public class SdCardUtil  
 {
-	
+	public static String SDCARD_PATH = Environment.getExternalStorageDirectory().toString();
 	/**
 	 * sd card
 	 * @return

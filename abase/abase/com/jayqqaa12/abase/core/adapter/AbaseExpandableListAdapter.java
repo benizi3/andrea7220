@@ -21,7 +21,6 @@ public class AbaseExpandableListAdapter<T> extends BaseExpandableListAdapter
 	private List<Group<T>> groups=new ArrayList<Group<T>>();
 	
 	
-	
 	public AbaseExpandableListAdapter(){
 	}
 

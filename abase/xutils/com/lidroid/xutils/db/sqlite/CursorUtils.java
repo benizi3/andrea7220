@@ -17,7 +17,7 @@ package com.lidroid.xutils.db.sqlite;
 
 import android.database.Cursor;
 
-import com.lidroid.xutils.DbUtils;
+import com.jayqqaa12.abase.core.DbKit;
 import com.lidroid.xutils.db.table.*;
 import com.lidroid.xutils.util.LogUtils;
 import com.lidroid.xutils.util.core.DoubleKeyValueMap;
@@ -25,7 +25,7 @@ import com.lidroid.xutils.util.core.DoubleKeyValueMap;
 public class CursorUtils {
 
     @SuppressWarnings("unchecked")
-    public static <T> T getEntity(final DbUtils db, final Cursor cursor, Class<T> entityType, long findCacheSequence) {
+    public static <T> T getEntity(final DbKit db, final Cursor cursor, Class<T> entityType, long findCacheSequence) {
         if (db == null || cursor == null) return null;
 
         EntityTempCache.setSeq(findCacheSequence);

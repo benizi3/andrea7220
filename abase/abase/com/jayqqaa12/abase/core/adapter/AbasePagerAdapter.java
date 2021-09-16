@@ -1,5 +1,6 @@
 package com.jayqqaa12.abase.core.adapter;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import android.content.Context;
@@ -10,11 +11,26 @@ import android.view.ViewGroup;
 
 public class AbasePagerAdapter extends PagerAdapter
 {
-	private Map<Integer,View> views;
+	private Map<Integer, View> views = new HashMap<Integer, View>();
 
-	public AbasePagerAdapter(Context context, Map<Integer,View> views)
+	public AbasePagerAdapter(Context context, Map<Integer, View> views)
 	{
 		this.views = views;
+	}
+
+	public AbasePagerAdapter(Context context, int... layoutRes)
+	{
+		int i = 0;
+		for (int layout : layoutRes)
+			this.views.put(i++, View.inflate(context, layout, null));
+
+	}
+
+	public AbasePagerAdapter(Context context, View... views)
+	{
+		int i = 0;
+		for (View v : views)
+			this.views.put(i++, v);
 	}
 
 	@Override

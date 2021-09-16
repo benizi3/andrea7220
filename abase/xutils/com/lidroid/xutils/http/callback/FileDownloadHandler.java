@@ -53,7 +53,9 @@ public class FileDownloadHandler {
             } else {
                 fileOutputStream = new FileOutputStream(target);
             }
+            
             long total = entity.getContentLength() + current;
+            
             bis = new BufferedInputStream(entity.getContent());
             bos = new BufferedOutputStream(fileOutputStream);
 

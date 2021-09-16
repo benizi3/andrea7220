@@ -5,6 +5,15 @@ import java.util.Date;
 
 import android.graphics.drawable.Drawable;
 
+
+/***
+ * app 跟 apk 放在一块
+ * 有的属性 读取 只有 apk 有 app不一定有
+ * 
+ * @author 12
+ *
+ * @param <T>
+ */
 public class AppInfo<T>  implements Serializable{
 	
 	
@@ -17,6 +26,9 @@ public class AppInfo<T>  implements Serializable{
 	public long appSize;
 	public String versionName;
 	public boolean isSysApp;
+	public boolean isInstall;
+	public String path;
+	
 	/**
 	 * 预装 应用
 	 */

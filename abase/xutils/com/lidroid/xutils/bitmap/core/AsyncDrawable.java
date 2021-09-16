@@ -3,7 +3,8 @@ package com.lidroid.xutils.bitmap.core;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
 import android.view.View;
-import com.lidroid.xutils.BitmapUtils;
+
+import com.jayqqaa12.abase.core.AbaseBitmap;
 
 import java.lang.ref.WeakReference;
 
@@ -14,11 +15,11 @@ import java.lang.ref.WeakReference;
  */
 public class AsyncDrawable<T extends View> extends Drawable {
 
-    private final WeakReference<BitmapUtils.BitmapLoadTask<T>> bitmapLoadTaskReference;
+    private final WeakReference<AbaseBitmap.BitmapLoadTask<T>> bitmapLoadTaskReference;
 
     private final Drawable baseDrawable;
 
-    public AsyncDrawable(Drawable drawable, BitmapUtils.BitmapLoadTask<T> bitmapWorkerTask) {
+    public AsyncDrawable(Drawable drawable, AbaseBitmap.BitmapLoadTask<T> bitmapWorkerTask) {
         if (drawable == null) {
             throw new IllegalArgumentException("drawable may not be null");
         }
@@ -26,10 +27,10 @@ public class AsyncDrawable<T extends View> extends Drawable {
             throw new IllegalArgumentException("bitmapWorkerTask may not be null");
         }
         baseDrawable = drawable;
-        bitmapLoadTaskReference = new WeakReference<BitmapUtils.BitmapLoadTask<T>>(bitmapWorkerTask);
+        bitmapLoadTaskReference = new WeakReference<AbaseBitmap.BitmapLoadTask<T>>(bitmapWorkerTask);
     }
 
-    public BitmapUtils.BitmapLoadTask<T> getBitmapWorkerTask() {
+    public AbaseBitmap.BitmapLoadTask<T> getBitmapWorkerTask() {
         return bitmapLoadTaskReference.get();
     }
 
