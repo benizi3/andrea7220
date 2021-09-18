@@ -49,7 +49,7 @@ public class BitmapGlobalConfig {
     private Downloader downloader;
     private BitmapCache bitmapCache;
 
-    private int threadPoolSize = 5;
+    private int threadPoolSize = 8;
     private boolean _dirty_params_bitmapLoadExecutor = true;
     private ExecutorService bitmapLoadExecutor;
 

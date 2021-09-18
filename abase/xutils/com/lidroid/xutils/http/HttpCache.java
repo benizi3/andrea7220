@@ -27,22 +27,18 @@ import java.util.concurrent.ConcurrentHashMap;
 public class HttpCache
 {
 
-
 	/**
 	 * key: url value: response result
 	 */
 	private final LruMemoryCache<String, String> mMemoryCache;
 
-	private final static int DEFAULT_CACHE_SIZE = 1024 * 100;// string length
+	private final static int DEFAULT_CACHE_SIZE = 1024 * 200;// string length
 	private final static long DEFAULT_EXPIRY_TIME = 1000 * 60; // 60 seconds
 
 	private int cacheSize = DEFAULT_CACHE_SIZE;
 
 	private static long defaultExpiryTime = DEFAULT_EXPIRY_TIME;
 	
-	public final static long TIME_HOUR = DEFAULT_EXPIRY_TIME * 60;
-	public final static long TIME_DAY = TIME_HOUR * 24;
-
 	/**
 	 * HttpCache(HttpCache.DEFAULT_CACHE_SIZE, HttpCache.DEFAULT_EXPIRY_TIME);
 	 */

@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -26,6 +27,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.jayqqaa12.abase.core.Abase;
+import com.lidroid.xutils.http.client.HttpRequest;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -34,6 +36,7 @@ import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 
 
 
@@ -56,8 +59,10 @@ public class ACache
 	{
 		return get(Abase.getContext(), "ACache");
 	}
-
+ 
 	
+ 
+
 	/***
 	 * 判断是否 初始化过了
 	 * @param isInit

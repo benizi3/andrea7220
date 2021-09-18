@@ -54,19 +54,31 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
+
+/***
+ * 修改内存
+ * 添加 acache 硬盘缓存
+ * 增加一个 excetor 防止下载时候 线程满了
+ * 
+ * @author 12
+ *
+ */
 @EBean
 public class AbaseHttp
 {
 
+	/***
+	 * 内存 缓存
+	 */
 	public final static HttpCache sHttpCache = new HttpCache();
+	
 
 	private final DefaultHttpClient httpClient;
 	private final HttpContext httpContext = new BasicHttpContext();
 
 	private HttpRedirectHandler httpRedirectHandler;
 
- 
-	public AbaseHttp( )
+	public AbaseHttp()
 	{
 		HttpParams params = new BasicHttpParams();
 
@@ -130,7 +142,10 @@ public class AbaseHttp
 
 	private String responseTextCharset = HTTP.UTF_8;
 
-	private long currentRequestExpiry = HttpCache.getDefaultExpiryTime();
+	/***
+	 * Acache cache time
+	 */
+	private int acacheExpiry ;
 
 	private final static int DEFAULT_CONN_TIMEOUT = 1000 * 5; // 5s
 
@@ -154,7 +169,12 @@ public class AbaseHttp
 
 	private static int threadPoolSize = 3;
 
-	private static Executor executor = Executors.newFixedThreadPool(threadPoolSize, sThreadFactory);
+	private static Executor downloadExecutor = Executors.newFixedThreadPool(threadPoolSize, sThreadFactory);
+
+	/***
+	 * 添加一个 excetor 解决 下载的时候 其他线程打不开的问题
+	 */
+	private static Executor sendExecutor = Executors.newFixedThreadPool(threadPoolSize, sThreadFactory);
 
 	public HttpClient getHttpClient()
 	{
@@ -185,24 +205,6 @@ public class AbaseHttp
 		return this;
 	}
 
-	public AbaseHttp configDefaultHttpCacheExpiry(long defaultExpiry)
-	{
-		HttpCache.setDefaultExpiryTime(defaultExpiry);
-		currentRequestExpiry = HttpCache.getDefaultExpiryTime();
-		return this;
-	}
-
-	/***
-	 * 设置 当前 请求缓存 
-	 * 
-	 * @param currRequestExpiry
-	 * @return
-	 */
-	public AbaseHttp configCurrentHttpCacheExpiry(long currRequestExpiry)
-	{
-		this.currentRequestExpiry = currRequestExpiry;
-		return this;
-	}
 
 	public AbaseHttp configCookieStore(CookieStore cookieStore)
 	{
@@ -249,28 +251,25 @@ public class AbaseHttp
 		if (threadPoolSize > 0 && threadPoolSize != AbaseHttp.threadPoolSize)
 		{
 			AbaseHttp.threadPoolSize = threadPoolSize;
-			AbaseHttp.executor = Executors.newFixedThreadPool(threadPoolSize, sThreadFactory);
+			AbaseHttp.sendExecutor = Executors.newFixedThreadPool(threadPoolSize, sThreadFactory);
 		}
 		return this;
 	}
-	
-	
-	
-	//**** 12 add
-	
-	public <T> HttpHandler<T> get( String url,RequestCallBack<T> callBack)
+
+	// **** 12 add
+
+	public <T> HttpHandler<T> get(String url, RequestCallBack<T> callBack)
 	{
 		return send(HttpRequest.HttpMethod.GET, url, null, callBack);
 	}
 
-	public <T> HttpHandler<T> get( String url,long cacheTime ,RequestCallBack<T> callBack)
+	public <T> HttpHandler<T> get(String url, int cacheTime, RequestCallBack<T> callBack)
 	{
-		this.currentRequestExpiry =cacheTime;
+		this.acacheExpiry = cacheTime;
 		return send(HttpRequest.HttpMethod.GET, url, null, callBack);
 	}
-	
-	
-	public <T> HttpHandler<T> post( String url,RequestParams params,RequestCallBack<T> callBack)
+
+	public <T> HttpHandler<T> post(String url, RequestParams params, RequestCallBack<T> callBack)
 	{
 		return send(HttpRequest.HttpMethod.POST, url, params, callBack);
 	}
@@ -309,55 +308,55 @@ public class AbaseHttp
 
 	public HttpHandler<File> download(String url, String target, RequestCallBack<File> callback)
 	{
-		return download(HttpRequest.HttpMethod.GET, url, target, null, false, false,0, callback);
+		return download(HttpRequest.HttpMethod.GET, url, target, null, false, false, 0, callback);
 	}
 
 	public HttpHandler<File> download(String url, String target, boolean autoResume, RequestCallBack<File> callback)
 	{
-		return download(HttpRequest.HttpMethod.GET, url, target, null, autoResume, false,0, callback);
+		return download(HttpRequest.HttpMethod.GET, url, target, null, autoResume, false, 0, callback);
 	}
 
 	public HttpHandler<File> download(String url, String target, boolean autoResume, boolean autoRename, long total,
 			RequestCallBack<File> callback)
 	{
-		return download(HttpRequest.HttpMethod.GET, url, target, null, autoResume, autoRename,total, callback);
+		return download(HttpRequest.HttpMethod.GET, url, target, null, autoResume, autoRename, total, callback);
 	}
 
 	public HttpHandler<File> download(String url, String target, boolean autoResume, boolean autoRename, RequestCallBack<File> callback)
 	{
-		return download(HttpRequest.HttpMethod.GET, url, target, null, autoResume, autoRename,0, callback);
+		return download(HttpRequest.HttpMethod.GET, url, target, null, autoResume, autoRename, 0, callback);
 	}
 
 	public HttpHandler<File> download(String url, String target, RequestParams params, RequestCallBack<File> callback)
 	{
-		return download(HttpRequest.HttpMethod.GET, url, target, params, false, false, 0,callback);
+		return download(HttpRequest.HttpMethod.GET, url, target, params, false, false, 0, callback);
 	}
 
 	public HttpHandler<File> download(String url, String target, RequestParams params, boolean autoResume, RequestCallBack<File> callback)
 	{
-		return download(HttpRequest.HttpMethod.GET, url, target, params, autoResume, false,0, callback);
+		return download(HttpRequest.HttpMethod.GET, url, target, params, autoResume, false, 0, callback);
 	}
 
 	public HttpHandler<File> download(String url, String target, RequestParams params, boolean autoResume, boolean autoRename,
 			RequestCallBack<File> callback)
 	{
-		return download(HttpRequest.HttpMethod.GET, url, target, params, autoResume, autoRename, 0,callback);
+		return download(HttpRequest.HttpMethod.GET, url, target, params, autoResume, autoRename, 0, callback);
 	}
 
 	public HttpHandler<File> download(HttpRequest.HttpMethod method, String url, String target, RequestParams params,
 			RequestCallBack<File> callback)
 	{
-		return download(method, url, target, params, false, false,0, callback);
+		return download(method, url, target, params, false, false, 0, callback);
 	}
 
 	public HttpHandler<File> download(HttpRequest.HttpMethod method, String url, String target, RequestParams params, boolean autoResume,
 			RequestCallBack<File> callback)
 	{
-		return download(method, url, target, params, autoResume, false, 0,callback);
+		return download(method, url, target, params, autoResume, false, 0, callback);
 	}
 
 	public HttpHandler<File> download(HttpRequest.HttpMethod method, String url, String target, RequestParams params, boolean autoResume,
-			boolean autoRename, long totalLength,RequestCallBack<File> callback)
+			boolean autoRename, long totalLength, RequestCallBack<File> callback)
 	{
 
 		if (url == null) throw new IllegalArgumentException("url may not be null");
@@ -365,13 +364,13 @@ public class AbaseHttp
 
 		HttpRequest request = new HttpRequest(method, url);
 
-		HttpHandler<File> handler = new HttpHandler<File>(httpClient, httpContext, responseTextCharset, totalLength,callback);
+		HttpHandler<File> handler = new HttpHandler<File>(httpClient, httpContext, responseTextCharset, totalLength, callback);
 
-		handler.setExpiry(currentRequestExpiry);
+		handler.setExpiry(acacheExpiry);
 		handler.setHttpRedirectHandler(httpRedirectHandler);
 		request.setRequestParams(params, handler);
 
-		handler.executeOnExecutor(executor, request, target, autoResume, autoRename);
+		handler.executeOnExecutor(downloadExecutor, request, target, autoResume, autoRename);
 		return handler;
 	}
 
@@ -381,11 +380,11 @@ public class AbaseHttp
 
 		HttpHandler<T> handler = new HttpHandler<T>(httpClient, httpContext, responseTextCharset, callBack);
 
-		handler.setExpiry(currentRequestExpiry);
+		handler.setExpiry(acacheExpiry);
 		handler.setHttpRedirectHandler(httpRedirectHandler);
 		request.setRequestParams(params, handler);
 
-		handler.executeOnExecutor(executor, request);
+		  handler.executeOnExecutor(sendExecutor, request);
 		return handler;
 	}
 
@@ -394,7 +393,7 @@ public class AbaseHttp
 
 		SyncHttpHandler handler = new SyncHttpHandler(httpClient, httpContext, responseTextCharset);
 
-		handler.setExpiry(currentRequestExpiry);
+		handler.setExpiry(acacheExpiry);
 		handler.setHttpRedirectHandler(httpRedirectHandler);
 		request.setRequestParams(params);
 

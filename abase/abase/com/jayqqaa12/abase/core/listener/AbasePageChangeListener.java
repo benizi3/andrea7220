@@ -5,11 +5,13 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Matrix;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.ImageView;
 
 
 /***
@@ -26,19 +28,43 @@ public class AbasePageChangeListener implements OnPageChangeListener
 	 * 滑动条 设置 自己的滑动条来 自动生成 滑动动画
 	 */
 	private View title;
-
-	public AbasePageChangeListener(Context context, int count, View title)
+	
+	public AbasePageChangeListener(Context context, int count,  View lineView)
 	{
+	
 		DisplayMetrics dm = new DisplayMetrics();
 		((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(dm);
 		int size = (int) (dm.widthPixels / count);
 		int i = -1;
+	
 		while (count > i++)
 		{
 			postiion.add(size * i);
 		}
+		this.title = lineView;
+		
+	}
 
-		this.title = title;
+	public AbasePageChangeListener(Context context, int count, int bmw,ImageView lineView)
+	{
+		
+	
+		DisplayMetrics dm = new DisplayMetrics();
+		((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(dm);
+//		int size = (int) (dm.widthPixels / count);
+		int i = 0;
+		int offset = (dm.widthPixels / count - bmw) / count;
+	
+		postiion.add(offset);
+		while (count > i++)
+		{
+			postiion.add(offset * i+bmw);
+		}
+		this.title = lineView;
+		
+		Matrix matrix = new Matrix();
+		matrix.postTranslate(offset, 0);
+		lineView.setImageMatrix(matrix);
 	}
 
 	@Override

@@ -1,12 +1,22 @@
 package com.jayqqaa12.abase.core.activity;
 
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EFragment;
+
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jayqqaa12.abase.core.Abus;
+
+@EFragment
 public class AbaseFragment extends Fragment  
 {
+	
+	@Bean
+	Abus bus;
+	
 	protected View rootView;
 
 

@@ -17,6 +17,7 @@ package com.lidroid.xutils.http;
 
 import android.os.SystemClock;
 
+import com.jayqqaa12.abase.core.ACache;
 import com.jayqqaa12.abase.core.AbaseHttp;
 import com.jayqqaa12.abase.util.common.L;
 import com.lidroid.xutils.exception.HttpException;
@@ -75,7 +76,7 @@ public class HttpHandler<T> extends CompatibleAsyncTask<Object, Object, Void> im
 										// completely.
 	private String charset; // The default charset of response header info.
 
-	private long expiry = HttpCache.getDefaultExpiryTime();
+	private int expiry;
 	private long totalLenth;
 	private State state = State.WAITING;
 
@@ -87,7 +88,6 @@ public class HttpHandler<T> extends CompatibleAsyncTask<Object, Object, Void> im
 		this.charset = charset;
 		this.client.setRedirectHandler(notUseApacheRedirectHandler);
 	}
-
 
 	public HttpHandler(AbstractHttpClient client, HttpContext context, String charset, long totalLength, RequestCallBack<T> callback)
 	{
@@ -113,9 +113,10 @@ public class HttpHandler<T> extends CompatibleAsyncTask<Object, Object, Void> im
 
 	/***
 	 * 设置 缓存时间
+	 * 
 	 * @param expiry
 	 */
-	public void setExpiry(long expiry)
+	public void setExpiry(int expiry)
 	{
 		this.expiry = expiry;
 	}
@@ -156,7 +157,7 @@ public class HttpHandler<T> extends CompatibleAsyncTask<Object, Object, Void> im
 				if (fileLen > 0)
 				{
 					if (totalLenth == 0) request.setHeader("RANGE", "bytes=" + fileLen + "-");
-					else  request.setHeader("RANGE", "bytes=" + fileLen + "-" + (totalLenth - 1));
+					else request.setHeader("RANGE", "bytes=" + fileLen + "-" + (totalLenth - 1));
 
 				}
 
@@ -170,6 +171,7 @@ public class HttpHandler<T> extends CompatibleAsyncTask<Object, Object, Void> im
 				if (AbaseHttp.sHttpCache.isEnabled(requestMethod))
 				{
 					String result = AbaseHttp.sHttpCache.get(requestUrl);
+					if (result == null) result = ACache.create().getAsString(requestUrl);
 					if (result != null) { return new ResponseInfo<T>(null, (T) result, true); }
 				}
 
@@ -310,7 +312,8 @@ public class HttpHandler<T> extends CompatibleAsyncTask<Object, Object, Void> im
 					result = mStringDownloadHandler.handleEntity(entity, this, charset);
 					if (AbaseHttp.sHttpCache.isEnabled(requestMethod))
 					{
-						AbaseHttp.sHttpCache.put(requestUrl, (String) result, expiry);
+						AbaseHttp.sHttpCache.put(requestUrl, (String) result, HttpCache.getDefaultExpiryTime());
+						 ACache.create().put(requestUrl, (String) result,   expiry);
 					}
 				}
 			}

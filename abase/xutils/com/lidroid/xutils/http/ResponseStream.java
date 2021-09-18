@@ -15,6 +15,7 @@
 
 package com.lidroid.xutils.http;
 
+import com.jayqqaa12.abase.core.ACache;
 import com.jayqqaa12.abase.core.AbaseHttp;
 import com.lidroid.xutils.util.IOUtils;
 
@@ -38,13 +39,13 @@ public class ResponseStream extends InputStream {
 
     private String requestUrl;
     private String requestMethod;
-    private long expiry;
+    private int expiry;
 
-    public ResponseStream(HttpResponse baseResponse, String requestUrl, long expiry) throws IOException {
+    public ResponseStream(HttpResponse baseResponse, String requestUrl, int expiry) throws IOException {
         this(baseResponse, HTTP.UTF_8, requestUrl, expiry);
     }
 
-    public ResponseStream(HttpResponse baseResponse, String charset, String requestUrl, long expiry) throws IOException {
+    public ResponseStream(HttpResponse baseResponse, String charset, String requestUrl, int expiry) throws IOException {
         if (baseResponse == null) {
             throw new IllegalArgumentException("baseResponse may not be null");
         }
@@ -112,8 +113,9 @@ public class ResponseStream extends InputStream {
                 sb.append(line);
             }
             _directResult = sb.toString();
-            if (requestUrl != null && AbaseHttp.sHttpCache.isEnabled(requestMethod)) {
-                AbaseHttp.sHttpCache.put(requestUrl, _directResult, expiry);
+            if (requestUrl != null &&  AbaseHttp.sHttpCache.isEnabled(requestMethod)) {
+            	AbaseHttp.sHttpCache.put(requestUrl, _directResult,HttpCache.getDefaultExpiryTime());
+            	ACache.create().put(requestUrl, _directResult,  expiry);
             }
             return _directResult;
         } finally {

@@ -6,6 +6,7 @@
 package com.jayqqaa12.abase.core.adapter;
 
 import android.content.Context;
+import com.jayqqaa12.abase.core.Abus_;
 import org.androidannotations.api.view.HasViews;
 import org.androidannotations.api.view.OnViewChangedNotifier;
 
@@ -55,6 +56,7 @@ public final class ItemView_
 
     private void init_() {
         OnViewChangedNotifier previousNotifier = OnViewChangedNotifier.replaceNotifier(onViewChangedNotifier_);
+        bus = Abus_.getInstance_(getContext());
         OnViewChangedNotifier.replaceNotifier(previousNotifier);
     }
 

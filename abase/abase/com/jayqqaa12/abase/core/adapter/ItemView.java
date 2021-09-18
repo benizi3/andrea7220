@@ -2,15 +2,21 @@ package com.jayqqaa12.abase.core.adapter;
 
 import java.lang.reflect.Method;
 
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EViewGroup;
 
 import android.content.Context;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.jayqqaa12.abase.core.Abus;
+
 @EViewGroup
 public class ItemView<T> extends LinearLayout
 {
+	@Bean
+	Abus bus;
+	
 	public void bind(T item)
 	{
 

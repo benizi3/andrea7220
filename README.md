@@ -14,11 +14,13 @@
 > 替换xUtils ViewUtils模块为 androidannotations <br>
 > 更为强大的ioc annotations写法 <br>
 > 集成了其他3大模块 DbUtils模块：HttpUtils模块：BitmapUtils模块：<br>
-
+> 基于abase 的个人定制
 
 #abase-util
 > 100多个util包含个人目前为止用到的所有可复用方法 <br>
  
+#其他
+>otto 定位sdk firewall等项目支持
 
 
 

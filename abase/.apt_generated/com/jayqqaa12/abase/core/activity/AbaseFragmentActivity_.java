@@ -10,16 +10,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import com.jayqqaa12.abase.core.Abus_;
+import org.androidannotations.api.SdkVersionHelper;
 import org.androidannotations.api.view.HasViews;
-import org.androidannotations.api.view.OnViewChangedListener;
 import org.androidannotations.api.view.OnViewChangedNotifier;
 
-public final class AbaseHttpActivity_
-    extends AbaseHttpActivity
-    implements HasViews, OnViewChangedListener
+public final class AbaseFragmentActivity_
+    extends AbaseFragmentActivity
+    implements HasViews
 {
 
     private final OnViewChangedNotifier onViewChangedNotifier_ = new OnViewChangedNotifier();
@@ -34,8 +35,6 @@ public final class AbaseHttpActivity_
 
     private void init_(Bundle savedInstanceState) {
         bus = Abus_.getInstance_(this);
-        afterInject();
-        OnViewChangedNotifier.registerOnViewChangedListener(this);
     }
 
     @Override
@@ -56,17 +55,20 @@ public final class AbaseHttpActivity_
         onViewChangedNotifier_.notifyViewChanged(this);
     }
 
-    public static AbaseHttpActivity_.IntentBuilder_ intent(Context context) {
-        return new AbaseHttpActivity_.IntentBuilder_(context);
+    public static AbaseFragmentActivity_.IntentBuilder_ intent(Context context) {
+        return new AbaseFragmentActivity_.IntentBuilder_(context);
     }
 
-    public static AbaseHttpActivity_.IntentBuilder_ intent(Fragment supportFragment) {
-        return new AbaseHttpActivity_.IntentBuilder_(supportFragment);
+    public static AbaseFragmentActivity_.IntentBuilder_ intent(Fragment supportFragment) {
+        return new AbaseFragmentActivity_.IntentBuilder_(supportFragment);
     }
 
     @Override
-    public void onViewChanged(HasViews hasViews) {
-        afterView();
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (((SdkVersionHelper.getSdkInt()< 5)&&(keyCode == KeyEvent.KEYCODE_BACK))&&(event.getRepeatCount() == 0)) {
+            onBackPressed();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     public static class IntentBuilder_ {
@@ -77,20 +79,20 @@ public final class AbaseHttpActivity_
 
         public IntentBuilder_(Context context) {
             context_ = context;
-            intent_ = new Intent(context, AbaseHttpActivity_.class);
+            intent_ = new Intent(context, AbaseFragmentActivity_.class);
         }
 
         public IntentBuilder_(Fragment fragment) {
             fragmentSupport_ = fragment;
             context_ = fragment.getActivity();
-            intent_ = new Intent(context_, AbaseHttpActivity_.class);
+            intent_ = new Intent(context_, AbaseFragmentActivity_.class);
         }
 
         public Intent get() {
             return intent_;
         }
 
-        public AbaseHttpActivity_.IntentBuilder_ flags(int flags) {
+        public AbaseFragmentActivity_.IntentBuilder_ flags(int flags) {
             intent_.setFlags(flags);
             return this;
         }
