@@ -1,5 +1,7 @@
 package com.jayqqaa12.abase.core.activity;
 
+import org.androidannotations.annotations.AfterInject;
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 
@@ -18,7 +20,7 @@ import com.jayqqaa12.abase.core.Abus;
 public class AbaseFragmentActivity extends FragmentActivity implements OnTabChangeListener
 {
 	@Bean
-	Abus bus;
+	protected Abus bus;
 
 	@Override
 	protected void onCreate(Bundle arg0)
@@ -34,6 +36,30 @@ public class AbaseFragmentActivity extends FragmentActivity implements OnTabChan
 		bus.unregister(this);
 	}
 	
+	
+	@AfterInject
+	protected void afterInject(){
+		
+	}
+ 
+	
+	@AfterViews
+	protected void afterView()
+	{
+		init();
+		connect();
+	}
+	
+	protected void init(){
+	}
+	
+	/***
+	 * 填充数据 连接网络等
+	 */
+	protected void connect()
+	{
+	}
+
 
 	/**
 	 * 

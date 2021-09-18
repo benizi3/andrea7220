@@ -13,6 +13,14 @@ import android.view.ViewGroup;
 
 import com.jayqqaa12.abase.util.common.ReflectUtil;
 
+
+/***
+ * 
+ * 建议 view  使用 fragment 代替
+ * @author 12
+ *
+ * @param <T>
+ */
 public class AbasePagerAdapter<T> extends PagerAdapter
 {
 	private Map<Integer, View> views = new HashMap<Integer, View>();

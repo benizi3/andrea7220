@@ -9,7 +9,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 public class AbaseFragmentPagerAdapter extends FragmentPagerAdapter
 {
 
-	private ArrayList<Fragment> list;
+	protected ArrayList<Fragment> list;
+	
+	public AbaseFragmentPagerAdapter(FragmentManager fm){
+		super(fm);
+	}
 
 	public AbaseFragmentPagerAdapter(FragmentManager fm, ArrayList<Fragment> fragmentsList)
 	{
@@ -17,6 +21,16 @@ public class AbaseFragmentPagerAdapter extends FragmentPagerAdapter
 		
 		this.list = fragmentsList;
 	}
+	
+	public AbaseFragmentPagerAdapter(FragmentManager fm, Fragment ... fragmentsList)
+	{
+		super(fm);
+		
+		for(Fragment frag :fragmentsList){
+			list.add(frag);
+		}
+	}
+
 
 	@Override
 	public Fragment getItem(int pos)

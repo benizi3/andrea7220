@@ -1,5 +1,7 @@
 package com.jayqqaa12.abase.core.activity;
 
+import org.androidannotations.annotations.AfterInject;
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 
@@ -15,10 +17,22 @@ public class AbaseFragment extends Fragment
 {
 	
 	@Bean
-	Abus bus;
+	protected Abus bus;
 	
 	protected View rootView;
 
+	
+	public void onCreate(android.os.Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		bus.register(this);
+	};
+	
+	@Override
+	public void onDestroy()
+	{
+		super.onDestroy();
+		bus.unregister(this);
+	}
 
 	public View cacheView(int resId, LayoutInflater inflater)
 	{
@@ -29,6 +43,30 @@ public class AbaseFragment extends Fragment
 		return rootView;
 	}
 
+
+	
+	@AfterInject
+	protected void afterInject(){
+		
+	}
+ 
+	
+	@AfterViews
+	protected void afterView()
+	{
+		init();
+		connect();
+	}
+	
+	protected void init(){
+	}
+	
+	/***
+	 * 填充数据 连接网络等
+	 */
+	protected void connect()
+	{
+	}
 
 
 

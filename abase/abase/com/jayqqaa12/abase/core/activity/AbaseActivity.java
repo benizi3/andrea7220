@@ -11,10 +11,10 @@ import android.app.Activity;
 import android.os.Bundle;
 
 @EActivity
-public class AbaseHttpActivity extends Activity
+public class AbaseActivity extends Activity
 {
 	@Bean
-	Abus bus;
+	protected Abus bus;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -48,6 +48,10 @@ public class AbaseHttpActivity extends Activity
 	
 	protected void init(){
 	}
+	
+	/***
+	 * 填充数据 连接网络等
+	 */
 	protected void connect()
 	{
 	}

@@ -21,6 +21,21 @@ public class IntentUtil
 	}
 	
 	
+	
+	public static Intent getIntent( String[] name, Object ... content)
+	{
+		Intent intent = new Intent();
+		int i = name.length;
+		while (i-- > 0)
+		{
+			putExtra(name[i], content[i], intent);
+		}
+		
+		return intent;
+	}
+	
+	
+	
 	public static void startSubService(Context context, Class clazz)
 	{
 		startService(context,ReflectUtil.getSubClass(clazz));
@@ -116,6 +131,7 @@ public class IntentUtil
 		}
 		context.startActivity(intent);
 	}
+	
 
 	public static void startIntent(Context context, Class clazz, String objName, Serializable obj, String name, Object content)
 	{

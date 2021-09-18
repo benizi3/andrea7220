@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EBean;
 
 import android.content.Context;
 import android.view.View;
@@ -26,7 +27,6 @@ import com.jayqqaa12.abase.util.common.ReflectUtil;
  */
 public class AbaseAdapter<T> extends BaseAdapter
 {
-	
 	
 	public List<T> data = new ArrayList<T>();
 	public Class<? extends ItemView<T>> clazz;

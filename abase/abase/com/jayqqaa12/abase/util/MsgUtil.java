@@ -1,6 +1,7 @@
 package com.jayqqaa12.abase.util;
 
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Handler.Callback;
 import android.os.Message;
@@ -36,6 +37,7 @@ public class MsgUtil
 	public static final int MSG_LOAD=22;
 	public static final int MSG_REFRESH=23;
 	public static final int MSG_INIT=24;
+	
 	
 	public static void sendMessage(Callback callback, int what,Object obj){
 		

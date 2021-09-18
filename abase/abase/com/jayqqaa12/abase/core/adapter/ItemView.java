@@ -15,7 +15,7 @@ import com.jayqqaa12.abase.core.Abus;
 public class ItemView<T> extends LinearLayout
 {
 	@Bean
-	Abus bus;
+	protected Abus bus;
 	
 	public void bind(T item)
 	{
