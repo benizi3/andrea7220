@@ -1,8 +1,9 @@
 package com.jayqqaa12.news;
 
-import com.jayqqaa12.abase.core.AbaseApp;
+import com.jayqqaa12.abase.core.AApp;
 
-public class App extends AbaseApp
+
+public class App extends AApp
 {
 	
 	@Override

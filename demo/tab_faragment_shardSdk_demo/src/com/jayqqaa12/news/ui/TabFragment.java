@@ -1,7 +1,6 @@
 package com.jayqqaa12.news.ui;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
@@ -10,19 +9,15 @@ import org.androidannotations.annotations.ViewById;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.DisplayMetrics;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
-import com.jayqqaa12.abase.core.activity.AbaseFragment;
-import com.jayqqaa12.abase.core.adapter.AbaseFragmentPagerAdapter;
-import com.jayqqaa12.abase.util.common.L;
+import com.jayqqaa12.abase.core.fragment.AFragment;
+import com.jayqqaa12.abase.core.fragment.AFragmentPagerAdapter;
+import com.jayqqaa12.abase.core.listener.APageChangeListener;
 import com.jayqqaa12.news.R;
 
 @EFragment(R.layout.fragment)
-public class TabFragment extends AbaseFragment 
+public class TabFragment extends AFragment  
 {
 	@ViewById
 	ViewPager vp;
@@ -52,20 +47,12 @@ public class TabFragment extends AbaseFragment
 	@AfterViews
 	public void init()
 	{
-		vp.setAdapter(new AbaseFragmentPagerAdapter(getChildFragmentManager(), fragmentsList));
-		vp.setOnPageChangeListener(this);
-		
-		initTitleWidth(fragmentsList.size(), iv_line);
+		vp.setAdapter(new AFragmentPagerAdapter(getChildFragmentManager(), fragmentsList));
+		vp.setOnPageChangeListener( new APageChangeListener(getActivity(), fragmentsList.size(), iv_line));
 		
 	}
 
+ 
+
 	
-
-	@Override
-	public void onPageScrollStateChanged(int arg0)
-	{}
-
-	@Override
-	public void onPageScrolled(int arg0, float arg1, int arg2)
-	{}
 }

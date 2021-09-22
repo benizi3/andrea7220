@@ -1,13 +1,10 @@
 package com.jayqqaa12.news.ui;
 
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ItemClick;
-import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import android.support.v4.widget.DrawerLayout;
@@ -20,14 +17,13 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
 import cn.sharesdk.sina.weibo.SinaWeibo;
 import cn.sharesdk.tencent.qzone.QZone;
 
-import com.jayqqaa12.abase.core.activity.AbaseFragmentActivity;
-import com.jayqqaa12.abase.util.IntentUtil;
-import com.jayqqaa12.abase.util.common.L;
-import com.jayqqaa12.abase.util.common.T;
+import com.jayqqaa12.abase.core.fragment.AFragmentActivity;
+import com.jayqqaa12.abase.kit.IntentKit;
+import com.jayqqaa12.abase.kit.common.L;
 import com.jayqqaa12.news.R;
 
 @EActivity(R.layout.activity_main)
-public class MainActivity extends AbaseFragmentActivity
+public class MainActivity extends AFragmentActivity
 {
 	@ViewById
 	DrawerLayout dl;
@@ -188,7 +184,7 @@ public class MainActivity extends AbaseFragmentActivity
 
 		case 3:
 			L.i("thrid party login");
-			IntentUtil.startIntent(this, LoginActivity_.class);
+			IntentKit.startIntent(this, LoginActivity_.class);
 
 			break;
 		}

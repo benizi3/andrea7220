@@ -56,7 +56,7 @@ public final class R {
 		public static final int ssdk_title_div = 0x7f020041;
 		public static final int title_back = 0x7f020048;
 		public static final int title_shadow = 0x7f020049;
-		public static final int white_point = 0x7f020050;
+		public static final int white_point = 0x7f020057;
 	}
 	public static final class string {
 		public static final int app_downloading = 0x7f05002b;

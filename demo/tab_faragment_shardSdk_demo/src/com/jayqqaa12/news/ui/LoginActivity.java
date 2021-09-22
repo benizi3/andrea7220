@@ -16,8 +16,8 @@ import cn.sharesdk.framework.utils.UIHandler;
 import cn.sharesdk.sina.weibo.SinaWeibo;
 import cn.sharesdk.tencent.qzone.QZone;
 
-import com.jayqqaa12.abase.util.MsgUtil;
-import com.jayqqaa12.abase.util.common.L;
+import com.jayqqaa12.abase.kit.MsgKit;
+import com.jayqqaa12.abase.kit.common.L;
 import com.jayqqaa12.news.R;
 
 @EActivity(R.layout.third_party_login_page)
@@ -54,7 +54,7 @@ public class LoginActivity extends Activity implements Callback, PlatformActionL
 			if (userId != null)
 			{
 				L.i("user id = " + userId);
-				MsgUtil.sendMessage(this, MSG_LOGIN, null);
+				MsgKit.sendMessage(this, MSG_LOGIN, null);
 				return;
 			}
 		}
@@ -69,7 +69,7 @@ public class LoginActivity extends Activity implements Callback, PlatformActionL
 		if (action == Platform.ACTION_USER_INFOR)
 		{
 			UIHandler.sendEmptyMessage(MSG_AUTH_COMPLETE, this);
-			MsgUtil.sendMessage(this, MSG_LOGIN, res);
+			MsgKit.sendMessage(this, MSG_LOGIN, res);
 		}
 	}
 

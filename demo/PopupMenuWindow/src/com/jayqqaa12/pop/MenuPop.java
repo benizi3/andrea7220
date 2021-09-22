@@ -5,17 +5,17 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
-import com.jayqqaa12.abase.util.ManageUtil;
-import com.jayqqaa12.abase.view.AbasePopup;
+import com.jayqqaa12.abase.kit.ManageKit;
+import com.jayqqaa12.abase.view.APopup;
 
-public class MenuPop extends AbasePopup implements OnItemClickListener
+public class MenuPop extends APopup implements OnItemClickListener
 {
 	MenuAdapter adapter ;
 
 	@Override
 	protected View initView()
 	{
-		View view = ManageUtil.getInflater().inflate(R.layout.test_menu, null);
+		View view = ManageKit.getInflater().inflate(R.layout.test_menu, null);
 		GridView gv = (GridView) view.findViewById(R.id.gv);
 		adapter= new MenuAdapter();
 		gv.setAdapter(adapter);

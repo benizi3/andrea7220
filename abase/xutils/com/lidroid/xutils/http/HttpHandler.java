@@ -18,8 +18,8 @@ package com.lidroid.xutils.http;
 import android.os.SystemClock;
 
 import com.jayqqaa12.abase.core.ACache;
-import com.jayqqaa12.abase.core.AbaseHttp;
-import com.jayqqaa12.abase.util.common.L;
+import com.jayqqaa12.abase.core.AHttp;
+import com.jayqqaa12.abase.kit.common.L;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.callback.*;
 import com.lidroid.xutils.util.OtherUtils;
@@ -168,9 +168,9 @@ public class HttpHandler<T> extends CompatibleAsyncTask<Object, Object, Void> im
 			try
 			{
 				requestMethod = request.getMethod();
-				if (AbaseHttp.sHttpCache.isEnabled(requestMethod))
+				if (AHttp.sHttpCache.isEnabled(requestMethod))
 				{
-					String result = AbaseHttp.sHttpCache.get(requestUrl);
+					String result = AHttp.sHttpCache.get(requestUrl);
 					if (result == null) result = ACache.create().getAsString(requestUrl);
 					if (result != null) { return new ResponseInfo<T>(null, (T) result, true); }
 				}
@@ -310,9 +310,9 @@ public class HttpHandler<T> extends CompatibleAsyncTask<Object, Object, Void> im
 				else
 				{
 					result = mStringDownloadHandler.handleEntity(entity, this, charset);
-					if (AbaseHttp.sHttpCache.isEnabled(requestMethod))
+					if (AHttp.sHttpCache.isEnabled(requestMethod))
 					{
-						AbaseHttp.sHttpCache.put(requestUrl, (String) result, HttpCache.getDefaultExpiryTime());
+						AHttp.sHttpCache.put(requestUrl, (String) result, HttpCache.getDefaultExpiryTime());
 						 ACache.create().put(requestUrl, (String) result,   expiry);
 					}
 				}

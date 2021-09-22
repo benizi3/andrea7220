@@ -17,8 +17,16 @@ androidannotations 集成方式
 不懂可自行百度 
 
 
-其他没什么好说 大家 直接用就行 
 
+#建议使用方式
+
+activity 方式 使用对象组装
+AActivity-->> AAdapter-->> ItemView<T>
+
+
+activity+viewpage  方式请使用
+
+AFragmentActivity-->>AFragmentPagerAdapter--->> AFragment --->>AAdapter-->>IitemView<T>
 
 
 

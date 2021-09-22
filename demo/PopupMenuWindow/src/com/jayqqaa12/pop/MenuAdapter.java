@@ -3,17 +3,13 @@ package com.jayqqaa12.pop;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.androidannotations.annotations.AfterInject;
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EBean;
-
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.jayqqaa12.abase.util.ManageUtil;
+import com.jayqqaa12.abase.kit.ManageKit;
 
 class MenuAdapter extends BaseAdapter
 {
@@ -52,7 +48,7 @@ class MenuAdapter extends BaseAdapter
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
-		View view = ManageUtil.getInflater().inflate(R.layout.test_menu_item, null);
+		View view = ManageKit.getInflater().inflate(R.layout.test_menu_item, null);
 		TextView tv = (TextView) view.findViewById(R.id.m_tv);
 		ImageView iv = (ImageView) view.findViewById(R.id.m_iv);
 		tv.setText(getItem(position).text);

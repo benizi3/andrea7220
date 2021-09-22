@@ -4,8 +4,8 @@ import android.content.Context;
 import android.database.ContentObserver;
 import android.os.Handler;
 
-import com.jayqqaa12.abase.util.phone.CallUtil;
-import com.jayqqaa12.abase.util.ui.NotifiyUtil;
+import com.jayqqaa12.abase.kit.phone.CallKit;
+import com.jayqqaa12.abase.kit.ui.NotifiyKit;
 
 /**
  * 
@@ -31,7 +31,7 @@ public class PhoneNumberObserver extends ContentObserver
 	public void onChange(boolean selfChange) {
 	
 		super.onChange(selfChange);
-		CallUtil.deleteCallLog(incomingnumber);
+		CallKit.deleteCallLog(incomingnumber);
 		
 		//当删除了呼叫记录后 反注册内容观察者
 		context.getContentResolver().unregisterContentObserver(this);

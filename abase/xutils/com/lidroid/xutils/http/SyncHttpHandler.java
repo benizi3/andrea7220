@@ -16,7 +16,7 @@
 package com.lidroid.xutils.http;
 
 import com.jayqqaa12.abase.core.ACache;
-import com.jayqqaa12.abase.core.AbaseHttp;
+import com.jayqqaa12.abase.core.AHttp;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.callback.DefaultHttpRedirectHandler;
 import com.lidroid.xutils.http.callback.HttpRedirectHandler;
@@ -76,9 +76,9 @@ public class SyncHttpHandler
 			{
 				requestUrl = request.getURI().toString();
 				requestMethod = request.getMethod();
-				if (AbaseHttp.sHttpCache.isEnabled(requestMethod))
+				if (AHttp.sHttpCache.isEnabled(requestMethod))
 				{
-					String result = AbaseHttp.sHttpCache.get(requestUrl);
+					String result = AHttp.sHttpCache.get(requestUrl);
 					if (result == null) result = ACache.create().getAsString(requestUrl);
 					if (result != null) { return new ResponseStream(result); }
 				}

@@ -6,11 +6,11 @@ import android.view.Gravity;
 import android.view.Menu;
 
 import com.jayqqaa12.abase.core.Abase;
-import com.jayqqaa12.abase.view.AbasePopup;
+import com.jayqqaa12.abase.view.APopup;
 public class MainActivity extends Activity
 {
 	
-	AbasePopup pop;
+	APopup pop;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)

@@ -5,17 +5,13 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.jayqqaa12.abase.core.activity.AbaseFragment;
-import com.jayqqaa12.abase.util.common.L;
+import com.jayqqaa12.abase.core.fragment.AFragment;
 import com.jayqqaa12.news.R;
 
 @EFragment(R.layout.image)
-public class PageFragment extends AbaseFragment
+public class PageFragment extends AFragment
 {
 	@ViewById
 	ImageView imageview;

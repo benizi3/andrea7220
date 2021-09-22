@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jayqqaa12.abase.util.common.L;
+import com.jayqqaa12.abase.kit.common.L;
 import com.lidroid.xutils.db.table.ColumnUtils;
 import com.lidroid.xutils.db.table.Finder;
 import com.lidroid.xutils.db.table.TableUtils;

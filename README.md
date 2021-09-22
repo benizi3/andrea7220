@@ -2,9 +2,9 @@
 
 ##abase简介 
 > abase集成了本人常用的 util <br>
-> 以及 androidannotations afinal xutils 开源框架 <br>
+> 以及 androidannotations  xutils 等开源框架 <br>
 > 然后按我个人习惯修改了一下 <br>
-> 追求的是最快速的项目构建 <br>
+> 追求的是快速的项目构建 <br>
 
 
 
@@ -13,14 +13,14 @@
 #xUtils 
 > 替换xUtils ViewUtils模块为 androidannotations <br>
 > 更为强大的ioc annotations写法 <br>
-> 集成了其他3大模块 DbUtils模块：HttpUtils模块：BitmapUtils模块：<br>
+> 集成了其他3大模块并进行部分优化 Db模块 Http模块 Bitmap模块<br>
 > 基于abase 的个人定制
 
 #abase-util
 > 100多个util包含个人目前为止用到的所有可复用方法 <br>
  
-#其他
->otto 定位sdk firewall等项目支持
+#abase-ext 
+> 定位sdk firewall 等扩展支持 需要的
 
 
 
@@ -29,7 +29,7 @@
 
 ##学习
 
-> 使用前请自行研究 androidannotations xUtils <br>
+> 使用前可自行研究 <a href="https://github.com/excilys/androidannotations/wiki/Cookbook"> androidannotations</a> <a href="https://github.com/wyouflf/xUtils" >xUtils </a> <br>
 
 > 只使用abase-util 只要在之前加上  <br>
 
@@ -49,23 +49,27 @@ demo 目录下是一些 以前写的项目实例可参考（abase版本可能不
 
 // androidannotations 
 
+
+//activity 形式  一般使用方式直接绑定对象 AActivity + AAdapter +ItemView<T>
+
 @EActivity(R.layout.activity_main)
-public class MainActivity extends Activity
+public class MainActivity extends AActivity
 {
 	@ViewById
 	GridView gv;
-	AbaseBaseAdapter<Book> adapter;
+	ABaseAdapter<Book> adapter;
 	
-	private AbaseDao db = AbaseDao.create();
+	@Bean
+        ADao db ;
 
         /**
 	这个方法可代替 onCreate（）
 	**/
-	@AfterViews
+	 
 	public void init()
 	{
 	         // 使用BookItemView 来代替 adapter
-		adapter = new AbaseBaseAdapter<Book>(BookItemView.class,this);
+		adapter = new AeBaseAdapter<Book>(BookItemView.class,this);
 		gv.setAdapter(adapter);
 		setData();
 	}
@@ -95,14 +99,91 @@ public class BookItemView extends ItemView<Book>
 }
 
 
-// 常用utils  一些有用没用的东西
+//fragment tabs 使用形式 
+
+AFragmentActivity+AFragmentPagerAdapter+Viewpage+TabPageIndicator+AFragment
+
+
+@EActivity(R.layout.activity_viewpage)
+@NoTitle
+public class RankActivity extends AFragmentActivity
+{
+	@ViewById
+	TextView tv_title;
+	@ViewById
+	ViewPager vp;
+
+	@ViewById  // viewindicator 开源项目 
+	TabPageIndicator tpi;
+	
+	private AFragmentPagerAdapter adapter;
+	
+	protected void init()
+	{
+		tv_title.setText("排行");
+		adapter = new AFragmentPagerAdapter(getSupportFragmentManager());
+		adapter.setFragment(AFragment.newInstances(MsgKit.getBundle("url", new String[]{Config.apprank_url,Config.gamerank_url}),
+				RankFragment.class,RankFragment.class));
+		adapter.setLable("应用排行","游戏排行");
+		vp.setAdapter(adapter);
+		tpi.setViewPager(vp);
+		
+		
+	}
+}
+
+@EFragment(R.layout.lay)
+public class RankFragment extends AFragment  
+{
+	@ViewById
+	ListView lv;
+	@ViewById
+	ProgressBar pb;
+	 
+	@Bean
+	AppAdapter adapter;
+	
+	@FragmentArg
+	String url;
+	
+	@Override
+	protected void init()
+	{
+		 
+		pb.setVisibility(View.VISIBLE);
+
+		setDate(xxx);
+	}
+	
+	
+	 
+
+	@Override
+	public void setDate(String data)
+	{
+		adapter.setData(AppInfo.paraseData(data));
+		adapter.setListView(lv);
+		lv.setAdapter(adapter);
+		pb.setVisibility(View.GONE);
+	}
+}
+
+
+
+
+
+
+
+
+
+// 常用 kit 一些有用没用的东西
 
 
 /**
- * SharedPredferences util 
+ * SharedPredferences kit 
  * 
  */
-public class ConfigUtil
+public class ConfigKit
 
 
 
@@ -111,7 +192,7 @@ public class ConfigUtil
 * @author jayqqaa12 
 * @date 2013-6-8
  */
-public class MsgUtil 
+public class MsgKit 
 
 
 /***
@@ -121,7 +202,7 @@ public class MsgUtil
  * 
  *         SystemClock.elapsedRealtime
  */
-public class TimeUtil
+public class TimeKit
 
 
 
@@ -138,7 +219,7 @@ public final class Txt
  * @author 12
  * 
  */
-public class VersionUtil 
+public class VersionKit 
 
 
 /***
@@ -146,7 +227,7 @@ public class VersionUtil
  * @author 12
  *
  */
-public class DateUtil
+public class DateKit
 
 
 /**
@@ -166,7 +247,7 @@ public class L
  * @author jayqqaa12
  * @date 2013-5-15
  */
-public class LogcatUtil  
+public class LogcatKit  
 
 
 /**
@@ -189,15 +270,15 @@ public class Validate {
  * 文件 工具栏
  * 
  */
-public class FileUtil
+public class FileKit
 
 
 
 /**
- * Java utils 实现的Zip工具
+ * Java Kits 实现的Zip工具
  * 
  */
-public class ZipUtils
+public class ZipKits
 
 /**
  * 媒体类型工具包
@@ -205,14 +286,14 @@ public class ZipUtils
  * @author 12
  * 
  */
-public class MediaTypeUtil  
+public class MediaTypeKit  
 
 /***
  * 判断网络类型  网络连接等
  * @author 12
  *
  */
-public class NetworkUtil  
+public class NetworkKit  
 
 /**
  * 1.点击"Network"将输出本机所处的网络环境。 2.点击"WAP"将设定 移动网络接入点为CMWAP。 3.点击"GPRS"将设定
@@ -220,7 +301,7 @@ public class NetworkUtil
  * 
  * 必需 为 系统应用 或者有系统权限
  */
-public class ApnUtil  
+public class ApnKit  
 
 
 /**
@@ -228,7 +309,7 @@ public class ApnUtil
 * @author jayqqaa12 
 * @date 2013-6-8
  */
-public class CallUtil 
+public class CallKit 
 
 
 
@@ -237,7 +318,7 @@ public class CallUtil
  * @author 12
  *
  */
-public class ContactUtil  
+public class ContactKit  
 
 
 /***
@@ -245,14 +326,14 @@ public class ContactUtil
  * @author 12
  *
  */
-public class TelUtil
+public class TelKit
 
 /***
  * 加密的
  * @author 12
  *
  */
-public class CipherUtil
+public class CipherKit
 
 /**
  * apk 的 相关 信息
@@ -260,14 +341,14 @@ public class CipherUtil
  * @author 12
  * 
  */
-public class AppInfoUtil  
+public class AppInfoKit  
 
 
 /**
  * 手机和SD卡内存获取
  *
  * */
-public class MemoryUtil 
+public class MemoryKit 
 
 /**
  * 提供各种 系统 广播的 动态 注册
@@ -275,7 +356,7 @@ public class MemoryUtil
  * @author jayqqaa12
  * @date 2013-5-15
  */
-public class ReceiverUtil  
+public class ReceiverKit  
 
 
 /**
@@ -284,7 +365,7 @@ public class ReceiverUtil
  * @author jayqqaa12
  * @date 2013-5-17
  */
-public class RootUtil
+public class RootKit
 
 /**
  * 获得 android.os.SystemProperties 相关 属性
@@ -292,7 +373,7 @@ public class RootUtil
  * @author jayqqaa12
  *
  */
-public class SysPropUtil  
+public class SysPropKit  
 
 
 /**
@@ -300,27 +381,27 @@ public class SysPropUtil
  * @author jayqqaa12
  * @date 2013-5-15
  */
-public class SysUtil  
+public class SysKit  
 /**
  * 当前 手机  进程的 相关 信息的 工具
  * @author  jayqqaa12
  *
  */
-public class TaskUtil  
+public class TaskKit  
 
 /**
  * 常见动画 工具
 * @author jayqqaa12 
 * @date 2013-6-5
  */
-public class AnimUitl  
+public class AnimKit  
 
 /**
- * @Title ImageUtils
- * @Package com.ta.util.extend.draw
+ * @Title ImageKits
+ * @Package com.ta.Kit.extend.draw
  * @Description 处理图片的工具类.
  */
-public class ImageUtil
+public class ImageKit
 
 
 /**
@@ -328,12 +409,12 @@ public class ImageUtil
  * notification 工具集
  *
  */
-public class NotificationUtil   
+public class NotificationKit   
 
 /**
  * 获取、设置控件信息
  */
-public class ViewParmUtil 
+public class ViewParmKit 
 
 
 // 对框架的进一步封装
@@ -341,9 +422,9 @@ public class ViewParmUtil
 
 
 /***
- * 结合 androidannotations 
+ * 可结合 androidannotations 
  * 
- * 使用方法  new AbasePopup(BindView.class)
+ * 使用方法  new APopup(BindView.class)
  * 
  * 其中 bindview 为继承 bindview的子类
  * 
@@ -352,20 +433,20 @@ public class ViewParmUtil
  * @author 12
  *
  */
-public class AbasePopup extends PopupWindow
+public class APopup extends PopupWindow
 
 /**
  * 配合 android annotations使用 配合 itemView 使用
  * 
  * 可在 @afterInject 注入之后 设置 setItemView 传入 itemview 实例化类
  * 
- * 也可直接 new  AbaseBaseAdapter<T>( itemview.class,context)
+ * 也可直接 new  AAdapter<T>( itemview.class,context)
  * 
  * @author 12
  * 
  * @param <T>
  */
-public   class AbaseBaseAdapter<T> extends BaseAdapter
+public   class ABaseAdapter<T> extends BaseAdapter
  
 
 //还有一些东西 也挺简单的 就不多挺了 呵呵 大家看着办

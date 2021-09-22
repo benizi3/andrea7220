@@ -15,7 +15,7 @@
 
 package com.lidroid.xutils.bitmap.download;
 
-import com.jayqqaa12.abase.core.AbaseBitmap;
+import com.jayqqaa12.abase.core.ABitmap;
 import com.lidroid.xutils.util.IOUtils;
 import com.lidroid.xutils.util.LogUtils;
 import com.lidroid.xutils.util.OtherUtils;
@@ -38,7 +38,7 @@ public class DefaultDownloader extends Downloader {
      * @return The expiry time stamp or -1 if failed to download.
      */
     @Override
-    public long downloadToStream(String uri, OutputStream outputStream, final AbaseBitmap.BitmapLoadTask<?> task) {
+    public long downloadToStream(String uri, OutputStream outputStream, final ABitmap.BitmapLoadTask<?> task) {
 
         if (task == null || task.isCancelled() || task.getTargetContainer() == null) return -1;
 
