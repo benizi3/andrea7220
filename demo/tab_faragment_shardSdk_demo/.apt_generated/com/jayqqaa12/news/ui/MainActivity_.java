@@ -82,8 +82,8 @@ public final class MainActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        lv_dl = ((ListView) hasViews.findViewById(com.jayqqaa12.news.R.id.lv_dl));
         dl = ((DrawerLayout) hasViews.findViewById(com.jayqqaa12.news.R.id.dl));
+        lv_dl = ((ListView) hasViews.findViewById(com.jayqqaa12.news.R.id.lv_dl));
         {
             AdapterView<?> view = ((AdapterView<?> ) hasViews.findViewById(com.jayqqaa12.news.R.id.lv_dl));
             if (view!= null) {

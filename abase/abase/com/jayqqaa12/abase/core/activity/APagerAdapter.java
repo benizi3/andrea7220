@@ -25,9 +25,9 @@ import com.jayqqaa12.abase.kit.common.ReflectKit;
 @Deprecated
 public class APagerAdapter<T> extends PagerAdapter
 {
-	private Map<Integer, View> views = new HashMap<Integer, View>();
+	protected Map<Integer, View> views = new HashMap<Integer, View>();
 
-	private List<T> data = new ArrayList<T>();
+	protected List<T> data = new ArrayList<T>();
 
 	public Class<? extends ItemView<T>> clazz;
 	public Context context;

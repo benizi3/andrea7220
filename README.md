@@ -10,7 +10,7 @@
 
 ##abase组成
 
-#xUtils 
+#androidannotations xUtils 
 > 替换xUtils ViewUtils模块为 androidannotations <br>
 > 更为强大的ioc annotations写法 <br>
 > 集成了其他3大模块并进行部分优化 Db模块 Http模块 Bitmap模块<br>

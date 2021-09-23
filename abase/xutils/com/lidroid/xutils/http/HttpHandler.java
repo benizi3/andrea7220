@@ -313,7 +313,7 @@ public class HttpHandler<T> extends CompatibleAsyncTask<Object, Object, Void> im
 					if (AHttp.sHttpCache.isEnabled(requestMethod))
 					{
 						AHttp.sHttpCache.put(requestUrl, (String) result, HttpCache.getDefaultExpiryTime());
-						 ACache.create().put(requestUrl, (String) result,   expiry);
+						if (expiry > 60) ACache.create().put(requestUrl, (String) result, expiry);
 					}
 				}
 			}

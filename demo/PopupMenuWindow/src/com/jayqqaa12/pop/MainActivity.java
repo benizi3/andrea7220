@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
 
+import com.jayqqaa12.abase.core.APopup;
 import com.jayqqaa12.abase.core.Abase;
-import com.jayqqaa12.abase.view.APopup;
 public class MainActivity extends Activity
 {
 	

@@ -13,6 +13,7 @@ import android.widget.BaseAdapter;
 
 import com.jayqqaa12.abase.core.Abus;
 import com.jayqqaa12.abase.core.ItemView;
+import com.jayqqaa12.abase.kit.common.L;
 import com.jayqqaa12.abase.kit.common.ReflectKit;
 
 /**
@@ -30,7 +31,7 @@ public class AAdapter<T> extends BaseAdapter
 {
 	
 	public List<T> data = new ArrayList<T>();
-	public Class<? extends ItemView<T>> clazz;
+	public Class clazz;
 	public Context context;
 
 	public AAdapter()
@@ -47,7 +48,7 @@ public class AAdapter<T> extends BaseAdapter
 		this.data = data;
 	}
 
-	public void setItemView(Class<? extends ItemView<T>> clazz, Context context)
+	public void setItemView(Class clazz, Context context)
 	{
 		this.clazz = ReflectKit.getSubClass(clazz);
 		this.context = context;
@@ -55,7 +56,6 @@ public class AAdapter<T> extends BaseAdapter
 
 	public void setData(List<T> data)
 	{
-
 		this.data = data;
 		this.notifyDataSetChanged();
 	}

@@ -13,7 +13,6 @@ import android.widget.ImageView;
 
 import com.jayqqaa12.abase.core.fragment.AFragment;
 import com.jayqqaa12.abase.core.fragment.AFragmentPagerAdapter;
-import com.jayqqaa12.abase.core.listener.APageChangeListener;
 import com.jayqqaa12.news.R;
 
 @EFragment(R.layout.fragment)

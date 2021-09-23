@@ -6,7 +6,6 @@ import java.util.List;
 import org.androidannotations.annotations.EBean;
 
 import com.jayqqaa12.abase.kit.common.L;
-import com.jayqqaa12.abase.kit.common.T;
 import com.lidroid.xutils.db.sqlite.Selector;
 import com.lidroid.xutils.db.sqlite.WhereBuilder;
 import com.lidroid.xutils.exception.DbException;

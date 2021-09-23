@@ -115,7 +115,7 @@ public class ResponseStream extends InputStream {
             _directResult = sb.toString();
             if (requestUrl != null &&  AHttp.sHttpCache.isEnabled(requestMethod)) {
             	AHttp.sHttpCache.put(requestUrl, _directResult,HttpCache.getDefaultExpiryTime());
-            	ACache.create().put(requestUrl, _directResult,  expiry);
+            	if (expiry > 60)ACache.create().put(requestUrl, _directResult,  expiry);
             }
             return _directResult;
         } finally {

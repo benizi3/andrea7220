@@ -5,8 +5,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
+import com.jayqqaa12.abase.core.APopup;
 import com.jayqqaa12.abase.kit.ManageKit;
-import com.jayqqaa12.abase.view.APopup;
 
 public class MenuPop extends APopup implements OnItemClickListener
 {
