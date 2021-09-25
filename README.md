@@ -458,7 +458,13 @@ public   class ABaseAdapter<T> extends BaseAdapter
 如果您喜欢本项目<br> 
 认为本项目确实给您带来方便和帮助非常感谢 <br>
 您的捐赠，是我们前进的动力<br>
-<a href='https://me.alipay.com/12shu'> <img src='https://img.alipay.com/sys/personalprod/style/mc/btn-index.png' /> </a>
+
+支付宝捐赠帐号 jayqqaa12@yahoo.com.cn
+
+
+
+![Screenshot 5](http://git.oschina.net/jayqqaa12/abase-reader/raw/master/Screenshot/12shu-zfb.png "Screenshot 12shu") <br> <br>
+
 <br>
 
 
