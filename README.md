@@ -462,8 +462,9 @@ public   class ABaseAdapter<T> extends BaseAdapter
 支付宝捐赠帐号 jayqqaa12@yahoo.com.cn
 
 
+扫描二维码捐赠
+![Screenshot 12shu-zfb](http://git.oschina.net/jayqqaa12/abase-reader/raw/master/Screenshot/12shu-zfb.png "Screenshot 12shu-zfb") <br> <br>
 
-![Screenshot 5](http://git.oschina.net/jayqqaa12/abase-reader/raw/master/Screenshot/12shu-zfb.png "Screenshot 12shu") <br> <br>
 
 <br>
 
