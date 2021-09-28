@@ -463,7 +463,7 @@ public   class ABaseAdapter<T> extends BaseAdapter
 
 
 扫描二维码捐赠
-![Screenshot 12shu-zfb](http://git.oschina.net/jayqqaa12/abase-reader/raw/master/Screenshot/12shu-zfb.png "Screenshot 12shu-zfb") <br> <br>
+![Screenshot 12shu-zfb](http://git.oschina.net/jayqqaa12/JFinal_Authority/raw/master/Screenshot/12shu-zfb.png "Screenshot 12shu-zfb") <br> <br>
 
 
 <br>
