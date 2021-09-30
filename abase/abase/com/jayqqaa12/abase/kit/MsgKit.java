@@ -42,6 +42,10 @@ public class MsgKit
 	public static final int MSG_LOAD = 22;
 	public static final int MSG_REFRESH = 23;
 	public static final int MSG_INIT = 24;
+	public static final int MSG_ADD_REFRESH = 25;
+	public static final int MSG_RETRY=26;
+	public static final int MSG_ALERY_INIT=27;
+	public static final int MSG_RESUME=28;
 
 	public static Bundle getBundle(String[] keys, Object[] values)
 	{

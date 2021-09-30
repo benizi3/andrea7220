@@ -76,7 +76,7 @@ public class SyncHttpHandler
 			{
 				requestUrl = request.getURI().toString();
 				requestMethod = request.getMethod();
-				if (AHttp.sHttpCache.isEnabled(requestMethod)&&expiry!=ACache.TIME_NONE)
+				if (AHttp.sHttpCache.isEnabled(requestMethod) )
 				{
 					String result = AHttp.sHttpCache.get(requestUrl);
 					if (result == null) result = ACache.create().getAsString(requestUrl);

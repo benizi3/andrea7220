@@ -72,4 +72,12 @@
          (the screen is in landscape). This may be either a fraction or a dimension.-->
     <item type="dimen" name="dialog_fixed_height_minor">100%</item>
 
+    
+    
+    
+    <!-- Preference fragment padding, bottom -->
+    <dimen name="preference_fragment_padding_bottom">0dp</dimen>
+    <!-- Preference fragment padding, sides -->
+    <dimen name="preference_fragment_padding_side">16dp</dimen>
+    <integer name="preference_fragment_scrollbarStyle">0x02000000</integer>
 </resources>

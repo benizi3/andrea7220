@@ -173,7 +173,7 @@ public class HttpHandler<T> extends CompatibleAsyncTask<Object, Object, Void> im
 			try
 			{
 				requestMethod = request.getMethod();
-				if (AHttp.sHttpCache.isEnabled(requestMethod)&&expiry!=ACache.TIME_NONE)
+				if (AHttp.sHttpCache.isEnabled(requestMethod))
 				{
 					String result = AHttp.sHttpCache.get(requestUrl);
 					if (result == null ) result = ACache.create().getAsString(requestUrl);
@@ -316,7 +316,7 @@ public class HttpHandler<T> extends CompatibleAsyncTask<Object, Object, Void> im
 				else
 				{
 					result = mStringDownloadHandler.handleEntity(entity, this, charset);
-					if (AHttp.sHttpCache.isEnabled(requestMethod))
+					if (AHttp.sHttpCache.isEnabled(requestMethod)&&expiry!=ACache.TIME_NONE)
 					{
 						AHttp.sHttpCache.put(requestUrl, (String) result, HttpCache.getDefaultExpiryTime());
 						if (expiry > 60) ACache.create().put(requestUrl, (String) result, expiry);

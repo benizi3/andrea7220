@@ -434,7 +434,7 @@ public class T
 	{
 		if (mLayoutParams == null)
 		{
-			mLayoutParams = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, Gravity.CENTER);
+			mLayoutParams = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, Gravity.TOP);
 		}
 		return mLayoutParams;
 	}

@@ -8,12 +8,12 @@ import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
+import android.os.Bundle;
 import android.os.PowerManager;
 import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
@@ -76,11 +76,11 @@ public class ManageKit
 		return Abase.getContext().getPackageManager();
 	}
 
-	public static ApplicationInfo getMetaData()
+	public static Bundle getMetaData()
 	{
 		try
 		{
-			return getPackManager().getApplicationInfo(Abase.getContext().getPackageName(), PackageManager.GET_META_DATA);
+			return getPackManager().getApplicationInfo(Abase.getContext().getPackageName(), PackageManager.GET_META_DATA).metaData;
 		} catch (NameNotFoundException e)
 		{
 			e.printStackTrace();

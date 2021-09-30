@@ -260,12 +260,34 @@ public class AHttp
 		return send(HttpRequest.HttpMethod.GET, url, null, callBack);
 	}
 
+	/**
+	 * ACache.TIME_NONE 的时候 关闭缓存
+	 * @param url
+	 * @param cacheTime
+	 * @param callBack
+	 * @return
+	 */
 	public <T> HttpHandler<T> get(String url, int cacheTime, RequestCallBack<T> callBack)
 	{
+		if(cacheTime==ACache.TIME_NONE)ACache.create().remove(url);
 		this.acacheExpiry = cacheTime;
 		return send(HttpRequest.HttpMethod.GET, url, null, callBack);
 	}
 
+	/***
+	 * 刷新缓存 重新发送请求并缓存
+	 * @param url
+	 * @param cacheTime
+	 * @param reflsh
+	 * @param callBack
+	 * @return
+	 */
+	public <T> HttpHandler<T> getRefresh(String url, int cacheTime , RequestCallBack<T> callBack)
+	{
+	     ACache.create().remove(url);
+		this.acacheExpiry = cacheTime;
+		return send(HttpRequest.HttpMethod.GET, url, null, callBack);
+	}
 	public <T> HttpHandler<T> post(String url, RequestParams params, RequestCallBack<T> callBack)
 	{
 		return send(HttpRequest.HttpMethod.POST, url, params, callBack);

@@ -35,6 +35,7 @@ public class APagerAdapter<T> extends PagerAdapter
 	public void setData(List<T> data)
 	{
 		this.data = data;
+		this.notifyDataSetChanged();
 	}
 
 	public APagerAdapter()

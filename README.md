@@ -20,10 +20,10 @@
 > 100多个util包含个人目前为止用到的所有可复用方法 <br>
  
 #abase-ext 
-> 定位sdk firewall 等扩展支持 需要的
+> 定位sdk firewall umeng 统计自动更新反馈 等扩展支持 需要的添加依赖即可
 
 #abase-view 
-> UI相关支持
+> UI 自动滚屏viewpage 下拉刷新组件等 相关支持  需要的添加依赖即可
 
 
 

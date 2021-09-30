@@ -113,7 +113,7 @@ public class ResponseStream extends InputStream {
                 sb.append(line);
             }
             _directResult = sb.toString();
-            if (requestUrl != null &&  AHttp.sHttpCache.isEnabled(requestMethod)) {
+            if (requestUrl != null &&  AHttp.sHttpCache.isEnabled(requestMethod)&&expiry!=ACache.TIME_NONE) {
             	AHttp.sHttpCache.put(requestUrl, _directResult,HttpCache.getDefaultExpiryTime());
             	if (expiry > 60)ACache.create().put(requestUrl, _directResult,  expiry);
             }

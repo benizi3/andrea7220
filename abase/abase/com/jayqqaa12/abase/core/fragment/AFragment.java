@@ -1,5 +1,6 @@
 package com.jayqqaa12.abase.core.fragment;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,11 @@ public class AFragment extends Fragment
 	@Bean
 	protected Abus bus;
 
-	protected View rootView;
+	/***
+	 * 查看这个值可 防止fragment 重复加载
+	 */
+	protected boolean aleryInit;
+
 	
 	
 	public static Fragment newInstance(Class<? extends Fragment> clazz){
@@ -82,6 +87,7 @@ public class AFragment extends Fragment
 	{
 		init();
 		connect();
+		aleryInit=true;
 	}
 
 	protected void init()
@@ -100,13 +106,29 @@ public class AFragment extends Fragment
 		if (bus != null) bus.unregister(this);
 	}
 
-	public View cacheView(int resId, LayoutInflater inflater)
+	
+	
+	/**
+	 * 一个bug
+	 */
+	@Override
+	public void onDetach()
 	{
-		if (rootView == null) rootView = inflater.inflate(resId, null);
-		ViewGroup parent = (ViewGroup) rootView.getParent();
-		if (parent != null) parent.removeView(rootView);
+		super.onDetach();
+		try
+		{
+			Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
+			childFragmentManager.setAccessible(true);
+			childFragmentManager.set(this, null);
 
-		return rootView;
+		} catch (NoSuchFieldException e)
+		{
+			throw new RuntimeException(e);
+		} catch (IllegalAccessException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
+
 
 }
