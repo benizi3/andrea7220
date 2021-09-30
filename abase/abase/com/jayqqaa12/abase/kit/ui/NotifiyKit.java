@@ -35,7 +35,7 @@ public class NotifiyKit
 	 * @param contentIntent
 	 * @param context
 	 */
-	public static void showNotification( Context context,int iconId, String title, String desc, PendingIntent contentIntent,boolean canCancel)
+	public static void showNotification( Context context,int id,int iconId, String title, String desc, PendingIntent contentIntent,boolean canCancel)
 	{
 		NotificationManager manager = ManageKit.getNotificationManager();
 		Notification notification = new Notification(iconId, title, System.currentTimeMillis());
@@ -46,7 +46,7 @@ public class NotifiyKit
 		else  notification.flags |= Notification.FLAG_NO_CLEAR;
 	
 		notification.setLatestEventInfo(context, title, desc, contentIntent);
-		manager.notify(0, notification);
+		manager.notify(id, notification);
 	}
 
 	/**

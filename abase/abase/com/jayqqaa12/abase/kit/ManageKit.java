@@ -8,7 +8,9 @@ import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
@@ -16,10 +18,11 @@ import android.os.PowerManager;
 import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import com.jayqqaa12.abase.core.Abase;
 
-public class ManageKit  
+public class ManageKit
 {
 
 	public static DevicePolicyManager getDevicePolicyManager()
@@ -73,6 +76,18 @@ public class ManageKit
 		return Abase.getContext().getPackageManager();
 	}
 
+	public static ApplicationInfo getMetaData()
+	{
+		try
+		{
+			return getPackManager().getApplicationInfo(Abase.getContext().getPackageName(), PackageManager.GET_META_DATA);
+		} catch (NameNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public static ConnectivityManager getConnectivtyManager()
 	{
 		return (ConnectivityManager) Abase.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -92,12 +107,15 @@ public class ManageKit
 	{
 		return (WifiManager) Abase.getContext().getSystemService(Context.WIFI_SERVICE);
 	}
-	
 
 	public static LayoutInflater getInflater()
 	{
-		return  (LayoutInflater) Abase.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		return (LayoutInflater) Abase.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
-	
+
+	public static InputMethodManager getInputMethodManager()
+	{
+		return ((InputMethodManager) Abase.getContext().getSystemService(Context.INPUT_METHOD_SERVICE));
+	}
 
 }

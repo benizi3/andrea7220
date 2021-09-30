@@ -48,6 +48,10 @@ import android.text.TextUtils;
  */
 public class ACache
 {
+	/**
+	 * 无缓存
+	 */
+	public static final int TIME_NONE=-1;
 	public static final int TIME_HOUR = 60 * 60;
 	public static final int TIME_DAY = TIME_HOUR * 24;
 	private static final int MAX_SIZE = 1000 * 1000 * 50; // 50 mb

@@ -41,7 +41,7 @@ public class BitmapGlobalConfig {
     public final static int MIN_MEMORY_CACHE_SIZE = 1024 * 1024 * 2; // 2M
     private int memoryCacheSize = 1024 * 1024 * 4; // 4MB
     public final static int MIN_DISK_CACHE_SIZE = 1024 * 1024 * 10; // 10M
-    private int diskCacheSize = 1024 * 1024 * 50;  // 50M
+    private int diskCacheSize = 1024 * 1024 * 100;  // 50M
 
     private boolean memoryCacheEnabled = true;
     private boolean diskCacheEnabled = true;
@@ -49,7 +49,7 @@ public class BitmapGlobalConfig {
     private Downloader downloader;
     private BitmapCache bitmapCache;
 
-    private int threadPoolSize = 8;
+    private int threadPoolSize = 5;
     private boolean _dirty_params_bitmapLoadExecutor = true;
     private ExecutorService bitmapLoadExecutor;
 

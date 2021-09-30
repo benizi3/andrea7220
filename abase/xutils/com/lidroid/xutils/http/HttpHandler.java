@@ -15,15 +15,10 @@
 
 package com.lidroid.xutils.http;
 
-import android.os.SystemClock;
-
-import com.jayqqaa12.abase.core.ACache;
-import com.jayqqaa12.abase.core.AHttp;
-import com.jayqqaa12.abase.kit.common.L;
-import com.lidroid.xutils.exception.HttpException;
-import com.lidroid.xutils.http.callback.*;
-import com.lidroid.xutils.util.OtherUtils;
-import com.lidroid.xutils.util.core.CompatibleAsyncTask;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.UnknownHostException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -35,10 +30,20 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.protocol.HttpContext;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.UnknownHostException;
+import android.os.SystemClock;
+
+import com.jayqqaa12.abase.core.ACache;
+import com.jayqqaa12.abase.core.AHttp;
+import com.jayqqaa12.abase.kit.common.L;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.callback.DefaultHttpRedirectHandler;
+import com.lidroid.xutils.http.callback.FileDownloadHandler;
+import com.lidroid.xutils.http.callback.HttpRedirectHandler;
+import com.lidroid.xutils.http.callback.RequestCallBack;
+import com.lidroid.xutils.http.callback.RequestCallBackHandler;
+import com.lidroid.xutils.http.callback.StringDownloadHandler;
+import com.lidroid.xutils.util.OtherUtils;
+import com.lidroid.xutils.util.core.CompatibleAsyncTask;
 
 public class HttpHandler<T> extends CompatibleAsyncTask<Object, Object, Void> implements RequestCallBackHandler
 {
@@ -168,13 +173,14 @@ public class HttpHandler<T> extends CompatibleAsyncTask<Object, Object, Void> im
 			try
 			{
 				requestMethod = request.getMethod();
-				if (AHttp.sHttpCache.isEnabled(requestMethod))
+				if (AHttp.sHttpCache.isEnabled(requestMethod)&&expiry!=ACache.TIME_NONE)
 				{
 					String result = AHttp.sHttpCache.get(requestUrl);
-					if (result == null) result = ACache.create().getAsString(requestUrl);
-					if (result != null) { return new ResponseInfo<T>(null, (T) result, true); }
+					if (result == null ) result = ACache.create().getAsString(requestUrl);
+					if (result != null) return new ResponseInfo<T>(null, (T) result, true);
+					
 				}
-
+				
 				ResponseInfo<T> responseInfo = null;
 				if (!isCancelled())
 				{

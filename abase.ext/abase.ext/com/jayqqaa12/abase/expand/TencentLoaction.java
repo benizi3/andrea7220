@@ -4,7 +4,7 @@ import android.os.PowerManager;
 
 import com.jayqqaa12.abase.core.Abase;
 import com.jayqqaa12.abase.kit.ManageKit;
-import com.jayqqaa12.abase.view.toast.T;
+import com.jayqqaa12.abase.kit.common.*;
 import com.tencent.tencentmap.lbssdk.TencentMapLBSApi;
 import com.tencent.tencentmap.lbssdk.TencentMapLBSApiListener;
 import com.tencent.tencentmap.lbssdk.TencentMapLBSApiPOI;

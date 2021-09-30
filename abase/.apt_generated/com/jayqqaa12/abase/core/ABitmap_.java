@@ -6,28 +6,30 @@
 package com.jayqqaa12.abase.core;
 
 import android.content.Context;
+import org.androidannotations.api.view.OnViewChangedNotifier;
 
 public final class ABitmap_
     extends ABitmap
 {
 
     private Context context_;
+    private static ABitmap_ instance_;
 
     private ABitmap_(Context context) {
         context_ = context;
-        init_();
     }
 
     public static ABitmap_ getInstance_(Context context) {
-        return new ABitmap_(context);
+        if (instance_ == null) {
+            OnViewChangedNotifier previousNotifier = OnViewChangedNotifier.replaceNotifier(null);
+            instance_ = new ABitmap_(context.getApplicationContext());
+            instance_.init_();
+            OnViewChangedNotifier.replaceNotifier(previousNotifier);
+        }
+        return instance_;
     }
 
     private void init_() {
-    }
-
-    public void rebind(Context context) {
-        context_ = context;
-        init_();
     }
 
 }

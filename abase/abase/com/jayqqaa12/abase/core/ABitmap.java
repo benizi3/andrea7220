@@ -5,6 +5,7 @@ import java.io.File;
 import java.lang.ref.WeakReference;
 
 import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.EBean.Scope;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -32,7 +33,7 @@ import com.lidroid.xutils.util.core.LruDiskCache;
  * @author 12
  *
  */
-@EBean
+@EBean(scope=Scope.Singleton)
 public class ABitmap {
 
     private boolean pauseTask = false;

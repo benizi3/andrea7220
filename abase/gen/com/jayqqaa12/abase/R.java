@@ -10,26 +10,18 @@ package com.jayqqaa12.abase;
 public final class R {
     public static final class attr {
     }
-    public static final class color {
-        public static int alert=0x7f030000;
-        public static int confirm=0x7f030001;
-        public static int info=0x7f030002;
-    }
-    public static final class layout {
-        public static int app_msg=0x7f020000;
-    }
     public static final class style {
-        public static int ll_m_h=0x7f040007;
-        public static int ll_m_v=0x7f040006;
-        public static int ll_w_h=0x7f040008;
-        public static int ll_w_v=0x7f040009;
-        public static int ll_wm_hw_h=0x7f040005;
-        public static int ll_wm_hw_v=0x7f040004;
-        public static int m=0x7f040001;
+        public static int ll_m_h=0x7f020007;
+        public static int ll_m_v=0x7f020006;
+        public static int ll_w_h=0x7f020008;
+        public static int ll_w_v=0x7f020009;
+        public static int ll_wm_hw_h=0x7f020005;
+        public static int ll_wm_hw_v=0x7f020004;
+        public static int m=0x7f020001;
         /**  layout  width height 
          */
-        public static int w=0x7f040000;
-        public static int wm_hw=0x7f040002;
-        public static int ww_hm=0x7f040003;
+        public static int w=0x7f020000;
+        public static int wm_hw=0x7f020002;
+        public static int ww_hm=0x7f020003;
     }
 }

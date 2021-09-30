@@ -59,6 +59,14 @@ public class AAdapter<T> extends BaseAdapter
 		this.data = data;
 		this.notifyDataSetChanged();
 	}
+	
+	
+	public void addData(List<T> data)
+	{
+		this.data.addAll(data);
+		
+		this.notifyDataSetChanged();
+	}
 
 	@Override
 	public T getItem(int position)

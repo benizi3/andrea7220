@@ -11,7 +11,6 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.PopupWindow;
 
 import com.jayqqaa12.abase.kit.common.ReflectKit;
-import com.jayqqaa12.abase.view.BindView;
 
 
 /***

@@ -12,24 +12,25 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
 
 import com.jayqqaa12.abase.core.Abus;
+import com.jayqqaa12.abase.kit.common.ReflectKit;
 
 /***
- * tab +viewpage 建议使用
- * TabPageIndicator 
+ * tab +viewpage 建议使用 TabPageIndicator
  * 
  * @author 12
  * 
  */
 @EActivity
-public class AFragmentActivity extends FragmentActivity implements OnPageChangeListener
+public class AFragmentActivity extends FragmentActivity implements OnPageChangeListener,OnTabChangeListener
+
 {
 	@Bean
 	protected Abus bus;
-	private ViewPager vp;
-	
+
 	@Override
 	protected void onDestroy()
 	{
@@ -49,16 +50,15 @@ public class AFragmentActivity extends FragmentActivity implements OnPageChangeL
 		init();
 		connect();
 	}
+
 	protected void init()
 	{}
+
 	/***
 	 * 填充数据 连接网络等
 	 */
 	protected void connect()
 	{}
-
-	
- 
 
 	/**
 	 * 
@@ -72,6 +72,18 @@ public class AFragmentActivity extends FragmentActivity implements OnPageChangeL
 		mTabHost.setup(this, getSupportFragmentManager(), realtabcontentId);
 
 		return mTabHost;
+	}
+
+	public Class[] getSubClass(Class... clazz)
+	{
+
+		int i = 0;
+		for (Class c : clazz)
+		{
+			clazz[i++] = ReflectKit.getSubClass(c);
+		}
+
+		return clazz;
 	}
 
 	/**
@@ -89,7 +101,7 @@ public class AFragmentActivity extends FragmentActivity implements OnPageChangeL
 	 * @param Intents
 	 *            内容
 	 */
-	protected void initMyTab(FragmentTabHost tabHost, int tabWidgetLayoutId, int[][] tabWidgetResIds, int[] tabWidgetIds, Class[] fragments)
+	protected FragmentTabHost initMyTab(FragmentTabHost tabHost, int tabWidgetLayoutId, int[][] tabWidgetResIds, int[] tabWidgetIds, Class[] fragments)
 	{
 
 		int length = fragments.length;
@@ -111,9 +123,11 @@ public class AFragmentActivity extends FragmentActivity implements OnPageChangeL
 			tabHost.addTab(tabHost.newTabSpec(i + "").setIndicator(tab), fragments[i], null);
 		}
 
+		tabHost.setOnTabChangedListener(this);
+		
+		return tabHost;
 	}
 
- 
 	@Override
 	public void onPageScrollStateChanged(int arg0)
 	{}
@@ -124,6 +138,11 @@ public class AFragmentActivity extends FragmentActivity implements OnPageChangeL
 
 	@Override
 	public void onPageSelected(int position)
+	{}
+
+	@Override
+	public void onTabChanged(String tabId)
 	{
+		
 	}
 }

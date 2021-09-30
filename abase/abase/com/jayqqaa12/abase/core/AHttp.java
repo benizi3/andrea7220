@@ -66,13 +66,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 @EBean
 public class AHttp
 {
-
 	/***
 	 * 内存 缓存
 	 */
 	public final static HttpCache sHttpCache = new HttpCache();
-	
-
 	private final DefaultHttpClient httpClient;
 	private final HttpContext httpContext = new BasicHttpContext();
 

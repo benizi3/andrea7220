@@ -1,6 +1,5 @@
 package com.jayqqaa12.abase.kit;
 
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +11,13 @@ import android.os.Handler;
 import android.os.Handler.Callback;
 import android.os.Message;
 
-
 /**
- * 有关 handler  msg 的 工具 
-* @author jayqqaa12 
-* @date 2013-6-8
+ * 有关 handler msg 的 工具
+ * 
+ * @author jayqqaa12
+ * @date 2013-6-8
  */
-public class MsgKit 
+public class MsgKit
 {
 	public static final int MSG_ADD = 1;
 	public static final int MSG_REMOVE = 2;
@@ -40,65 +39,97 @@ public class MsgKit
 	public static final int MSG_LEFT = 19;
 	public static final int MSG_START = 20;
 	public static final int MSG_FIND = 21;
-	public static final int MSG_LOAD=22;
-	public static final int MSG_REFRESH=23;
-	public static final int MSG_INIT=24;
-	
-	
-	
-	public static List<Bundle> getBundle( String key ,Object [] values ){
-		
+	public static final int MSG_LOAD = 22;
+	public static final int MSG_REFRESH = 23;
+	public static final int MSG_INIT = 24;
+
+	public static Bundle getBundle(String[] keys, Object[] values)
+	{
+
+		Bundle bundle = new Bundle();
+
+		int i = 0;
+		for (Object v : values)
+		{
+			putBundle(bundle, keys[i++], v);
+		}
+
+		return bundle;
+	}
+
+	private static void putBundle(Bundle bundle, String key, Object v)
+	{
+		if (v instanceof String)
+		{
+			bundle.putString(key, (String) v);
+		}
+		else if (v instanceof Boolean)
+		{
+			bundle.putBoolean(key, (Boolean) v);
+
+		}
+		else if (v instanceof Integer)
+		{
+
+			bundle.putInt(key, (Integer) v);
+		}
+		else if (v instanceof Float)
+		{
+			bundle.putFloat(key, (Float) v);
+		}
+		else if (v instanceof Serializable)
+		{
+			bundle.putSerializable(key, (Serializable) v);
+		}
+		else
+		{
+			throw new AException("object must implements Serializable");
+		}
+	}
+
+	public static List<Bundle> getBundle(String key, Object[] values)
+	{
+
 		List<Bundle> list = new ArrayList<Bundle>();
-		
-		for(Object v :values){
-			Bundle bundle =new Bundle();
-			
-			if (v instanceof String)
-			{
-				bundle.putString(key, (String) v);
-			}
-			else if (v instanceof Boolean)
-			{
-				bundle.putBoolean(key, (Boolean) v);
 
-			}
-			else if (v instanceof Integer)
-			{
-
-				bundle.putInt(key, (Integer) v);
-			}
-			else if (v instanceof Float)
-			{
-				bundle.putFloat(key, (Float) v);
-			}
-
-			else if (v instanceof Serializable)
-			{
-				bundle.putSerializable(key, (Serializable) v);
-			}
-			else {
-				
-				throw new AException("object must implements Serializable");
-			}
-			
+		for (Object v : values)
+		{
+			Bundle bundle = new Bundle();
+			putBundle(bundle, key, v);
 			list.add(bundle);
 		}
-		
-		
+
 		return list;
 	}
-	
-	
-	public static void sendMessage(Callback callback, int what,Object obj){
-		
-		
+
+	public static List<Bundle> getBundle(String[] key, Object[]... values)
+	{
+
+		List<Bundle> list = new ArrayList<Bundle>();
+
+		int i=0;
+		for (String k : key)
+		{
+			for (Object v : values[i++])
+			{
+				Bundle bundle = new Bundle();
+				putBundle(bundle, k, v);
+				list.add(bundle);
+			}
+		}
+
+		return list;
+	}
+
+	public static void sendMessage(Callback callback, int what, Object obj)
+	{
+
 		Message msg = new Message();
 		msg.what = what;
-		msg.obj =obj;
+		msg.obj = obj;
 		callback.handleMessage(msg);
-		
+
 	}
-	
 
 	public static void sendMessage(Handler callback, int what)
 	{
@@ -109,18 +140,15 @@ public class MsgKit
 
 	}
 
-
-	public static void sendMessage(Handler callback, int what,int arg1)
+	public static void sendMessage(Handler callback, int what, int arg1)
 	{
 		Message msg = new Message();
 		msg.what = what;
-		msg.arg1=arg1;
+		msg.arg1 = arg1;
 		msg.setTarget(callback);
 		callback.sendMessage(msg);
 
 	}
-
-	
 
 	public static void sendMessage(Handler callback, int what, Object obj)
 	{

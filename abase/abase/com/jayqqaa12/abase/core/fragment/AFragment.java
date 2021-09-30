@@ -58,7 +58,7 @@ public class AFragment extends Fragment
 	   
 		int i=0;
 		for(Fragment f :list){
-		 f.setArguments(bundle.get(i));
+		 f.setArguments(bundle.get(i++));
 		}
 		return  list;
 	}
