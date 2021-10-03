@@ -14,10 +14,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import com.jayqqaa12.abase.core.Abus_;
+import com.jayqqaa12.news.R.id;
 import com.jayqqaa12.news.R.layout;
 import org.androidannotations.api.SdkVersionHelper;
 import org.androidannotations.api.view.HasViews;
@@ -82,23 +81,8 @@ public final class MainActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        dl = ((DrawerLayout) hasViews.findViewById(com.jayqqaa12.news.R.id.dl));
-        lv_dl = ((ListView) hasViews.findViewById(com.jayqqaa12.news.R.id.lv_dl));
-        {
-            AdapterView<?> view = ((AdapterView<?> ) hasViews.findViewById(com.jayqqaa12.news.R.id.lv_dl));
-            if (view!= null) {
-                view.setOnItemClickListener(new OnItemClickListener() {
-
-
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        MainActivity_.this.onItemClick(position);
-                    }
-
-                }
-                );
-            }
-        }
+        lv_dl = ((ListView) hasViews.findViewById(id.lv_dl));
+        dl = ((DrawerLayout) hasViews.findViewById(id.dl));
         afterView();
         init();
     }

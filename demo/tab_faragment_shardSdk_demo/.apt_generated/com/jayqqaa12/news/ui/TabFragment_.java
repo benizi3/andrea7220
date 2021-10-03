@@ -67,8 +67,8 @@ public final class TabFragment_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        iv_line = ((ImageView) hasViews.findViewById(com.jayqqaa12.news.R.id.iv_bottom_line));
         vp = ((ViewPager) hasViews.findViewById(com.jayqqaa12.news.R.id.vp));
+        iv_line = ((ImageView) hasViews.findViewById(com.jayqqaa12.news.R.id.iv_bottom_line));
         afterView();
         init();
     }
