@@ -1,11 +1,14 @@
 package com.jayqqaa12.abase.download;
 
+import java.io.File;
+
+import com.jayqqaa12.abase.model.Bean;
+import com.lidroid.xutils.db.annotation.Table;
 import com.lidroid.xutils.db.annotation.Transient;
 import com.lidroid.xutils.http.HttpHandler;
 
-import java.io.File;
-
-public class DownloadInfo
+@Table(name="abase_download")
+public class DownloadInfo extends Bean
 {
 
 	public long id;

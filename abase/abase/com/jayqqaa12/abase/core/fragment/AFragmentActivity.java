@@ -5,9 +5,9 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
-import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,6 +60,10 @@ public class AFragmentActivity extends FragmentActivity implements OnPageChangeL
 	protected void connect()
 	{}
 
+	
+	
+
+	
 	/**
 	 * 
 	 * 获得 自定义的 tabhost 默认 使用 android.R.id.tabhost

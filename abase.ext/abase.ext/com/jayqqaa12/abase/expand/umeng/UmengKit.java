@@ -2,11 +2,14 @@ package com.jayqqaa12.abase.expand.umeng;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.jayqqaa12.abase.core.Abase;
-import com.jayqqaa12.abase.kit.ManageKit;
 import com.umeng.fb.FeedbackAgent;
 import com.umeng.update.UmengUpdateAgent;
+import com.umeng.update.UmengUpdateListener;
+import com.umeng.update.UpdateResponse;
+import com.umeng.update.UpdateStatus;
 
 public class UmengKit
 {
@@ -64,6 +67,7 @@ public class UmengKit
 	 */
 	public static void autoUpdate( ){
 		
+		UmengUpdateAgent.setUpdateListener(null);
 		UmengUpdateAgent.update(Abase.getContext());
 		
 	}
@@ -72,8 +76,31 @@ public class UmengKit
 	/***
 	 * 手动 检测更新 无视 网络环境
 	 */
-	public static void checkUpdate(){
+	public static void checkUpdate(final Context mContext){
+		
+		UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
+		    @Override
+		    public void onUpdateReturned(int updateStatus,UpdateResponse updateInfo) {
+		        switch (updateStatus) {
+		        case UpdateStatus.Yes:
+		            UmengUpdateAgent.showUpdateDialog(mContext, updateInfo);
+		            break;
+		        case UpdateStatus.No: // has no update
+		            Toast.makeText(mContext, "没有更新", Toast.LENGTH_SHORT).show();
+		            break;
+		        case UpdateStatus.NoneWifi: // none wifi
+		            Toast.makeText(mContext, "没有wifi连接， 只在wifi下更新", Toast.LENGTH_SHORT).show();
+		            break;
+		        case UpdateStatus.Timeout: // time out
+		            Toast.makeText(mContext, "检测更新超时", Toast.LENGTH_SHORT).show();
+		            break;
+		        }
+		    }
+		});
+		
 		UmengUpdateAgent.forceUpdate(Abase.getContext());
+		
+		
 	}
 	
 	
