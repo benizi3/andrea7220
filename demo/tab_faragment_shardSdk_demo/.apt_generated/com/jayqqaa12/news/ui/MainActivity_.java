@@ -81,8 +81,8 @@ public final class MainActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        lv_dl = ((ListView) hasViews.findViewById(id.lv_dl));
         dl = ((DrawerLayout) hasViews.findViewById(id.dl));
+        lv_dl = ((ListView) hasViews.findViewById(id.lv_dl));
         afterView();
         init();
     }
