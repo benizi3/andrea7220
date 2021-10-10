@@ -3,8 +3,8 @@ package com.jayqqaa12.abase.kit.phone;
 import java.util.List;
 import java.util.UUID;
 
-import android.content.Context;
 import android.net.wifi.WifiInfo;
+import android.os.Build;
 import android.telephony.CellLocation;
 import android.telephony.NeighboringCellInfo;
 import android.telephony.TelephonyManager;
@@ -87,7 +87,7 @@ public class TelKit
 	}
 
 	/**
-	 * 手机号： GSM手机的 MSISDN. Return null if it is unavailable.
+	 * 就是手机号： GSM手机的 MSISDN. Return null if it is unavailable.
 	 */
 
 	public static String getLine1Number()
@@ -332,4 +332,14 @@ public class TelKit
 		return uid;
 	}
 
+	public static String getModel(){
+		
+		
+		return Build.MODEL;
+	}
+	
+public static String getBrand(){
+		
+		return Build.BRAND;
+	}
 }

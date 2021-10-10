@@ -7,6 +7,7 @@ import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.provider.CallLog.Calls;
 
 import com.jayqqaa12.abase.core.Abase;
 
@@ -93,12 +94,43 @@ public class ContactKit
 		String name = null;
 		while (cursor.moveToNext())
 		{
-			// 取得联系人名字
 			name = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
 		}
 
 		return name;
 	}
 
+	
+	public static long getTelTime()
+	{
+
+		Cursor cursor = Abase.getContext().getContentResolver().query(Calls.CONTENT_URI,  
+			    new String[] { Calls.DURATION, Calls.TYPE, Calls.DATE },  
+			    null,  
+			    null,  
+			    Calls.DEFAULT_SORT_ORDER);  
+			boolean hasRecord = cursor.moveToFirst();  
+			long incoming = 0L;  
+			long outgoing = 0L;  
+			int count = 0;  
+			while (hasRecord) {  
+			    int type = cursor.getInt(cursor.getColumnIndex(Calls.TYPE));  
+			    long duration = cursor.getLong(cursor.getColumnIndex(Calls.DURATION));  
+			    switch (type) {  
+			        case Calls.INCOMING_TYPE:  
+			            incoming += duration;  
+			            break;  
+			        case Calls.OUTGOING_TYPE:  
+			            outgoing += duration;  
+			        default:  
+			            break;  
+			    }  
+			    count++;  
+			    hasRecord = cursor.moveToNext();  
+			}  
+			
+			cursor.close();
+		return incoming+outgoing;
+	}
 
 }
