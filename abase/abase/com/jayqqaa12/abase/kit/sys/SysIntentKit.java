@@ -11,15 +11,13 @@ import android.provider.Settings;
  * 
  ******* System Action_View************
  * 
- * 如有 特殊 需求 请改  FLAG
+ * 如有 特殊 需求 请改 FLAG
  * 
  * @author jayqqaa12
  * @date 2013-5-15
  */
-public class SysIntentKit  
+public class SysIntentKit
 {
-	
-	
 
 	/**
 	 * FLAG_ACTIVITY_NEW_TASK
@@ -29,21 +27,21 @@ public class SysIntentKit
 	 */
 	public static void install(Context activity, String path)
 	{
-		Intent intent =getInstallIntent(path);
+		Intent intent = getInstallIntent(path);
 		intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK);
 		activity.startActivity(intent);
 	}
-	
-	
 
-	public static Intent getInstallIntent(String path){
+	public static Intent getInstallIntent(String path)
+	{
 		Intent intent = new Intent(Intent.ACTION_VIEW);
 		intent.setDataAndType(Uri.fromFile(new File(path)), "application/vnd.android.package-archive");
 		return intent;
 	}
-	
+
 	/**
 	 * FLAG_ACTIVITY_NEW_TASK
+	 * 
 	 * @param path
 	 * @return
 	 */
@@ -54,18 +52,18 @@ public class SysIntentKit
 		intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(intent);
 	}
-	
-	public static Intent getUnInstallIntent(String pkg){
+
+	public static Intent getUnInstallIntent(String pkg)
+	{
 		Uri uri = Uri.fromParts("package", pkg, null);
 		Intent intent = new Intent(Intent.ACTION_DELETE, uri);
 		return intent;
 	}
 
-
 	public static void callPhone(Context context, String number)
 	{
 		Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + number));
-		
+
 		context.startActivity(intent);
 	}
 
@@ -150,8 +148,7 @@ public class SysIntentKit
 		context.startActivity(intent);
 
 	}
-	
-	
+
 	/**
 	 * 进入 设置的 管理 app 界面
 	 */
@@ -162,50 +159,38 @@ public class SysIntentKit
 
 	}
 
-
 	/**
-	 * 进入网络设置 界面 
+	 * 进入网络设置 界面
+	 * 
 	 * @param context
 	 */
 	public static void intoNetworkSetting(Context context)
 	{
-		Intent intent = new Intent();
-		// 类名一定要包含包名
-		intent.setClassName("com.android.settings", "com.android.settings.WirelessSettings");
-		context.startActivity(intent);
-		
+		context.startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
+
 	}
-	
+
 	/**
 	 * 打开 图片 查看界面
+	 * 
 	 * @param context
 	 */
 	public static void goImageView(Context context)
 	{
 		Intent intent = new Intent(Intent.ACTION_PICK);
-    	intent.setType("image/*");
-    	context.startActivity(intent);
-		
+		intent.setType("image/*");
+		context.startActivity(intent);
+
 	}
 
-	
-	public static void goWeb(Context context,String url)
+	public static void goWeb(Context context, String url)
 	{
 		Intent i = new Intent();
 		i.setAction(Intent.ACTION_VIEW);
 		i.setData(Uri.parse(url));
 		i.setFlags(i.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(i);
-		
+
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 }

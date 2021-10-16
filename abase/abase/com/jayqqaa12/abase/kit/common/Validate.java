@@ -2,6 +2,8 @@ package com.jayqqaa12.abase.kit.common;
 
 
 import java.util.Collection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 校验工具类
@@ -63,6 +65,21 @@ public class Validate {
 		return true ;
 	}
 	
+	
+	/**
+	 * 验证 邮箱有效性
+	 * @param email
+	 * @return
+	 */
+	
+	 public static boolean isEmail(String email){     
+		 if(isEmpty(email))return false;
+
+		 String str="^([a-zA-Z0-9]*[-_]?[a-zA-Z0-9]+)*@([a-zA-Z0-9]*[-_]?[a-zA-Z0-9]+)+[\\.][A-Za-z]{2,3}([\\.][A-Za-z]{2})?$";
+	        Pattern p = Pattern.compile(str);     
+	        Matcher m = p.matcher(email);     
+	        return m.matches();     
+	    } 
 	
 	
 }
