@@ -38,23 +38,21 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 
-
-
 /***
  * 注意 数据过大时 io速度过慢 请放在 线程中
  * 
  * @author 12
- *
+ * 
  */
 public class ACache
 {
 	/**
 	 * 无缓存
 	 */
-	public static final int TIME_NONE=-1;
+	public static final int TIME_NONE = -1;
 	public static final int TIME_HOUR = 60 * 60;
 	public static final int TIME_DAY = TIME_HOUR * 24;
-	private static final int MAX_SIZE = 1000 * 1000 * 50; // 50 mb
+	private static final int MAX_SIZE = 1000 * 1000 * 100; // 100 mb
 	private static final int MAX_COUNT = Integer.MAX_VALUE; // 不限制存放数据的数量
 	private static Map<String, ACache> mInstanceMap = new HashMap<String, ACache>();
 	private ACacheManager mCache;
@@ -63,12 +61,10 @@ public class ACache
 	{
 		return get(Abase.getContext(), "ACache");
 	}
- 
-	
- 
 
 	/***
-	 * 判断是否 初始化过了
+	 * 判断是否 初始化过了 没有就自动设置初始化
+	 * 
 	 * @param isInit
 	 */
 	public static boolean isInit(String cacheName)
@@ -76,15 +72,14 @@ public class ACache
 		ACache cache = create();
 		if (cache.getAsString(cacheName) == null)
 		{
-			cache.put(cacheName, "flage");
+			cache.put(cacheName, "flag_2");
 			return true;
 		}
 		else return false;
 	}
-	
+
 	/**
-	 * 判断 数据 标记 是否 过期了 过期了  
-	 * 常常用来 做 服务器 的请求 缓存 
+	 * 判断 数据 标记 是否 过期了 过期了就设置一下 常常用来 做 服务器 的请求 缓存
 	 * 
 	 * @param cacheName
 	 * @param time
@@ -93,11 +88,23 @@ public class ACache
 	public static boolean isPastDue(String cacheName, int time)
 	{
 		ACache cache = create();
-		if (cache.getAsString(cacheName) == null)
+		if (isPastDue(cacheName))
 		{
-			cache.put(cacheName, "flage", time);
+			cache.put(cacheName, "flag", time);
 			return true;
 		}
+		else return false;
+
+	}
+	/**
+	 * 判断 数据 标记 是否 过期了  
+	 * @param cacheName
+	 * @param time
+	 * @return
+	 */
+	public static boolean isPastDue(String cacheName)
+	{
+		if (create().getAsString(cacheName) == null) return true;
 		else return false;
 
 	}
@@ -165,12 +172,10 @@ public class ACache
 		{
 			out = new BufferedWriter(new FileWriter(file), 1024);
 			out.write(value);
-		}
-		catch (IOException e)
+		} catch (IOException e)
 		{
 			e.printStackTrace();
-		}
-		finally
+		} finally
 		{
 			if (out != null)
 			{
@@ -178,8 +183,7 @@ public class ACache
 				{
 					out.flush();
 					out.close();
-				}
-				catch (IOException e)
+				} catch (IOException e)
 				{
 					e.printStackTrace();
 				}
@@ -233,21 +237,18 @@ public class ACache
 				removeFile = true;
 				return null;
 			}
-		}
-		catch (IOException e)
+		} catch (IOException e)
 		{
 			e.printStackTrace();
 			return null;
-		}
-		finally
+		} finally
 		{
 			if (in != null)
 			{
 				try
 				{
 					in.close();
-				}
-				catch (IOException e)
+				} catch (IOException e)
 				{
 					e.printStackTrace();
 				}
@@ -300,8 +301,7 @@ public class ACache
 		{
 			JSONObject obj = new JSONObject(JSONString);
 			return obj;
-		}
-		catch (Exception e)
+		} catch (Exception e)
 		{
 			e.printStackTrace();
 			return null;
@@ -352,8 +352,7 @@ public class ACache
 		{
 			JSONArray obj = new JSONArray(JSONString);
 			return obj;
-		}
-		catch (Exception e)
+		} catch (Exception e)
 		{
 			e.printStackTrace();
 			return null;
@@ -379,12 +378,10 @@ public class ACache
 		{
 			out = new FileOutputStream(file);
 			out.write(value);
-		}
-		catch (Exception e)
+		} catch (Exception e)
 		{
 			e.printStackTrace();
-		}
-		finally
+		} finally
 		{
 			if (out != null)
 			{
@@ -392,8 +389,7 @@ public class ACache
 				{
 					out.flush();
 					out.close();
-				}
-				catch (IOException e)
+				} catch (IOException e)
 				{
 					e.printStackTrace();
 				}
@@ -443,21 +439,18 @@ public class ACache
 				removeFile = true;
 				return null;
 			}
-		}
-		catch (Exception e)
+		} catch (Exception e)
 		{
 			e.printStackTrace();
 			return null;
-		}
-		finally
+		} finally
 		{
 			if (RAFile != null)
 			{
 				try
 				{
 					RAFile.close();
-				}
-				catch (IOException e)
+				} catch (IOException e)
 				{
 					e.printStackTrace();
 				}
@@ -510,18 +503,15 @@ public class ACache
 			{
 				put(key, data);
 			}
-		}
-		catch (Exception e)
+		} catch (Exception e)
 		{
 			e.printStackTrace();
-		}
-		finally
+		} finally
 		{
 			try
 			{
 				oos.close();
-			}
-			catch (IOException e)
+			} catch (IOException e)
 			{}
 		}
 	}
@@ -545,27 +535,23 @@ public class ACache
 				ois = new ObjectInputStream(bais);
 				Object reObject = ois.readObject();
 				return reObject;
-			}
-			catch (Exception e)
+			} catch (Exception e)
 			{
 				e.printStackTrace();
 				return null;
-			}
-			finally
+			} finally
 			{
 				try
 				{
 					if (bais != null) bais.close();
-				}
-				catch (IOException e)
+				} catch (IOException e)
 				{
 					e.printStackTrace();
 				}
 				try
 				{
 					if (ois != null) ois.close();
-				}
-				catch (IOException e)
+				} catch (IOException e)
 				{
 					e.printStackTrace();
 				}
