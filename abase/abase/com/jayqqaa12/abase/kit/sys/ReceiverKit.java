@@ -10,6 +10,8 @@ import android.os.Environment;
 /**
  * 提供各种 系统 广播的 动态 注册
  * 
+ * 部分 只能动态注册 关闭了就收不到了
+ * 
  * @author jayqqaa12
  * @date 2013-5-15
  */
@@ -69,6 +71,8 @@ public class ReceiverKit
 
 	/**
 	 * 定时 发送的 广播 每分钟一次
+	 * 
+	 * 只能热注册  退出后就收不到了
 	 * @param context
 	 * @param receiver
 	 * @return

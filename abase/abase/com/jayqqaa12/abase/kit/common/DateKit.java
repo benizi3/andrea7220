@@ -19,6 +19,23 @@ public class DateKit
 	public static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
 	public static final String YY_MM_DD_HH_MM_SS = "yy-MM-dd HH:mm:ss";
 
+	
+	
+	/**
+	 * 获取 当天零点时间
+	 * @return
+	 */
+	public static long getZeroTime()
+	{
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		return (cal.getTimeInMillis());
+	}
+	
+	
 	/**
 	 * 获得 几天后的时间
 	 */
@@ -30,6 +47,17 @@ public class DateKit
 		return cal.getTime();
 
 	}
+	
+	public static Date getAfterDate(Date date, int hour,int min)
+	{
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(Calendar.HOUR_OF_DAY, hour);
+		cal.add(Calendar.MINUTE, min);
+		return cal.getTime();
+
+	}
+
 
 	/**
 	 * 返回 指定 年 的 月份的天数

@@ -1,6 +1,7 @@
 package com.jayqqaa12.abase.kit;
 
 import android.app.ActivityManager;
+import android.app.AlarmManager;
 import android.app.KeyguardManager;
 import android.app.NotificationManager;
 import android.app.admin.DeviceAdminReceiver;
@@ -47,6 +48,11 @@ public class ManageKit
 			context.startActivity(intent);
 		}
 
+	}
+	
+	public static AlarmManager getAlarmManager(){
+		
+		return (AlarmManager)  Abase.getContext().getSystemService(Context.ALARM_SERVICE);
 	}
 
 	public static LocationManager getLocationManager()

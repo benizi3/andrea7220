@@ -67,16 +67,14 @@ public class KeyExpiryMap<K, V> extends ConcurrentHashMap<K, Long> {
     @Override
     public synchronized boolean containsKey(Object key) {
         boolean result = false;
-        if (super.containsKey(key)) {
-            if (System.currentTimeMillis() < super.get(key)) {
-                result = true;
-            } else {
-                this.remove(key);
-            }
+        Long expiryTimestamp = super.get(key);
+        if (expiryTimestamp != null && System.currentTimeMillis() < expiryTimestamp) {
+            result = true;
+        } else {
+            this.remove(key);
         }
         return result;
     }
-
     @Override
     public synchronized Long remove(Object key) {
         return super.remove(key);

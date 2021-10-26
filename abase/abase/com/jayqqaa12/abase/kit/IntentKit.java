@@ -44,7 +44,7 @@ public class IntentKit
 
 	public static void startSubIntent(Context context, Class clazz, String name, Object content)
 	{
-		startSubIntent(context, ReflectKit.getSubClass(clazz), name, content);
+		startIntent(context, ReflectKit.getSubClass(clazz), name, content);
 	}
 	
 	public static void startSubIntent(Context context, Class clazz)

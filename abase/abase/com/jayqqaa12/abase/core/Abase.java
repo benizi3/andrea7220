@@ -9,12 +9,6 @@ import android.content.Context;
 
 /***
  * 
- * 
- * 重新架构 原先的设计不太理想 直接推翻了
- * 
- * 现在 把自己有的工具类 保留   核心功能集成 其他 开源项目
- * 
- * 
  * 这个类还可以用来 管理 activity
  * 
  * @author 12

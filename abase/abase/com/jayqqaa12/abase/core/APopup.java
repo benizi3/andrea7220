@@ -16,7 +16,7 @@ import com.jayqqaa12.abase.kit.common.ReflectKit;
 /***
  * 结合 androidannotations 
  * 
- * 使用方法  new AbasePopup(BindView.class)
+ * 使用方法  new APopup(BindView.class)
  * 
  * 其中 bindview 为继承 bindview的子类
  * 
