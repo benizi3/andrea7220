@@ -2,6 +2,7 @@ package com.jayqqaa12.abase.kit;
 
 import android.app.ActivityManager;
 import android.app.AlarmManager;
+import android.app.DownloadManager;
 import android.app.KeyguardManager;
 import android.app.NotificationManager;
 import android.app.admin.DeviceAdminReceiver;
@@ -25,6 +26,11 @@ import com.jayqqaa12.abase.core.Abase;
 
 public class ManageKit
 {
+	
+	public static DownloadManager getDownloadManger(){
+		return  (DownloadManager) Abase.getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+	}
+	
 
 	public static DevicePolicyManager getDevicePolicyManager()
 	{
